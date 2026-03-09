@@ -1,6 +1,7 @@
 import Header from '@/components/ui/Header';
 import Footer from '@/components/ui/Footer';
 import Image from 'next/image';
+import ScrollFloat from '@/components/ScrollFloat';
 
 export const revalidate = 0;
 
@@ -106,13 +107,31 @@ export default function StoryPage() {
 
             {/* Closing */}
             <section className="py-32 md:py-48 text-center px-6 md:px-8">
-                <div className="max-w-2xl mx-auto space-y-12 animate-in fade-in duration-1000">
-                    <p className="text-2xl md:text-3xl font-light italic text-charcoal/60 leading-relaxed">
+                <div className="max-w-4xl mx-auto space-y-12">
+                    <ScrollFloat
+                        as="p"
+                        animationDuration={1}
+                        ease="back.inOut(2)"
+                        scrollStart="center bottom+=60%"
+                        scrollEnd="bottom bottom-=30%"
+                        stagger={0.03}
+                        containerClassName="w-full"
+                        textClassName="text-2xl md:text-3xl font-light italic text-charcoal/60 leading-relaxed max-w-2xl"
+                    >
                         "Desain bukan hanya tentang bagaimana tampilannya dan rasanya. Desain adalah tentang bagaimana ia bekerja."
-                    </p>
-                    <div className="text-[10px] uppercase tracking-[0.6em] text-charcoal/40 font-bold">
+                    </ScrollFloat>
+                    <ScrollFloat
+                        as="div"
+                        animationDuration={1.2}
+                        ease="power4.out"
+                        scrollStart="center bottom+=70%"
+                        scrollEnd="bottom bottom-=20%"
+                        stagger={0.1}
+                        containerClassName="w-full mt-4"
+                        textClassName="text-[10px] uppercase tracking-[0.6em] text-charcoal/40 font-bold"
+                    >
                         gibran
-                    </div>
+                    </ScrollFloat>
                 </div>
             </section>
 

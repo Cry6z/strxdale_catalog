@@ -14,6 +14,7 @@ interface CatalogItem {
     image_url: string;
     category: string;
     gallery?: string[];
+    is_showcase?: boolean;
 }
 
 interface SiteSettings {
@@ -39,6 +40,7 @@ export default function AdminDashboard() {
         image_url: '',
         category: 'Lifestyle',
         is_preorder: false,
+        is_showcase: false,
     });
     const [galleryImageFiles, setGalleryImageFiles] = useState<File[]>([]);
     const [galleryUrls, setGalleryUrls] = useState<string[]>([]);
@@ -197,6 +199,7 @@ export default function AdminDashboard() {
             image_url: item.image_url,
             category: item.category,
             is_preorder: item.price === 0,
+            is_showcase: item.is_showcase || false,
         });
         setGalleryUrls(item.gallery || []);
         setShowForm(true);
@@ -211,7 +214,8 @@ export default function AdminDashboard() {
             price: '',
             image_url: '',
             category: categories[0] || 'Lifestyle',
-            is_preorder: false
+            is_preorder: false,
+            is_showcase: false
         });
         setItemImageFile(null);
         setGalleryImageFiles([]);
@@ -271,12 +275,13 @@ export default function AdminDashboard() {
             }
         }
 
-        const { is_preorder, ...rest } = formData;
+        const { is_preorder, is_showcase, ...rest } = formData;
         const submitData = {
             ...rest,
             image_url: finalImageUrl,
-            price: is_preorder ? 0 : parseFloat(formData.price),
-            gallery: finalGalleryUrls
+            price: (is_preorder || is_showcase) ? 0 : parseFloat(formData.price),
+            gallery: finalGalleryUrls,
+            is_showcase: is_showcase
         };
 
         let result;
@@ -293,8 +298,8 @@ export default function AdminDashboard() {
 
         setLoading(false);
         if (result.error) {
-            console.error('Error saving item:', result.error);
-            alert('Error saving item: ' + result.error.message);
+            console.error('Error saving item detail:', JSON.stringify(result.error, null, 2));
+            alert('Error saving item: ' + (result.error?.message || 'Unknown error'));
         } else {
             setShowForm(false);
             resetForm();
@@ -553,11 +558,11 @@ export default function AdminDashboard() {
                                             <div className="space-y-2">
                                                 <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Price ($)</label>
                                                 <input
-                                                    disabled={formData.is_preorder}
-                                                    required={!formData.is_preorder}
+                                                    disabled={formData.is_preorder || formData.is_showcase}
+                                                    required={!formData.is_preorder && !formData.is_showcase}
                                                     type="number"
                                                     className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-sm disabled:opacity-50"
-                                                    placeholder={formData.is_preorder ? "Pre-order only" : "0.00"}
+                                                    placeholder={formData.is_showcase ? "Showcase only" : formData.is_preorder ? "Pre-order only" : "0.00"}
                                                     value={formData.price}
                                                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                                                 />
@@ -575,6 +580,21 @@ export default function AdminDashboard() {
                                                     </div>
                                                 </div>
                                                 <span className="text-xs font-bold uppercase tracking-widest text-charcoal/60 group-hover:text-charcoal transition-colors">Open Pre-order only</span>
+                                            </label>
+
+                                            <label className="flex items-center gap-3 cursor-pointer group">
+                                                <div className="relative">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="peer hidden"
+                                                        checked={formData.is_showcase}
+                                                        onChange={(e) => setFormData({ ...formData, is_showcase: e.target.checked })}
+                                                    />
+                                                    <div className="w-5 h-5 border-2 border-charcoal/20 rounded peer-checked:bg-charcoal peer-checked:border-charcoal transition-all flex items-center justify-center">
+                                                        <span className="material-symbols-outlined !text-white !text-sm peer-checked:block hidden">check</span>
+                                                    </div>
+                                                </div>
+                                                <span className="text-xs font-bold uppercase tracking-widest text-charcoal/60 group-hover:text-charcoal transition-colors">Showcase Only (Hide WhatsApp)</span>
                                             </label>
                                         </div>
                                         <div className="space-y-2">
@@ -740,7 +760,7 @@ export default function AdminDashboard() {
                                                                 <Link
                                                                     href={`/collection/${item.id}`}
                                                                     target="_blank"
-                                                                    className="font-bold text-sm tracking-tight hover:underline flex items-center gap-1"
+                                                                    className="font-bold text-sm tracking-tight hover:underline flex items-center gap-1 lowercase"
                                                                 >
                                                                     {item.name}
                                                                     <span className="material-symbols-outlined !text-xs opacity-30">open_in_new</span>
@@ -755,7 +775,9 @@ export default function AdminDashboard() {
                                                         </span>
                                                     </td>
                                                     <td className="p-4 font-bold text-sm">
-                                                        {item.price === 0 ? (
+                                                        {item.is_showcase ? (
+                                                            <span className="text-charcoal/40 italic font-medium">showcase</span>
+                                                        ) : item.price === 0 ? (
                                                             <span className="text-charcoal/40 italic font-medium">pre order</span>
                                                         ) : (
                                                             `$${item.price.toLocaleString()}`

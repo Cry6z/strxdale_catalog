@@ -66,8 +66,8 @@ export default async function Home() {
               scrollStart="center bottom+=50%"
               scrollEnd="bottom bottom-=40%"
               stagger={0.03}
-              containerClassName="justify-center"
-              textClassName="font-serif text-3xl md:text-5xl italic text-charcoal leading-tight"
+              containerClassName="w-full"
+              textClassName="font-serif text-3xl md:text-5xl italic text-charcoal leading-tight max-w-4xl mx-auto"
             >
               "Kesederhanaan adalah kecanggihan tertinggi. Koleksi saya mencerminkan komitmen terhadap kualitas dan tekstur alami."
             </ScrollFloat>

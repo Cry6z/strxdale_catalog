@@ -64,11 +64,13 @@ export default async function ProductDetailPage(props: { params: Promise<{ id: s
                                 <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal/30 block mb-4">
                                     {item.category}
                                 </span>
-                                <h1 className="text-3xl md:text-5xl font-serif font-black text-charcoal mb-4 md:mb-6 tracking-tighter uppercase">
+                                <h1 className="text-3xl md:text-5xl font-serif font-black text-charcoal mb-4 md:mb-6 tracking-tighter lowercase">
                                     {item.name}
                                 </h1>
                                 <p className="text-2xl font-light text-charcoal/80">
-                                    {item.price === 0 ? (
+                                    {item.is_showcase ? (
+                                        <span className="italic">showcase</span>
+                                    ) : item.price === 0 ? (
                                         <span className="italic">pre order</span>
                                     ) : (
                                         `$${item.price.toLocaleString()}`
@@ -86,14 +88,20 @@ export default async function ProductDetailPage(props: { params: Promise<{ id: s
                             </div>
 
                             <div className="space-y-4">
-                                <a
-                                    href={whatsappLink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block w-full bg-charcoal text-white text-center py-5 rounded-none font-bold text-xs uppercase tracking-[0.4em] hover:bg-charcoal/90 transition-all"
-                                >
-                                    pesan via whatsapp
-                                </a>
+                                {!item.is_showcase ? (
+                                    <a
+                                        href={whatsappLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="block w-full bg-charcoal text-white text-center py-5 rounded-none font-bold text-xs uppercase tracking-[0.4em] hover:bg-charcoal/90 transition-all"
+                                    >
+                                        pesan via whatsapp
+                                    </a>
+                                ) : (
+                                    <div className="bg-charcoal/5 text-charcoal/40 text-center py-5 rounded-none font-bold text-xs uppercase tracking-[0.4em] cursor-default border border-charcoal/10">
+                                        display only
+                                    </div>
+                                )}
                                 <Link
                                     href="/collection"
                                     className="block w-full border border-charcoal/10 text-charcoal/40 text-center py-5 rounded-none font-bold text-xs uppercase tracking-[0.4em] hover:bg-charcoal/5 transition-all"

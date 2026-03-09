@@ -17,7 +17,7 @@ interface ScrollFloatProps {
   stagger?: number;
 }
 
-const ScrollFloat: React.FC<ScrollFloatProps> = ({
+const ScrollFloat: React.FC<ScrollFloatProps & { as?: React.ElementType }> = ({
   children,
   scrollContainerRef,
   containerClassName = '',
@@ -26,15 +26,23 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
   ease = 'back.inOut(2)',
   scrollStart = 'center bottom+=50%',
   scrollEnd = 'bottom bottom-=40%',
-  stagger = 0.03
+  stagger = 0.03,
+  as: Component = 'h2'
 }) => {
-  const containerRef = useRef<HTMLHeadingElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
   const splitText = useMemo(() => {
     const text = typeof children === 'string' ? children : '';
-    return text.split('').map((char, index) => (
-      <span className="inline-block word" key={index}>
-        {char === ' ' ? '\u00A0' : char}
+    const words = text.split(' ');
+
+    return words.map((word, wordIndex) => (
+      <span key={wordIndex} className="inline-block whitespace-nowrap">
+        {word.split('').map((char, charIndex) => (
+          <span className="inline-block word-char" key={charIndex}>
+            {char}
+          </span>
+        ))}
+        {wordIndex < words.length - 1 && <span className="inline-block">&nbsp;</span>}
       </span>
     ));
   }, [children]);
@@ -45,7 +53,7 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
 
     const scroller = scrollContainerRef && scrollContainerRef.current ? scrollContainerRef.current : window;
 
-    const charElements = el.querySelectorAll('.inline-block');
+    const charElements = el.querySelectorAll('.word-char');
 
     gsap.fromTo(
       charElements,
@@ -77,9 +85,9 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
   }, [scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger, children]);
 
   return (
-    <h2 ref={containerRef} className={`my-5 overflow-hidden ${containerClassName}`}>
-      <span className={`inline-block text-[clamp(1.6rem,4vw,3rem)] leading-[1.5] ${textClassName}`}>{splitText}</span>
-    </h2>
+    <Component ref={containerRef} className={`my-5 overflow-hidden text-center ${containerClassName}`}>
+      <span className={`inline-block leading-[1.5] ${textClassName}`}>{splitText}</span>
+    </Component>
   );
 };
 

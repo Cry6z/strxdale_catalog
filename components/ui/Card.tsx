@@ -8,6 +8,7 @@ interface CatalogItem {
     price: number;
     image_url: string;
     category: string;
+    is_showcase?: boolean;
 }
 
 export default function Card(item: CatalogItem) {
@@ -25,7 +26,7 @@ export default function Card(item: CatalogItem) {
 
             <div className="mt-4 md:mt-6 flex justify-between items-baseline px-1 md:px-0">
                 <div>
-                    <h4 className="text-base md:text-lg font-serif font-bold group-hover:text-charcoal/60 transition-colors uppercase tracking-tight">
+                    <h4 className="text-base md:text-lg font-serif font-bold group-hover:text-charcoal/60 transition-colors lowercase tracking-tight">
                         {item.name}
                     </h4>
                     <p className="text-[11px] md:text-sm text-charcoal/50 font-sans tracking-wide">
@@ -33,7 +34,9 @@ export default function Card(item: CatalogItem) {
                     </p>
                 </div>
                 <span className="text-sm md:text-base font-medium font-sans">
-                    {item.price === 0 ? (
+                    {item.is_showcase ? (
+                        <span className="text-charcoal/40 italic font-medium lowercase">showcase</span>
+                    ) : item.price === 0 ? (
                         <span className="text-charcoal/40 italic font-medium lowercase">pre order</span>
                     ) : (
                         `$${item.price.toLocaleString()}`
