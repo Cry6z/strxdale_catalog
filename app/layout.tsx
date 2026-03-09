@@ -5,8 +5,10 @@ import "./globals.css";
 const anonPro = Anonymous_Pro({
   weight: ["400", "700"],
   subsets: ["latin"],
+  style: ["normal", "italic"],
   variable: "--font-anon-pro",
 });
+
 
 export const metadata: Metadata = {
   title: "strxdale's catalog | Essential Wear",
