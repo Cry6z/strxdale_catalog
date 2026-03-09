@@ -53,6 +53,20 @@ export default function AdminDashboard() {
         if (!isAuth) {
             router.push('/access-portal');
         }
+
+        // Diagnostic connection check
+        supabase.from('catalog_items').select('count', { count: 'exact', head: true })
+            .then(({ error }) => {
+                if (error) {
+                    console.error('Initial Connection Check Failed:', error);
+                    if (error.message === 'Failed to fetch') {
+                        alert('PERINGATAN: Tidak dapat terhubung ke Supabase. Periksa koneksi internet atau environment variables Anda.');
+                    }
+                } else {
+                    console.log('Supabase connection verified successfully.');
+                }
+            });
+
         fetchItems();
         fetchHeroSettings();
         fetchCategories();
@@ -77,14 +91,24 @@ export default function AdminDashboard() {
     }
 
     async function updateCategories(newCategories: string[]) {
-        const { error } = await supabase
-            .from('site_settings')
-            .upsert({ key: 'catalog_categories', value: newCategories });
+        try {
+            const { error } = await supabase
+                .from('site_settings')
+                .upsert({ key: 'catalog_categories', value: newCategories });
 
-        if (error) {
-            alert('Error updating categories: ' + error.message);
-        } else {
-            setCategories(newCategories);
+            if (error) {
+                console.error('Supabase Error:', error);
+                alert('Error updating categories: ' + error.message);
+            } else {
+                setCategories(newCategories);
+            }
+        } catch (err: any) {
+            console.error('Detailed Network Error:', err);
+            if (err.message === 'Failed to fetch') {
+                alert('Kesalahan Koneksi: Tidak dapat menghubungi Supabase. Pastikan environment variables sudah benar dan restart server Anda.');
+            } else {
+                alert('Error: ' + err.message);
+            }
         }
     }
 
@@ -598,7 +622,20 @@ export default function AdminDashboard() {
                                             </label>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Category</label>
+                                            <div className="flex justify-between items-center mb-1">
+                                                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Category</label>
+                                                <button
+                                                    type="button"
+                                                    onClick={async () => {
+                                                        const res = await fetch('/api/test-supabase');
+                                                        const data = await res.json();
+                                                        alert(data.message || (data.status === 'success' ? 'Database synced!' : 'Error syncing database'));
+                                                    }}
+                                                    className="text-[9px] font-bold uppercase tracking-widest text-charcoal/40 hover:text-charcoal transition-colors border border-charcoal/10 px-2 py-0.5 rounded"
+                                                >
+                                                    Fix & Sync
+                                                </button>
+                                            </div>
                                             <div className="flex gap-2">
                                                 <select className="flex-1 bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-sm" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
                                                     {categories.map(cat => (
