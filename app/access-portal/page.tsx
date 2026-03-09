@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginPage() {
     const [password, setPassword] = useState('');
@@ -11,7 +12,6 @@ export default function LoginPage() {
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
         // Simple client-side check for MVP. 
-        // In a real app, this would verify against an env variable or server action.
         if (password === '121208') {
             localStorage.setItem('admin_auth', 'true');
             router.push('/admin');
@@ -50,9 +50,9 @@ export default function LoginPage() {
                 </form>
 
                 <div className="text-center">
-                    <a href="/" className="text-[9px] uppercase tracking-widest text-charcoal/20 hover:text-charcoal transition-colors">
+                    <Link href="/" className="text-[9px] uppercase tracking-widest text-charcoal/20 hover:text-charcoal transition-colors">
                         kembali ke situs
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

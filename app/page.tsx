@@ -4,6 +4,7 @@ import Hero from '@/components/ui/Hero';
 import Header from '@/components/ui/Header';
 import Footer from '@/components/ui/Footer';
 import ScrollFloat from '@/components/ScrollFloat';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,12 +48,12 @@ export default async function Home() {
             </div>
 
             <div className="mt-20 text-center">
-              <a
+              <Link
                 href="/collection"
-                className="inline-block text-[10px] font-bold uppercase tracking-0.4em text-charcoal border-b border-charcoal/20 pb-2 hover:border-charcoal transition-all"
+                className="inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal border-b border-charcoal/20 pb-2 hover:border-charcoal transition-all"
               >
                 lihat semua koleksi
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -69,7 +70,7 @@ export default async function Home() {
               containerClassName="w-full"
               textClassName="font-serif text-3xl md:text-5xl italic text-charcoal leading-tight max-w-4xl mx-auto"
             >
-              "Kesederhanaan adalah kecanggihan tertinggi. Koleksi saya mencerminkan komitmen terhadap kualitas dan tekstur alami."
+              &quot;Kesederhanaan adalah kecanggihan tertinggi. Koleksi saya mencerminkan komitmen terhadap kualitas dan tekstur alami.&quot;
             </ScrollFloat>
             <div className="mt-8 md:mt-12 h-[1px] w-16 md:w-24 bg-charcoal/20 mx-auto"></div>
           </div>

@@ -15,7 +15,7 @@ export async function GET() {
             status: 'success',
             data: data || []
         })
-    } catch (error: any) {
-        return NextResponse.json({ status: 'error', message: error.message }, { status: 500 })
+    } catch (error: unknown) {
+        return NextResponse.json({ status: 'error', message: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 })
     }
 }

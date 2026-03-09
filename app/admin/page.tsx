@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
@@ -17,11 +17,6 @@ interface CatalogItem {
     is_showcase?: boolean;
 }
 
-interface SiteSettings {
-    key: string;
-    value: string[];
-}
-
 export default function AdminDashboard() {
     const [view, setView] = useState<'overview' | 'catalog' | 'hero'>('overview');
     const [items, setItems] = useState<CatalogItem[]>([]);
@@ -31,7 +26,6 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [categories, setCategories] = useState<string[]>(['Lifestyle', 'Accessories', 'Design', 'Vintage']);
-    const [newCategory, setNewCategory] = useState('');
     const [itemImageFile, setItemImageFile] = useState<File | null>(null);
     const [formData, setFormData] = useState({
         name: '',
@@ -48,31 +42,7 @@ export default function AdminDashboard() {
 
     const router = useRouter();
 
-    useEffect(() => {
-        const isAuth = localStorage.getItem('admin_auth');
-        if (!isAuth) {
-            router.push('/access-portal');
-        }
-
-        // Diagnostic connection check
-        supabase.from('catalog_items').select('count', { count: 'exact', head: true })
-            .then(({ error }) => {
-                if (error) {
-                    console.error('Initial Connection Check Failed:', error);
-                    if (error.message === 'Failed to fetch') {
-                        alert('PERINGATAN: Tidak dapat terhubung ke Supabase. Periksa koneksi internet atau environment variables Anda.');
-                    }
-                } else {
-                    console.log('Supabase connection verified successfully.');
-                }
-            });
-
-        fetchItems();
-        fetchHeroSettings();
-        fetchCategories();
-    }, []);
-
-    async function fetchCategories() {
+    const fetchCategories = useCallback(async () => {
         const { data, error } = await supabase
             .from('site_settings')
             .select('*')
@@ -85,51 +55,12 @@ export default function AdminDashboard() {
                 setFormData(prev => ({ ...prev, category: data.value[0] }));
             }
         }
-        if (error && error.code !== 'PGRST116') { // PGRST116 is "no rows returned"
+        if (error && error.code !== 'PGRST116') {
             console.error('Error fetching categories:', error);
         }
-    }
+    }, []);
 
-    async function updateCategories(newCategories: string[]) {
-        try {
-            const { error } = await supabase
-                .from('site_settings')
-                .upsert({ key: 'catalog_categories', value: newCategories });
-
-            if (error) {
-                console.error('Supabase Error:', error);
-                alert('Error updating categories: ' + error.message);
-            } else {
-                setCategories(newCategories);
-            }
-        } catch (err: any) {
-            console.error('Detailed Network Error:', err);
-            if (err.message === 'Failed to fetch') {
-                alert('Kesalahan Koneksi: Tidak dapat menghubungi Supabase. Pastikan environment variables sudah benar dan restart server Anda.');
-            } else {
-                alert('Error: ' + err.message);
-            }
-        }
-    }
-
-    const addCategory = () => {
-        if (!newCategory.trim()) return;
-        if (categories.includes(newCategory.trim())) {
-            alert('Category already exists');
-            return;
-        }
-        const updated = [...categories, newCategory.trim()];
-        updateCategories(updated);
-        setNewCategory('');
-    };
-
-    const deleteCategory = (catToDelete: string) => {
-        if (!confirm(`Are you sure you want to delete the category "${catToDelete}"?`)) return;
-        const updated = categories.filter(c => c !== catToDelete);
-        updateCategories(updated);
-    };
-
-    async function fetchHeroSettings() {
+    const fetchHeroSettings = useCallback(async () => {
         const { data: images } = await supabase
             .from('site_settings')
             .select('*')
@@ -150,7 +81,80 @@ export default function AdminDashboard() {
             .eq('key', 'hero_description')
             .single();
         if (desc) setHeroDescription(desc.value);
+    }, []);
+
+    const fetchItems = useCallback(async () => {
+        setLoading(true);
+        const { data, error } = await supabase
+            .from('catalog_items')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) console.error('Error:', error);
+        else setItems(data || []);
+        setLoading(false);
+    }, []);
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            const isAuth = localStorage.getItem('admin_auth');
+            if (!isAuth) {
+                router.push('/access-portal');
+                return;
+            }
+
+            // Diagnostic connection check
+            try {
+                const { error } = await supabase.from('catalog_items').select('count', { count: 'exact', head: true });
+                if (error) {
+                    console.error('Initial Connection Check Failed:', error);
+                    if (error.message === 'Failed to fetch') {
+                        alert('PERINGATAN: Tidak dapat terhubung ke Supabase. Periksa koneksi internet atau environment variables Anda.');
+                    }
+                } else {
+                    console.log('Supabase connection verified successfully.');
+                }
+            } catch (err) {
+                console.error('Connection check error:', err);
+            }
+
+            await Promise.all([
+                fetchItems(),
+                fetchHeroSettings(),
+                fetchCategories()
+            ]);
+        };
+
+        checkAuth();
+    }, [router, fetchItems, fetchHeroSettings, fetchCategories]);
+
+    async function updateCategories(newCategories: string[]) {
+        try {
+            const { error } = await supabase
+                .from('site_settings')
+                .upsert({ key: 'catalog_categories', value: newCategories });
+
+            if (error) {
+                console.error('Supabase Error:', error);
+                alert('Error updating categories: ' + error.message);
+            } else {
+                setCategories(newCategories);
+            }
+        } catch (err: unknown) {
+            console.error('Detailed Network Error:', err);
+            if (err instanceof Error && err.message === 'Failed to fetch') {
+                alert('Kesalahan Koneksi: Tidak dapat menghubungi Supabase. Pastikan environment variables sudah benar dan restart server Anda.');
+            } else if (err instanceof Error) {
+                alert('Error: ' + err.message);
+            }
+        }
     }
+
+    const deleteCategory = (catToDelete: string) => {
+        if (!confirm(`Are you sure you want to delete the category "${catToDelete}"?`)) return;
+        const updated = categories.filter(c => c !== catToDelete);
+        updateCategories(updated);
+    };
 
     async function updateHeroSettings() {
         setLoading(true);
@@ -194,18 +198,6 @@ export default function AdminDashboard() {
         const newImages = [...heroImages];
         newImages[index] = publicUrl;
         setHeroImages(newImages);
-        setLoading(false);
-    }
-
-    async function fetchItems() {
-        setLoading(true);
-        const { data, error } = await supabase
-            .from('catalog_items')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (error) console.error('Error:', error);
-        else setItems(data || []);
         setLoading(false);
     }
 
@@ -258,7 +250,7 @@ export default function AdminDashboard() {
             const filePath = `${fileName}`;
 
             const { error: uploadError } = await supabase.storage
-                .from('hero-images') // Using existing bucket for compatibility, or change to 'catalog-images'
+                .from('hero-images')
                 .upload(filePath, itemImageFile);
 
             if (uploadError) {
@@ -280,8 +272,7 @@ export default function AdminDashboard() {
             return;
         }
 
-        // Upload Gallery Images
-        let finalGalleryUrls = [...galleryUrls];
+        const finalGalleryUrls = [...galleryUrls];
         for (const file of galleryImageFiles) {
             const fileExt = file.name.split('.').pop();
             const fileName = `catalog-gallery-${Math.random()}.${fileExt}`;
@@ -345,7 +336,6 @@ export default function AdminDashboard() {
 
     return (
         <div className="flex min-h-screen bg-background">
-            {/* Sidebar */}
             <aside className="w-64 border-r border-border flex flex-col fixed inset-y-0">
                 <div className="p-8 border-b border-border">
                     <h2 className="text-sm font-bold tracking-[0.3em] uppercase opacity-50">Portal</h2>
@@ -373,20 +363,19 @@ export default function AdminDashboard() {
                         <span className="material-symbols-outlined !text-lg">image_search</span>
                         Pengaturan Hero
                     </button>
-                    <a
+                    <Link
                         href="/"
                         className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold hover:bg-charcoal/5 transition-all text-charcoal/60"
                     >
                         <span className="material-symbols-outlined !text-lg">open_in_new</span>
                         Lihat Situs
-                    </a>
+                    </Link>
                 </nav>
                 <div className="p-8 border-t border-border">
                     <p className="text-[10px] uppercase tracking-widest opacity-30">v1.2.0-stable</p>
                 </div>
             </aside>
 
-            {/* Main Content */}
             <main className="flex-1 ml-64 p-12">
                 <div className="max-w-6xl mx-auto">
                     {view === 'overview' ? (
@@ -396,7 +385,6 @@ export default function AdminDashboard() {
                                 <p className="text-muted-foreground">Statistik umum dan aktivitas terbaru.</p>
                             </header>
 
-                            {/* Stats Grid */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                                 <div className="p-8 border border-border rounded-xl bg-white">
                                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Total Item</span>
@@ -413,14 +401,13 @@ export default function AdminDashboard() {
                             </div>
 
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                                {/* Recently Added */}
                                 <div>
                                     <h3 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-40 text-charcoal">Terbaru Ditambahkan</h3>
                                     <div className="space-y-4">
                                         {recentItems.map(item => (
                                             <div key={item.id} className="flex items-center gap-4 p-4 border border-border rounded-lg bg-white/50">
                                                 <div className="relative w-12 h-12 rounded overflow-hidden flex-shrink-0 bg-secondary">
-                                                    <Image src={item.image_url || '/placeholder.png'} alt={item.name} fill className="object-cover" />
+                                                    <Image src={item.image_url || '/placeholder.png'} alt={item.name} width={48} height={48} className="object-cover" />
                                                 </div>
                                                 <div className="flex-1">
                                                     <p className="font-bold text-sm">{item.name}</p>
@@ -432,7 +419,6 @@ export default function AdminDashboard() {
                                     </div>
                                 </div>
 
-                                {/* Quick Actions */}
                                 <div>
                                     <h3 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-40 text-charcoal">Quick Actions</h3>
                                     <div className="grid grid-cols-2 gap-4">
@@ -462,7 +448,6 @@ export default function AdminDashboard() {
                             </header>
 
                             <div className="max-w-2xl space-y-12">
-                                {/* Text Content */}
                                 <div className="space-y-6 p-6 border border-border rounded-xl bg-white shadow-sm">
                                     <h3 className="text-xs font-bold uppercase tracking-widest opacity-40">Hero Content</h3>
                                     <div className="space-y-4">
@@ -489,7 +474,6 @@ export default function AdminDashboard() {
                                     </div>
                                 </div>
 
-                                {/* Background Images */}
                                 <div className="space-y-6">
                                     <h3 className="text-xs font-bold uppercase tracking-widest opacity-40">Background Images</h3>
                                     {[0, 1, 2].map((i) => (
@@ -498,7 +482,7 @@ export default function AdminDashboard() {
                                                 <span className="text-xs font-bold uppercase tracking-widest opacity-40">Latar Belakang {i + 1}</span>
                                                 {heroImages[i] && (
                                                     <div className="relative w-16 h-10 rounded border border-border overflow-hidden">
-                                                        <img src={heroImages[i]} alt="" className="object-cover w-full h-full" />
+                                                        <Image src={heroImages[i]} alt="" width={64} height={40} className="object-cover w-full h-full" />
                                                     </div>
                                                 )}
                                             </div>
@@ -742,7 +726,7 @@ export default function AdminDashboard() {
                                                 {galleryUrls.map((url, idx) => (
                                                     <div key={`url-${idx}`} className="relative w-24 aspect-[4/5] flex-shrink-0 group">
                                                         <div className="w-full h-full bg-charcoal/5 rounded-lg overflow-hidden border border-charcoal/10">
-                                                            <img src={url} alt="" className="w-full h-full object-cover" />
+                                                            <Image src={url} alt="" width={96} height={120} className="w-full h-full object-cover" />
                                                         </div>
                                                         <button
                                                             type="button"
@@ -791,7 +775,7 @@ export default function AdminDashboard() {
                                                     <td className="p-4">
                                                         <div className="flex items-center gap-4">
                                                             <div className="relative w-10 h-10 rounded overflow-hidden flex-shrink-0 bg-secondary border border-border">
-                                                                <Image src={item.image_url || '/placeholder.png'} alt={item.name} fill className="object-cover" />
+                                                                <Image src={item.image_url || '/placeholder.png'} alt={item.name} width={40} height={40} className="object-cover" />
                                                             </div>
                                                             <div>
                                                                 <Link
@@ -829,6 +813,27 @@ export default function AdminDashboard() {
                                         )}
                                     </tbody>
                                 </table>
+                            </div>
+                            <div className="mt-20 p-8 border border-dashed border-charcoal/20 rounded-2xl bg-beige/30">
+                                <h3 className="text-sm font-bold uppercase tracking-widest mb-6 text-charcoal/40">Database Connection Debugger</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-[10px] font-mono">
+                                    <div className="space-y-2">
+                                        <p className="text-charcoal/40 uppercase">Target URL:</p>
+                                        <p className="p-3 bg-white border border-border rounded truncate">
+                                            {process.env.NEXT_PUBLIC_SUPABASE_URL || 'Missing URL (Using Placeholder)'}
+                                        </p>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <p className="text-charcoal/40 uppercase">Connection Status:</p>
+                                        <div className="flex items-center gap-2 p-3 bg-white border border-border rounded">
+                                            <div className={`w-2 h-2 rounded-full ${items.length > 0 ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                                            <span>{items.length > 0 ? 'Connected & Data Loaded' : 'No Data / Disconnected'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p className="mt-6 text-[9px] text-charcoal/30 leading-relaxed italic">
+                                    * Jika status berwarna merah, pastikan file .env.local Anda berisi URL Supabase yang benar dan restart server Next.js Anda.
+                                </p>
                             </div>
                         </div>
                     )}

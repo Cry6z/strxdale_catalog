@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import CardSwap, { Card } from '@/components/CardSwap';
+import Image from 'next/image';
 
 const FALLBACK_IMAGES = [
     '/images/hero1.png',
@@ -17,10 +18,10 @@ export default function Hero() {
     const [isMobile, setIsMobile] = useState(true);
 
     useEffect(() => {
-        setIsMobile(window.innerWidth < 768);
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     useEffect(() => {
@@ -88,9 +89,11 @@ export default function Hero() {
                             {images.map((src, index) => (
                                 <Card key={index} className="overflow-hidden border-none shadow-2xl rounded-2xl">
                                     <div className="w-full h-full bg-off-white">
-                                        <img
+                                        <Image
                                             src={src ?? '/placeholder.png'}
                                             alt={`Collection Piece ${index + 1}`}
+                                            width={isMobile ? 300 : 480}
+                                            height={isMobile ? 380 : 600}
                                             className="w-full h-full object-cover"
                                             loading="eager"
                                         />

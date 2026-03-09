@@ -2,6 +2,7 @@ import Header from '@/components/ui/Header';
 import Footer from '@/components/ui/Footer';
 import Image from 'next/image';
 import ScrollFloat from '@/components/ScrollFloat';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -96,9 +97,9 @@ export default function StoryPage() {
                                 <h3 className="text-white text-2xl font-bold tracking-tighter lowercase leading-tight">
                                     perjalanan berlanjut di dalam koleksi.
                                 </h3>
-                                <a href="/collection" className="inline-block mt-4 border-b border-white/20 pb-1 text-[10px] uppercase tracking-widest text-white hover:border-white transition-colors">
+                                <Link href="/collection" className="inline-block mt-4 border-b border-white/20 pb-1 text-[10px] uppercase tracking-widest text-white hover:border-white transition-colors">
                                     lihat katalog
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -118,7 +119,7 @@ export default function StoryPage() {
                         containerClassName="w-full"
                         textClassName="text-2xl md:text-3xl font-light italic text-charcoal/60 leading-relaxed max-w-2xl"
                     >
-                        "Desain bukan hanya tentang bagaimana tampilannya dan rasanya. Desain adalah tentang bagaimana ia bekerja."
+                        &quot;Desain bukan hanya tentang bagaimana tampilannya dan rasanya. Desain adalah tentang bagaimana ia bekerja.&quot;
                     </ScrollFloat>
                     <ScrollFloat
                         as="div"
