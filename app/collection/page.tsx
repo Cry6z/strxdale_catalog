@@ -3,7 +3,7 @@ import Header from '@/components/ui/Header';
 import Footer from '@/components/ui/Footer';
 import CollectionGrid from '@/components/ui/CollectionGrid';
 
-export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 async function getItems() {
     const { data, error } = await supabase

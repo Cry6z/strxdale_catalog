@@ -3,7 +3,7 @@ import Footer from '@/components/ui/Footer';
 import Image from 'next/image';
 import ScrollFloat from '@/components/ScrollFloat';
 
-export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 export default function StoryPage() {
     return (

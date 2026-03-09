@@ -5,7 +5,7 @@ import ProductGallery from '@/components/ui/ProductGallery';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 async function getItem(id: string) {
     const { data, error } = await supabase
