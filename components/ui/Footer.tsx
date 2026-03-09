@@ -23,7 +23,7 @@ export default function Footer() {
                         <a href="https://instagram.com/strxdale" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">instagram</a>
                         <a href="https://wa.me/6281379669540" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">whatsapp</a>
                         <a href="mailto:gibran121208@gmail.com" className="hover:text-white transition-colors">gmail</a>
-                        <a href="https://github.com/strxdale" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">github</a>
+                        <a href="https://github.com/Cry6z" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">github</a>
                     </div>
                 </div>
 
