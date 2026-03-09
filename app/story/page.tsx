@@ -58,20 +58,19 @@ export default function StoryPage() {
                         <div className="bg-white p-2 group cursor-crosshair">
                             <div className="relative aspect-square overflow-hidden mb-6">
                                 <Image
-                                    src="/images/story/proto2.png"
-                                    alt="UI Prototype"
+                                    src="/images/story/vigilprototype.png"
+                                    alt="Design Prototype"
                                     fill
                                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                                 />
                             </div>
                             <div className="px-4 pb-6 space-y-2">
-                                <h3 className="text-sm font-bold lowercase tracking-tight">antarmuka digital</h3>
+                                <h3 className="text-sm font-bold lowercase tracking-tight">desain vigil pertama</h3>
                                 <p className="text-[11px] leading-relaxed text-charcoal/50">
-                                    Mengeksplorasi titik temu antara kisi geometris dan interaksi manusia.
+                                    Titik dimana saya mulai menyukai dan memilih desain art-minimalism
                                 </p>
                             </div>
                         </div>
-
                         {/* Card 2 */}
                         <div className="bg-white p-2 group cursor-crosshair">
                             <div className="relative aspect-square overflow-hidden mb-6">
@@ -83,9 +82,9 @@ export default function StoryPage() {
                                 />
                             </div>
                             <div className="px-4 pb-6 space-y-2">
-                                <h3 className="text-sm font-bold lowercase tracking-tight">studi tekstur</h3>
+                                <h3 className="text-sm font-bold lowercase tracking-tight">sketsa sanctum</h3>
                                 <p className="text-[11px] leading-relaxed text-charcoal/50">
-                                    Penyelaman mendalam ke dalam serat alami dan bagaimana cahaya berinteraksi dengan permukaan mentah.
+                                    Sketsa awal desain sanctum untuk koleksi kedepannya
                                 </p>
                             </div>
                         </div>
