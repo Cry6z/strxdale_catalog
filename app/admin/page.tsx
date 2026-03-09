@@ -25,6 +25,8 @@ export default function AdminDashboard() {
     const [view, setView] = useState<'overview' | 'catalog' | 'hero'>('overview');
     const [items, setItems] = useState<CatalogItem[]>([]);
     const [heroImages, setHeroImages] = useState<string[]>(['', '', '']);
+    const [heroTitle, setHeroTitle] = useState("");
+    const [heroDescription, setHeroDescription] = useState("");
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [categories, setCategories] = useState<string[]>(['Lifestyle', 'Accessories', 'Design', 'Vintage']);
@@ -102,25 +104,45 @@ export default function AdminDashboard() {
     };
 
     async function fetchHeroSettings() {
-        const { data, error } = await supabase
+        const { data: images } = await supabase
             .from('site_settings')
             .select('*')
             .eq('key', 'hero_images')
             .single();
+        if (images) setHeroImages(images.value);
 
-        if (data) setHeroImages(data.value);
-        if (error) console.error('Error fetching hero settings:', error);
+        const { data: title } = await supabase
+            .from('site_settings')
+            .select('*')
+            .eq('key', 'hero_title')
+            .single();
+        if (title) setHeroTitle(title.value);
+
+        const { data: desc } = await supabase
+            .from('site_settings')
+            .select('*')
+            .eq('key', 'hero_description')
+            .single();
+        if (desc) setHeroDescription(desc.value);
     }
 
     async function updateHeroSettings() {
         setLoading(true);
-        const { error } = await supabase
+        await supabase
             .from('site_settings')
             .upsert({ key: 'hero_images', value: heroImages });
 
+        await supabase
+            .from('site_settings')
+            .upsert({ key: 'hero_title', value: heroTitle });
+
+        const { error } = await supabase
+            .from('site_settings')
+            .upsert({ key: 'hero_description', value: heroDescription });
+
         setLoading(false);
-        if (error) alert('Error updating hero images: ' + error.message);
-        else alert('Hero images updated successfully!');
+        if (error) alert('Error updating hero settings: ' + error.message);
+        else alert('Hero settings updated successfully!');
     }
 
     async function uploadHeroImage(file: File, index: number) {
@@ -298,7 +320,7 @@ export default function AdminDashboard() {
             <aside className="w-64 border-r border-border flex flex-col fixed inset-y-0">
                 <div className="p-8 border-b border-border">
                     <h2 className="text-sm font-bold tracking-[0.3em] uppercase opacity-50">Portal</h2>
-                    <p className="text-xl font-bold mt-2">strxdale</p>
+                    <p className="text-xl font-bold mt-2">strxdale&apos;s catalog</p>
                 </div>
                 <nav className="flex-1 p-4 space-y-2">
                     <button
@@ -306,28 +328,28 @@ export default function AdminDashboard() {
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold transition-all ${view === 'overview' ? 'bg-charcoal text-white' : 'hover:bg-charcoal/5'}`}
                     >
                         <span className="material-symbols-outlined !text-lg">dashboard</span>
-                        Overview
+                        Ringkasan
                     </button>
                     <button
                         onClick={() => setView('catalog')}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold transition-all ${view === 'catalog' ? 'bg-charcoal text-white' : 'hover:bg-charcoal/5'}`}
                     >
                         <span className="material-symbols-outlined !text-lg">inventory_2</span>
-                        Catalog
+                        Katalog
                     </button>
                     <button
                         onClick={() => setView('hero')}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold transition-all ${view === 'hero' ? 'bg-charcoal text-white' : 'hover:bg-charcoal/5'}`}
                     >
                         <span className="material-symbols-outlined !text-lg">image_search</span>
-                        Hero Settings
+                        Pengaturan Hero
                     </button>
                     <a
                         href="/"
                         className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold hover:bg-charcoal/5 transition-all text-charcoal/60"
                     >
                         <span className="material-symbols-outlined !text-lg">open_in_new</span>
-                        View Site
+                        Lihat Situs
                     </a>
                 </nav>
                 <div className="p-8 border-t border-border">
@@ -341,22 +363,22 @@ export default function AdminDashboard() {
                     {view === 'overview' ? (
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <header className="mb-12">
-                                <h1 className="text-4xl font-bold tracking-tight mb-2">Overview</h1>
-                                <p className="text-muted-foreground">General statistics and recent activity.</p>
+                                <h1 className="text-4xl font-bold tracking-tight mb-2">Ringkasan</h1>
+                                <p className="text-muted-foreground">Statistik umum dan aktivitas terbaru.</p>
                             </header>
 
                             {/* Stats Grid */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                                 <div className="p-8 border border-border rounded-xl bg-white">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Total Items</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Total Item</span>
                                     <p className="text-4xl font-bold mt-4">{totalItems}</p>
                                 </div>
                                 <div className="p-8 border border-border rounded-xl bg-white">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Collection Value</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Nilai Koleksi</span>
                                     <p className="text-4xl font-bold mt-4">${totalValue.toLocaleString()}</p>
                                 </div>
                                 <div className="p-8 border border-border rounded-xl bg-white">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Categories</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Kategori</span>
                                     <p className="text-4xl font-bold mt-4">{categories.length}</p>
                                 </div>
                             </div>
@@ -364,7 +386,7 @@ export default function AdminDashboard() {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                                 {/* Recently Added */}
                                 <div>
-                                    <h3 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-40 text-charcoal">Recently Added</h3>
+                                    <h3 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-40 text-charcoal">Terbaru Ditambahkan</h3>
                                     <div className="space-y-4">
                                         {recentItems.map(item => (
                                             <div key={item.id} className="flex items-center gap-4 p-4 border border-border rounded-lg bg-white/50">
@@ -375,7 +397,7 @@ export default function AdminDashboard() {
                                                     <p className="font-bold text-sm">{item.name}</p>
                                                     <p className="text-xs text-muted-foreground">${item.price}</p>
                                                 </div>
-                                                <button onClick={() => setView('catalog')} className="text-[10px] font-bold uppercase tracking-widest hover:underline">View</button>
+                                                <button onClick={() => setView('catalog')} className="text-[10px] font-bold uppercase tracking-widest hover:underline">Lihat</button>
                                             </div>
                                         ))}
                                     </div>
@@ -390,14 +412,14 @@ export default function AdminDashboard() {
                                             className="p-6 border border-dashed border-charcoal/20 rounded-xl hover:bg-charcoal/5 transition-all text-left group"
                                         >
                                             <span className="material-symbols-outlined !text-xl mb-4 group-hover:scale-110 transition-transform">add_circle</span>
-                                            <p className="text-xs font-bold uppercase tracking-widest">New Item</p>
+                                            <p className="text-xs font-bold uppercase tracking-widest">Item Baru</p>
                                         </button>
                                         <button
                                             onClick={() => setView('catalog')}
                                             className="p-6 border border-dashed border-charcoal/20 rounded-xl hover:bg-charcoal/5 transition-all text-left group"
                                         >
                                             <span className="material-symbols-outlined !text-xl mb-4 group-hover:scale-110 transition-transform">inventory</span>
-                                            <p className="text-xs font-bold uppercase tracking-widest">Manage Items</p>
+                                            <p className="text-xs font-bold uppercase tracking-widest">Kelola Item</p>
                                         </button>
                                     </div>
                                 </div>
@@ -407,65 +429,96 @@ export default function AdminDashboard() {
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <header className="mb-12">
                                 <h1 className="text-4xl font-bold tracking-tight mb-2">Hero Settings</h1>
-                                <p className="text-muted-foreground">Manage your 3 landing page background images.</p>
+                                <p className="text-muted-foreground">Manage your landing page content and background images.</p>
                             </header>
 
-                            <div className="max-w-2xl space-y-8">
-                                {[0, 1, 2].map((i) => (
-                                    <div key={i} className="space-y-4 p-6 border border-border rounded-xl bg-white shadow-sm">
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-xs font-bold uppercase tracking-widest opacity-40">Background {i + 1}</span>
-                                            {heroImages[i] && (
-                                                <div className="relative w-16 h-10 rounded border border-border overflow-hidden">
-                                                    <img src={heroImages[i]} alt="" className="object-cover w-full h-full" />
-                                                </div>
-                                            )}
+                            <div className="max-w-2xl space-y-12">
+                                {/* Text Content */}
+                                <div className="space-y-6 p-6 border border-border rounded-xl bg-white shadow-sm">
+                                    <h3 className="text-xs font-bold uppercase tracking-widest opacity-40">Hero Content</h3>
+                                    <div className="space-y-4">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Hero Title</label>
+                                            <input
+                                                type="text"
+                                                className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-sm"
+                                                value={heroTitle}
+                                                onChange={(e) => setHeroTitle(e.target.value)}
+                                                placeholder="strxdale's catalog"
+                                            />
                                         </div>
-                                        <div className="flex gap-4 items-center">
-                                            <div className="flex-1">
-                                                <input
-                                                    type="url"
-                                                    placeholder="External URL or Upload..."
-                                                    className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-xs"
-                                                    value={heroImages[i] || ''}
-                                                    onChange={(e) => {
-                                                        const newImages = [...heroImages];
-                                                        newImages[i] = e.target.value;
-                                                        setHeroImages(newImages);
-                                                    }}
-                                                />
-                                            </div>
-                                            <label className="flex-shrink-0 cursor-pointer group">
-                                                <input
-                                                    type="file"
-                                                    className="hidden"
-                                                    accept="image/*"
-                                                    onChange={(e) => {
-                                                        const file = e.target.files?.[0];
-                                                        if (file) uploadHeroImage(file, i);
-                                                    }}
-                                                />
-                                                <div className="flex items-center gap-2 px-4 py-3 border border-dashed border-charcoal/20 rounded-lg hover:bg-charcoal/5 transition-all">
-                                                    <span className="material-symbols-outlined !text-lg">upload_file</span>
-                                                    <span className="text-[10px] font-bold uppercase tracking-widest">Local</span>
-                                                </div>
-                                            </label>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Hero Description</label>
+                                            <textarea
+                                                rows={3}
+                                                className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-sm"
+                                                value={heroDescription}
+                                                onChange={(e) => setHeroDescription(e.target.value)}
+                                                placeholder="A refined selection of timeless essentials..."
+                                            />
                                         </div>
                                     </div>
-                                ))}
+                                </div>
 
-                                <button
-                                    onClick={updateHeroSettings}
-                                    disabled={loading}
-                                    className="bg-charcoal text-white px-10 py-4 rounded-lg font-bold text-sm hover:opacity-90 disabled:opacity-50 transition-all shadow-xl shadow-charcoal/20"
-                                >
-                                    {loading ? 'Saving...' : 'Save Hero Changes'}
-                                </button>
+                                {/* Background Images */}
+                                <div className="space-y-6">
+                                    <h3 className="text-xs font-bold uppercase tracking-widest opacity-40">Background Images</h3>
+                                    {[0, 1, 2].map((i) => (
+                                        <div key={i} className="space-y-4 p-6 border border-border rounded-xl bg-white shadow-sm">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-xs font-bold uppercase tracking-widest opacity-40">Latar Belakang {i + 1}</span>
+                                                {heroImages[i] && (
+                                                    <div className="relative w-16 h-10 rounded border border-border overflow-hidden">
+                                                        <img src={heroImages[i]} alt="" className="object-cover w-full h-full" />
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="flex gap-4 items-center">
+                                                <div className="flex-1">
+                                                    <input
+                                                        type="url"
+                                                        placeholder="External URL or Upload..."
+                                                        className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-xs"
+                                                        value={heroImages[i] || ''}
+                                                        onChange={(e) => {
+                                                            const newImages = [...heroImages];
+                                                            newImages[i] = e.target.value;
+                                                            setHeroImages(newImages);
+                                                        }}
+                                                    />
+                                                </div>
+                                                <label className="flex-shrink-0 cursor-pointer group">
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        accept="image/*"
+                                                        onChange={(e) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (file) uploadHeroImage(file, i);
+                                                        }}
+                                                    />
+                                                    <div className="flex items-center gap-2 px-4 py-3 border border-dashed border-charcoal/20 rounded-lg hover:bg-charcoal/5 transition-all">
+                                                        <span className="material-symbols-outlined !text-lg">upload_file</span>
+                                                        <span className="text-[10px] font-bold uppercase tracking-widest">Local</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    ))}
 
-                                <div className="p-6 bg-beige/50 border border-charcoal/5 rounded-xl">
-                                    <p className="text-xs leading-relaxed text-charcoal/60 italic">
-                                        Tip: Use high-quality JPG or PNG images. Landscape orientation (16:9) works best for the full-screen hero section.
-                                    </p>
+                                    <button
+                                        onClick={updateHeroSettings}
+                                        disabled={loading}
+                                        className="bg-charcoal text-white px-10 py-4 rounded-lg font-bold text-sm hover:opacity-90 disabled:opacity-50 transition-all shadow-xl shadow-charcoal/20"
+                                    >
+                                        {loading ? 'Saving...' : 'Save Hero Changes'}
+                                    </button>
+
+                                    <div className="p-6 bg-beige/50 border border-charcoal/5 rounded-xl">
+                                        <p className="text-xs leading-relaxed text-charcoal/60 italic">
+                                            Tip: Use high-quality JPG or PNG images. Landscape orientation (16:9) works best for the full-screen hero section.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

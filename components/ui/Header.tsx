@@ -36,10 +36,10 @@ export default function Header() {
                 {/* Center: Navigation Links (Desktop) */}
                 <div className="hidden md:flex items-center gap-14 absolute left-1/2 -translate-x-1/2">
                     <Link href="/collection" className="text-[10px] font-bold tracking-[0.4em] text-charcoal/50 hover:text-charcoal transition-all duration-300 uppercase font-serif">
-                        catalog
+                        katalog
                     </Link>
                     <Link href="/story" className="text-[10px] font-bold tracking-[0.4em] text-charcoal/50 hover:text-charcoal transition-all duration-300 uppercase font-serif">
-                        backstory
+                        kisah
                     </Link>
                 </div>
 
@@ -70,14 +70,14 @@ export default function Header() {
                         onClick={() => setIsMenuOpen(false)}
                         className="text-[11px] font-bold tracking-[0.5em] text-charcoal/60 hover:text-charcoal uppercase font-serif py-2"
                     >
-                        catalog
+                        katalog
                     </Link>
                     <Link
                         href="/story"
                         onClick={() => setIsMenuOpen(false)}
                         className="text-[11px] font-bold tracking-[0.5em] text-charcoal/60 hover:text-charcoal uppercase font-serif py-2"
                     >
-                        backstory
+                        kisah
                     </Link>
                 </div>
             </div>

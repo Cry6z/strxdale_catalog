@@ -34,8 +34,8 @@ export default async function Home() {
         <section className="py-16 md:py-24 bg-off-white overflow-hidden" id="featured">
           <div className="mx-auto max-w-7xl px-6 md:px-8 mb-8 md:mb-12 flex items-end justify-between">
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-charcoal/40 block mb-2">Selected Works</span>
-              <h3 className="text-3xl md:text-4xl font-serif font-bold text-charcoal">Featured Products</h3>
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-charcoal/40 block mb-2">Karya Pilihan</span>
+              <h3 className="text-3xl md:text-4xl font-serif font-bold text-charcoal">Produk Unggulan</h3>
             </div>
           </div>
 
@@ -49,9 +49,9 @@ export default async function Home() {
             <div className="mt-20 text-center">
               <a
                 href="/collection"
-                className="inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal border-b border-charcoal/20 pb-2 hover:border-charcoal transition-all"
+                className="inline-block text-[10px] font-bold uppercase tracking-0.4em text-charcoal border-b border-charcoal/20 pb-2 hover:border-charcoal transition-all"
               >
-                view all collection
+                lihat semua koleksi
               </a>
             </div>
           </div>
@@ -69,7 +69,7 @@ export default async function Home() {
               containerClassName="justify-center"
               textClassName="font-serif text-3xl md:text-5xl italic text-charcoal leading-tight"
             >
-              "Simplicity is the ultimate sophistication. Our linen collection reflects a commitment to quality and natural textures."
+              "Kesederhanaan adalah kecanggihan tertinggi. Koleksi saya mencerminkan komitmen terhadap kualitas dan tekstur alami."
             </ScrollFloat>
             <div className="mt-8 md:mt-12 h-[1px] w-16 md:w-24 bg-charcoal/20 mx-auto"></div>
           </div>

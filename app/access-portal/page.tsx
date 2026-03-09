@@ -16,7 +16,7 @@ export default function LoginPage() {
             localStorage.setItem('admin_auth', 'true');
             router.push('/admin');
         } else {
-            setError('invalid credentials');
+            setError('kredensial tidak valid');
         }
     };
 
@@ -24,15 +24,15 @@ export default function LoginPage() {
         <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 font-serif">
             <div className="w-full max-w-xs space-y-12 animate-in fade-in duration-1000">
                 <div className="text-center space-y-4">
-                    <h1 className="text-xl font-bold tracking-[0.2em] lowercase">access portal</h1>
-                    <p className="text-[10px] uppercase tracking-[0.3em] text-charcoal/40">authorized personnel only</p>
+                    <h1 className="text-xl font-bold tracking-[0.2em] lowercase">portal akses</h1>
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-charcoal/40">hanya untuk personil berwenang</p>
                 </div>
 
                 <form onSubmit={handleLogin} className="space-y-6">
                     <div className="space-y-1">
                         <input
                             type="password"
-                            placeholder="password"
+                            placeholder="kata sandi"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full bg-transparent border-b border-charcoal/10 py-3 text-sm focus:outline-none focus:border-charcoal transition-colors placeholder:text-charcoal/20"
@@ -45,13 +45,13 @@ export default function LoginPage() {
                         type="submit"
                         className="w-full bg-charcoal text-white py-4 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-charcoal/90 transition-all"
                     >
-                        enter
+                        masuk
                     </button>
                 </form>
 
                 <div className="text-center">
                     <a href="/" className="text-[9px] uppercase tracking-widest text-charcoal/20 hover:text-charcoal transition-colors">
-                        return to site
+                        kembali ke situs
                     </a>
                 </div>
             </div>

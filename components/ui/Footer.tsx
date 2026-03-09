@@ -17,8 +17,8 @@ export default function Footer() {
 
                     {/* Compact Links */}
                     <div className="flex flex-wrap gap-x-8 gap-y-4 text-[10px] font-bold uppercase tracking-[0.3em] text-white/30">
-                        <Link href="/collection" className="hover:text-white transition-colors">catalog</Link>
-                        <Link href="/story" className="hover:text-white transition-colors">backstory</Link>
+                        <Link href="/collection" className="hover:text-white transition-colors">katalog</Link>
+                        <Link href="/story" className="hover:text-white transition-colors">kisah</Link>
                         <div className="w-[1px] h-3 bg-white/10 self-center hidden md:block"></div>
                         <a href="https://instagram.com/strxdale" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">instagram</a>
                         <a href="https://wa.me/6281379669540" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">whatsapp</a>
@@ -30,7 +30,7 @@ export default function Footer() {
                 {/* Bottom Bar: Minimalist Copyright */}
                 <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] tracking-[0.3em] text-white/10 uppercase">
                     <p>© 2026 strxdale&apos;s catalog</p>
-                    <p className="hidden md:block">designed for the essentialist</p>
+                    <p className="hidden md:block">dirancang untuk para esensialis</p>
                 </div>
             </div>
         </footer>

@@ -9,10 +9,10 @@ interface CollectionGridProps {
 }
 
 export default function CollectionGrid({ initialItems, categories: propCategories }: CollectionGridProps) {
-    const [activeCategory, setActiveCategory] = useState('all');
-    const categories = ['all', ...propCategories.map(c => c.toLowerCase())];
+    const [activeCategory, setActiveCategory] = useState('semua');
+    const categories = ['semua', ...propCategories.map(c => c.toLowerCase())];
 
-    const filteredItems = activeCategory === 'all'
+    const filteredItems = activeCategory === 'semua'
         ? initialItems
         : initialItems.filter(item => item.category?.toLowerCase() === activeCategory);
 
@@ -21,8 +21,8 @@ export default function CollectionGrid({ initialItems, categories: propCategorie
             {/* Filter Bar */}
             <section className="pt-32 pb-12 md:pb-16 px-6 md:px-8 border-b border-charcoal/5">
                 <div className="mx-auto max-w-7xl">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal/30 block mb-4">The Archive</span>
-                    <h1 className="text-4xl md:text-6xl font-serif font-black text-charcoal mb-8 md:mb-12 tracking-tighter lowercase">collection</h1>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal/30 block mb-4">Arsip Kami</span>
+                    <h1 className="text-4xl md:text-6xl font-serif font-black text-charcoal mb-8 md:mb-12 tracking-tighter lowercase">koleksi</h1>
 
                     <div className="flex flex-wrap gap-x-6 gap-y-4 md:gap-8">
                         {categories.map((cat) => (
@@ -54,12 +54,12 @@ export default function CollectionGrid({ initialItems, categories: propCategorie
 
                     {filteredItems.length === 0 && (
                         <div className="text-center py-32 animate-in fade-in zoom-in-95 duration-500">
-                            <p className="text-charcoal/30 font-serif italic">No items found in this category.</p>
+                            <p className="text-charcoal/30 font-serif italic">Tidak ada item ditemukan dalam kategori ini.</p>
                             <button
-                                onClick={() => setActiveCategory('all')}
+                                onClick={() => setActiveCategory('semua')}
                                 className="mt-6 text-[10px] font-bold uppercase tracking-widest text-charcoal border-b border-charcoal/20 pb-1"
                             >
-                                view all collection
+                                lihat semua koleksi
                             </button>
                         </div>
                     )}

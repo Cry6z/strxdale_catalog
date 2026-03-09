@@ -12,6 +12,8 @@ const FALLBACK_IMAGES = [
 
 export default function Hero() {
     const [images, setImages] = useState<string[]>(FALLBACK_IMAGES);
+    const [title, setTitle] = useState("strxdale's catalog");
+    const [description, setDescription] = useState("Pilihan terkurasi untuk barang-barang esensial yang tak lekang oleh waktu. Siluet yang dirancang dengan teliti untuk mereka yang percaya pada kesederhanaan.");
     const [isMobile, setIsMobile] = useState(true);
 
     useEffect(() => {
@@ -22,18 +24,35 @@ export default function Hero() {
     }, []);
 
     useEffect(() => {
-        async function fetchHeroImages() {
-            const { data } = await supabase
+        async function fetchHeroSettings() {
+            // Images
+            const { data: imgData } = await supabase
                 .from('site_settings')
                 .select('value')
                 .eq('key', 'hero_images')
                 .single();
 
-            if (data && Array.isArray(data.value) && data.value.length >= 2) {
-                setImages(data.value);
+            if (imgData && Array.isArray(imgData.value) && imgData.value.length >= 2) {
+                setImages(imgData.value);
             }
+
+            // Title
+            const { data: titleData } = await supabase
+                .from('site_settings')
+                .select('value')
+                .eq('key', 'hero_title')
+                .single();
+            if (titleData?.value) setTitle(String(titleData.value));
+
+            // Description
+            const { data: descData } = await supabase
+                .from('site_settings')
+                .select('value')
+                .eq('key', 'hero_description')
+                .single();
+            if (descData?.value) setDescription(String(descData.value));
         }
-        fetchHeroImages();
+        fetchHeroSettings();
     }, []);
 
     return (
@@ -44,14 +63,14 @@ export default function Hero() {
                 {/* Left: Content */}
                 <div className="relative z-10 text-left order-2 lg:order-1">
                     <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl font-black text-charcoal mb-6 tracking-tighter animate-in fade-in slide-in-from-left-8 duration-1000">
-                        strxdale&apos;s catalog
+                        {title}
                     </h2>
                     <p className="max-w-md text-base md:text-lg font-light text-charcoal/70 mb-10 leading-relaxed animate-in fade-in slide-in-from-left-12 duration-1000 delay-200">
-                        A refined selection of timeless essentials. Meticulously crafted silhouettes in premium fabrics designed for the essentialist.
+                        {description}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-left-16 duration-1000 delay-500">
                         <a className="group relative inline-flex items-center justify-center overflow-hidden border border-charcoal bg-charcoal text-white px-10 py-4 text-[10px] font-bold uppercase tracking-widest transition-all hover:bg-white hover:text-charcoal" href="#featured">
-                            <span className="relative z-10">Explore Catalog</span>
+                            <span className="relative z-10">Jelajahi Katalog</span>
                         </a>
                     </div>
                 </div>
@@ -86,7 +105,7 @@ export default function Hero() {
             {/* Scroll Indicator */}
             <div className="absolute bottom-10 left-8 text-charcoal/20 hidden lg:block">
                 <div className="flex flex-col items-center gap-4">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] rotate-90 origin-left translate-x-3 mb-12 whitespace-nowrap">Scroll Down</span>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] rotate-90 origin-left translate-x-3 mb-12 whitespace-nowrap">Scroll Kebawah</span>
                     <div className="w-[1px] h-12 bg-charcoal/10"></div>
                 </div>
             </div>

@@ -42,7 +42,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ id: s
     }
 
     const whatsappNumber = contactInfo.whatsapp;
-    const message = encodeURIComponent(`Hi, I'm interested in ordering ${item.name} from your catalog.`);
+    const message = encodeURIComponent(`Halo, saya tertarik untuk memesan ${item.name} dari katalog Anda.`);
     const whatsappLink = `https://wa.me/${whatsappNumber}?text=${message}`;
 
     // Combine main image with gallery images
@@ -79,7 +79,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ id: s
                             <div className="h-[1px] w-full bg-charcoal/5 mb-8" />
 
                             <div className="mb-12">
-                                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal/40 mb-4">Description</h3>
+                                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal/40 mb-4">Deskripsi</h3>
                                 <p className="text-charcoal/70 leading-relaxed font-sans whitespace-pre-line">
                                     {item.description}
                                 </p>
@@ -92,19 +92,19 @@ export default async function ProductDetailPage(props: { params: Promise<{ id: s
                                     rel="noopener noreferrer"
                                     className="block w-full bg-charcoal text-white text-center py-5 rounded-none font-bold text-xs uppercase tracking-[0.4em] hover:bg-charcoal/90 transition-all"
                                 >
-                                    order via whatsapp
+                                    pesan via whatsapp
                                 </a>
                                 <Link
                                     href="/collection"
                                     className="block w-full border border-charcoal/10 text-charcoal/40 text-center py-5 rounded-none font-bold text-xs uppercase tracking-[0.4em] hover:bg-charcoal/5 transition-all"
                                 >
-                                    back to collection
+                                    kembali ke koleksi
                                 </Link>
                             </div>
 
                             <div className="mt-12 p-6 bg-beige/50 border border-charcoal/5">
                                 <p className="text-[10px] text-charcoal/40 font-bold uppercase tracking-[0.2em] leading-relaxed italic">
-                                    * please note: for pre-order items, production may take 7-14 business days. we will contact you via whatsapp for confirmation.
+                                    * mohon dicatat: untuk item pre-order, produksi dapat memakan waktu 7-14 hari kerja. kami akan menghubungi anda via whatsapp untuk konfirmasi.
                                 </p>
                             </div>
                         </div>

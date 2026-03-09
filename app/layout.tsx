@@ -11,8 +11,8 @@ const anonPro = Anonymous_Pro({
 
 
 export const metadata: Metadata = {
-  title: "strxdale's catalog | Essential Wear",
-  description: "A refined selection of timeless essentials.",
+  title: "strxdale's catalog | Pakaian Esensial",
+  description: "Pilihan terkurasi untuk barang-barang esensial yang tak lekang oleh waktu.",
 };
 
 export default function RootLayout({
