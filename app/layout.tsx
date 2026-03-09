@@ -11,8 +11,11 @@ const anonPro = Anonymous_Pro({
 
 
 export const metadata: Metadata = {
-  title: "strxdale's catalog | Pakaian Esensial",
-  description: "Pilihan terkurasi untuk barang-barang esensial yang tak lekang oleh waktu.",
+  title: "strxdale's catalog | Born From Restlessness",
+  description: "Sebuah ruang untuk desain yang lahir dari rasa ingin mencoba. Sederhana, tenang, dan dibuat dengan pendekatan yang minimal.",
+  icons: {
+    icon: "/S.png",
+  },
 };
 
 export default function RootLayout({

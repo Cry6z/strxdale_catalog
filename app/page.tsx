@@ -70,7 +70,7 @@ export default async function Home() {
               containerClassName="w-full"
               textClassName="font-serif text-3xl md:text-5xl italic text-charcoal leading-tight max-w-4xl mx-auto"
             >
-              &quot;Kesederhanaan adalah kecanggihan tertinggi. Koleksi saya mencerminkan komitmen terhadap kualitas dan tekstur alami.&quot;
+              &quot;Di balik setiap bentuk yang sederhana, ada fase sunyi yang pernah dilewati.&quot;
             </ScrollFloat>
             <div className="mt-8 md:mt-12 h-[1px] w-16 md:w-24 bg-charcoal/20 mx-auto"></div>
           </div>

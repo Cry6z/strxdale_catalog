@@ -32,13 +32,13 @@ export default function StoryPage() {
                         </div>
                         <div className="relative aspect-[4/5] bg-charcoal/5 overflow-hidden greyscale group">
                             <Image
-                                src="/images/story/proto1.png"
+                                src="/images/story/design.png"
                                 alt="Initial sketch"
                                 fill
                                 className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
                             />
                             <div className="absolute bottom-6 left-6 text-[9px] uppercase tracking-widest text-charcoal/40">
-                                arsip_001 / fase_draft
+                                design / strxdale
                             </div>
                         </div>
                     </div>
@@ -58,16 +58,16 @@ export default function StoryPage() {
                         <div className="bg-white p-2 group cursor-crosshair">
                             <div className="relative aspect-square overflow-hidden mb-6">
                                 <Image
-                                    src="/images/story/vigilprototype.png"
-                                    alt="Design Prototype"
+                                    src="/images/story/renaissance.png"
+                                    alt="First Design Prototype"
                                     fill
                                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                                 />
                             </div>
                             <div className="px-4 pb-6 space-y-2">
-                                <h3 className="text-sm font-bold lowercase tracking-tight">desain vigil pertama</h3>
+                                <h3 className="text-sm font-bold lowercase tracking-tight">Renaissance (Desain Pertama)</h3>
                                 <p className="text-[11px] leading-relaxed text-charcoal/50">
-                                    Titik dimana saya mulai menyukai dan memilih desain art-minimalism
+                                    Ini merupakan baju yang saya desain sendiri dan sudah saya produksi untuk pemakaian pribadi
                                 </p>
                             </div>
                         </div>
@@ -75,16 +75,16 @@ export default function StoryPage() {
                         <div className="bg-white p-2 group cursor-crosshair">
                             <div className="relative aspect-square overflow-hidden mb-6">
                                 <Image
-                                    src="/images/story/proto3.png"
+                                    src="/images/story/spacewalk.png"
                                     alt="Material Study"
                                     fill
                                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                                 />
                             </div>
                             <div className="px-4 pb-6 space-y-2">
-                                <h3 className="text-sm font-bold lowercase tracking-tight">sketsa sanctum</h3>
+                                <h3 className="text-sm font-bold lowercase tracking-tight">spacewalk</h3>
                                 <p className="text-[11px] leading-relaxed text-charcoal/50">
-                                    Sketsa awal desain sanctum untuk koleksi kedepannya
+                                    Desain ini yang membuat saya yakin untuk memakai gaya minimalis pada desain saya kedepannya
                                 </p>
                             </div>
                         </div>
@@ -118,7 +118,7 @@ export default function StoryPage() {
                         containerClassName="w-full"
                         textClassName="text-2xl md:text-3xl font-light italic text-charcoal/60 leading-relaxed max-w-2xl"
                     >
-                        &quot;Desain bukan hanya tentang bagaimana tampilannya dan rasanya. Desain adalah tentang bagaimana ia bekerja.&quot;
+                        &quot;Desain bukan sekadar tampilan, tetapi tentang menemukan bentuk yang terasa benar&quot;
                     </ScrollFloat>
                     <ScrollFloat
                         as="div"
@@ -130,7 +130,7 @@ export default function StoryPage() {
                         containerClassName="w-full mt-4"
                         textClassName="text-[10px] uppercase tracking-[0.6em] text-charcoal/40 font-bold"
                     >
-                        gibran
+                        someone
                     </ScrollFloat>
                 </div>
             </section>

@@ -30,7 +30,7 @@ export default function Footer() {
                 {/* Bottom Bar: Minimalist Copyright */}
                 <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] tracking-[0.3em] text-white/10 uppercase">
                     <p>© 2026 strxdale&apos;s catalog</p>
-                    <p className="hidden md:block">dirancang untuk para esensialis</p>
+                    <p className="hidden md:block">Born From Restlessness</p>
                 </div>
             </div>
         </footer>
