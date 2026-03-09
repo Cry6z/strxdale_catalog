@@ -14,7 +14,7 @@ const FALLBACK_IMAGES = [
 export default function Hero() {
     const [images, setImages] = useState<string[]>(FALLBACK_IMAGES);
     const [title, setTitle] = useState("strxdale's catalog");
-    const [description, setDescription] = useState("Sebuah ruang untuk desain yang lahir dari rasa ingin mencoba.Sederhana, tenang, dan dibuat dengan pendekatan yang minimal.");
+    const [description, setDescription] = useState("Sebuah ruang untuk desain yang lahir dari rasa ingin mencoba. Sederhana, tenang, dan dibuat dengan pendekatan yang minimal.");
     const [isMobile, setIsMobile] = useState(true);
 
     useEffect(() => {
