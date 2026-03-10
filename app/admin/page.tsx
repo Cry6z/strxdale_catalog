@@ -15,6 +15,7 @@ interface CatalogItem {
     category: string;
     gallery?: string[];
     is_showcase?: boolean;
+    is_featured?: boolean;
 }
 
 export default function AdminDashboard() {
@@ -35,6 +36,7 @@ export default function AdminDashboard() {
         category: 'Lifestyle',
         is_preorder: false,
         is_showcase: false,
+        is_featured: false,
     });
     const [galleryImageFiles, setGalleryImageFiles] = useState<File[]>([]);
     const [galleryUrls, setGalleryUrls] = useState<string[]>([]);
@@ -216,6 +218,7 @@ export default function AdminDashboard() {
             category: item.category,
             is_preorder: item.price === 0,
             is_showcase: item.is_showcase || false,
+            is_featured: item.is_featured || false,
         });
         setGalleryUrls(item.gallery || []);
         setShowForm(true);
@@ -231,7 +234,8 @@ export default function AdminDashboard() {
             image_url: '',
             category: categories[0] || 'Lifestyle',
             is_preorder: false,
-            is_showcase: false
+            is_showcase: false,
+            is_featured: false
         });
         setItemImageFile(null);
         setGalleryImageFiles([]);
@@ -290,13 +294,14 @@ export default function AdminDashboard() {
             }
         }
 
-        const { is_preorder, is_showcase, ...rest } = formData;
+        const { is_preorder, is_showcase, is_featured, ...rest } = formData;
         const submitData = {
             ...rest,
             image_url: finalImageUrl,
             price: (is_preorder || is_showcase) ? 0 : parseFloat(formData.price),
             gallery: finalGalleryUrls,
-            is_showcase: is_showcase
+            is_showcase: is_showcase,
+            is_featured: is_featured
         };
 
         let result;
@@ -604,6 +609,21 @@ export default function AdminDashboard() {
                                                 </div>
                                                 <span className="text-xs font-bold uppercase tracking-widest text-charcoal/60 group-hover:text-charcoal transition-colors">Showcase Only (Hide WhatsApp)</span>
                                             </label>
+
+                                            <label className="flex items-center gap-3 cursor-pointer group">
+                                                <div className="relative">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="peer hidden"
+                                                        checked={formData.is_featured}
+                                                        onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
+                                                    />
+                                                    <div className="w-5 h-5 border-2 border-charcoal/20 rounded peer-checked:bg-charcoal peer-checked:border-charcoal transition-all flex items-center justify-center">
+                                                        <span className="material-symbols-outlined !text-white !text-sm peer-checked:block hidden">check</span>
+                                                    </div>
+                                                </div>
+                                                <span className="text-xs font-bold uppercase tracking-widest text-charcoal/60 group-hover:text-charcoal transition-colors">Featured Item (Landing Page)</span>
+                                            </label>
                                         </div>
                                         <div className="space-y-2">
                                             <div className="flex justify-between items-center mb-1">
@@ -785,6 +805,9 @@ export default function AdminDashboard() {
                                                                 >
                                                                     {item.name}
                                                                     <span className="material-symbols-outlined !text-xs opacity-30">open_in_new</span>
+                                                                    {item.is_featured && (
+                                                                        <span className="bg-amber-100 text-amber-700 text-[8px] px-1.5 py-0.5 rounded uppercase font-black tracking-tighter">Featured</span>
+                                                                    )}
                                                                 </Link>
                                                                 <p className="text-[10px] text-muted-foreground line-clamp-1 max-w-xs">{item.description}</p>
                                                             </div>

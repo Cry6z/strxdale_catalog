@@ -12,6 +12,7 @@ interface CatalogItem {
     category: string;
     gallery?: string[];
     is_showcase?: boolean;
+    is_featured?: boolean;
 }
 
 interface CollectionGridProps {
@@ -53,9 +54,9 @@ export default function CollectionGrid({ initialItems, categories: propCategorie
             </section>
 
             {/* Grid */}
-            <section className="py-16 md:py-24 px-6 md:px-8 min-h-[60vh]">
+            <section className="py-16 md:py-24 px-4 md:px-8 min-h-[60vh]">
                 <div className="mx-auto max-w-7xl">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 md:gap-y-16">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-8 gap-y-8 md:gap-y-16">
                         {filteredItems.map((item) => (
                             <div key={item.id} className="animate-in fade-in duration-700">
                                 <Card {...item} />

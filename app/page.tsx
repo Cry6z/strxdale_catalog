@@ -6,19 +6,45 @@ import Footer from '@/components/ui/Footer';
 import ScrollFloat from '@/components/ScrollFloat';
 import Link from 'next/link';
 
+
 export const dynamic = 'force-dynamic';
 
 async function getItems() {
-  const { data, error } = await supabase
+  // First, try to fetch featured items
+  const { data: featuredData, error: featuredError } = await supabase
     .from('catalog_items')
     .select('*')
-    .order('created_at', { ascending: false });
+    .eq('is_featured', true)
+    .order('created_at', { ascending: false })
+    .limit(3);
 
-  if (error) {
-    console.error('Error fetching items:', error);
-    return [];
+  if (featuredError) {
+    if (featuredError.code === '42703') {
+      console.warn('Column "is_featured" missing from catalog_items table. Falling back to latest items.');
+    } else {
+      console.error('Error fetching featured items:', featuredError.message || featuredError);
+    }
   }
-  return data || [];
+
+  let finalItems = featuredData || [];
+
+  // If we have less than 3 featured items, fetch the latest ones to fill up
+  if (finalItems.length < 3) {
+    const { data: latestData, error: latestError } = await supabase
+      .from('catalog_items')
+      .select('*')
+      .not('id', 'in', `(${finalItems.map(i => i.id).join(',') || '00000000-0000-0000-0000-000000000000'})`)
+      .order('created_at', { ascending: false })
+      .limit(3 - finalItems.length);
+
+    if (latestError) {
+      console.error('Error fetching latest items:', latestError);
+    } else if (latestData) {
+      finalItems = [...finalItems, ...latestData];
+    }
+  }
+
+  return finalItems;
 }
 
 export default async function Home() {
@@ -42,7 +68,7 @@ export default async function Home() {
 
           <div className="mx-auto max-w-7xl px-6 md:px-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 md:gap-y-16">
-              {items.slice(0, 3).map((item) => (
+              {items.map((item) => (
                 <Card key={item.id} {...item} />
               ))}
             </div>

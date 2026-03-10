@@ -9,6 +9,7 @@ interface CatalogItem {
     image_url: string;
     category: string;
     is_showcase?: boolean;
+    is_featured?: boolean;
 }
 
 export default function Card(item: CatalogItem) {
@@ -21,6 +22,16 @@ export default function Card(item: CatalogItem) {
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+
+                {/* Featured Tag */}
+                {item.is_featured && (
+                    <div className="absolute top-3 right-3 z-10">
+                        <span className="bg-charcoal text-white text-[8px] font-black uppercase tracking-[0.2em] px-2 py-1 rounded shadow-lg">
+                            featured
+                        </span>
+                    </div>
+                )}
+
                 <div className="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/5 transition-colors" />
             </div>
 
