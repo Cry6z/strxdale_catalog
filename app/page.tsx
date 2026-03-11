@@ -154,7 +154,7 @@ export default async function Home() {
               containerClassName="w-full"
               textClassName="font-serif text-3xl md:text-5xl italic text-charcoal leading-[1.3] max-w-3xl mx-auto"
             >
-              "Di balik setiap bentuk yang sederhana, ada fase sunyi yang pernah dilewati."
+              "Behind every simple form, there is a silent phase that has been passed."
             </ScrollFloat>
             <div className="mt-12 h-[1px] w-20 bg-charcoal/20 mx-auto"></div>
           </div>

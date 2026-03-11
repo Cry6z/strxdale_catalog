@@ -118,7 +118,7 @@ export default function StoryPage() {
                         containerClassName="w-full"
                         textClassName="text-2xl md:text-3xl font-light italic text-charcoal/60 leading-relaxed max-w-2xl"
                     >
-                        &quot;Desain bukan sekadar tampilan, tetapi tentang menemukan bentuk yang terasa benar&quot;
+                        &quot;Design is not just about looks, but about finding a form that feels right.&quot;
                     </ScrollFloat>
                     <div className="text-[10px] uppercase tracking-[0.6em] text-charcoal/40 font-bold w-full mt-4">
                         someone
