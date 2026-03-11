@@ -120,18 +120,9 @@ export default function StoryPage() {
                     >
                         &quot;Desain bukan sekadar tampilan, tetapi tentang menemukan bentuk yang terasa benar&quot;
                     </ScrollFloat>
-                    <ScrollFloat
-                        as="div"
-                        animationDuration={1.2}
-                        ease="power4.out"
-                        scrollStart="center bottom+=70%"
-                        scrollEnd="bottom bottom-=20%"
-                        stagger={0.1}
-                        containerClassName="w-full mt-4"
-                        textClassName="text-[10px] uppercase tracking-[0.6em] text-charcoal/40 font-bold"
-                    >
+                    <div className="text-[10px] uppercase tracking-[0.6em] text-charcoal/40 font-bold w-full mt-4">
                         someone
-                    </ScrollFloat>
+                    </div>
                 </div>
             </section>
 

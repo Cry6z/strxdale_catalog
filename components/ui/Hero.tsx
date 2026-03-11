@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import CardSwap, { Card } from '@/components/CardSwap';
-import ScrollFloat from '@/components/ScrollFloat';
 import Image from 'next/image';
 
 const FALLBACK_IMAGES = [
@@ -87,33 +86,13 @@ export default function Hero({
 
                 {/* Left: Content */}
                 <div className="relative z-10 text-left order-2 lg:order-1">
-                    <ScrollFloat
-                        as="h2"
-                        animationDuration={1.2}
-                        ease="power4.out"
-                        stagger={0.03}
-                        scrollStart="top 90%"
-                        scrollEnd="top 30%"
-                        scrub={false}
-                        containerClassName="text-left mb-6"
-                        textClassName="font-serif text-5xl md:text-7xl lg:text-8xl font-black text-charcoal tracking-tighter"
-                    >
+                    <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl font-black text-charcoal tracking-tighter text-left mb-6">
                         {title}
-                    </ScrollFloat>
+                    </h2>
                     
-                    <ScrollFloat
-                        as="p"
-                        animationDuration={1}
-                        ease="power3.out"
-                        stagger={0.01}
-                        scrollStart="top 95%"
-                        scrollEnd="top 40%"
-                        scrub={false}
-                        containerClassName="text-left mb-10"
-                        textClassName="max-w-md text-base md:text-lg font-light text-charcoal/70 leading-relaxed"
-                    >
+                    <p className="max-w-md text-base md:text-lg font-light text-charcoal/70 leading-relaxed text-left mb-10">
                         {description}
-                    </ScrollFloat>
+                    </p>
                     
                     <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-left-16 duration-1000 delay-500">
                         <a className="group relative inline-flex items-center justify-center overflow-hidden border border-charcoal bg-charcoal text-white px-10 py-4 text-[10px] font-bold uppercase tracking-widest transition-all hover:bg-white hover:text-charcoal" href="#featured">

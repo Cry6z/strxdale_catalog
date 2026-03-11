@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ScrollFloat from '@/components/ScrollFloat';
 import { supabase } from '@/lib/supabase';
 
 const Gallery = () => {
@@ -85,17 +84,9 @@ const Gallery = () => {
             <div className="mx-auto max-w-7xl px-6 md:px-8 mb-12 flex items-end justify-between">
                 <div>
                     <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-charcoal/40 block mb-2">Inspirasi</span>
-                    <ScrollFloat
-                        as="h3"
-                        stagger={0.03}
-                        animationDuration={1}
-                        scrollStart="top 90%"
-                        scrollEnd="top 70%"
-                        containerClassName="text-left"
-                        textClassName="text-3xl md:text-4xl font-serif font-bold text-charcoal"
-                    >
+                    <h3 className="text-3xl md:text-4xl font-serif font-bold text-charcoal text-left">
                         Galeri Visual
-                    </ScrollFloat>
+                    </h3>
                 </div>
                 {/* Mobile Hint */}
                 <span className="md:hidden text-[8px] font-bold uppercase tracking-widest text-charcoal/30 flex items-center gap-2">
