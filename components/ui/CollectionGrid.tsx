@@ -33,7 +33,7 @@ export default function CollectionGrid({ initialItems, categories: propCategorie
             {/* Filter Bar */}
             <section className="pt-32 pb-12 md:pb-16 px-6 md:px-8 border-b border-charcoal/5">
                 <div className="mx-auto max-w-7xl">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal/30 block mb-4">Arsip Kami</span>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal/30 block mb-4">arsip kami</span>
                     <h1 className="text-4xl md:text-6xl font-serif font-black text-charcoal mb-8 md:mb-12 tracking-tighter lowercase">koleksi</h1>
 
                     <div className="flex flex-wrap gap-x-6 gap-y-4 md:gap-8">

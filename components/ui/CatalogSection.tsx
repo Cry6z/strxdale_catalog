@@ -40,9 +40,9 @@ export default function CatalogSection({ items }: CatalogSectionProps) {
                     viewport={{ once: true }}
                     transition={{ duration: 1, ease: 'easeOut' }}
                 >
-                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal/30 block mb-4">Karya Pilihan</span>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal/30 block mb-4">karya pilihan</span>
                     <h3 className="text-4xl md:text-6xl font-serif font-black text-charcoal tracking-tighter leading-none lowercase">
-                        Produk Unggulan
+                        produk unggulan
                     </h3>
                 </motion.div>
                 
@@ -54,7 +54,7 @@ export default function CatalogSection({ items }: CatalogSectionProps) {
                     className="hidden md:block"
                 >
                     <p className="max-w-[280px] text-[11px] text-charcoal/50 leading-relaxed uppercase tracking-wider text-right">
-                        Seleksi desain terbaik yang baru saja kami rilis ke dalam katalog.
+                        Desain terbaik yang baru saja saya rilis ke dalam katalog.
                     </p>
                 </motion.div>
             </div>

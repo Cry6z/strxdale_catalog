@@ -13,7 +13,7 @@ export default function Footer() {
                                 strxdale&apos;s catalog
                             </h2>
                         </Link>
-                        <p className="text-[8px] tracking-[0.4em] uppercase text-white/20 mt-4 md:hidden">Born From Restlessness</p>
+                        <p className="text-[8px] tracking-[0.4em] uppercase text-white/20 mt-4 md:hidden">born from restlessness</p>
                     </div>
 
                     {/* Compact Links */}
@@ -34,7 +34,7 @@ export default function Footer() {
                 {/* Bottom Bar: Minimalist Copyright */}
                 <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[9px] tracking-[0.3em] text-white/10 uppercase">
                     <p>© 2026 strxdale&apos;s catalog</p>
-                    <p className="hidden md:block uppercase">Born From Restlessness</p>
+                    <p className="hidden md:block uppercase">born from restlessness</p>
                     <div className="md:hidden flex gap-4 text-[8px]">
                         <span>Indonesia</span>
                         <span className="opacity-50">•</span>

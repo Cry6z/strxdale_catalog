@@ -133,7 +133,7 @@ export default function Hero({
                             <motion.div 
                                 className="absolute inset-x-0 bottom-0 h-[2px] bg-white transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
                             />
-                            <span className="relative z-10 group-hover:opacity-80 transition-opacity">Jelajahi Katalog</span>
+                            <span className="relative z-10 group-hover:opacity-80 transition-opacity">jelajahi katalog</span>
                         </a>
                     </motion.div>
                 </motion.div>
@@ -182,7 +182,7 @@ export default function Hero({
                 className="absolute bottom-10 left-8 text-charcoal/20 hidden lg:block"
             >
                 <div className="flex flex-col items-center gap-4">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] rotate-90 origin-left translate-x-3 mb-12 whitespace-nowrap">Scroll Kebawah</span>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] rotate-90 origin-left translate-x-3 mb-12 whitespace-nowrap">Scroll Down</span>
                     <motion.div 
                         initial={{ height: 0 }}
                         animate={{ height: 48 }}

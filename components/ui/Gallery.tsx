@@ -83,9 +83,9 @@ const Gallery = () => {
         <section className="py-24 bg-white" id="gallery">
             <div className="mx-auto max-w-7xl px-6 md:px-8 mb-12 flex items-end justify-between">
                 <div>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-charcoal/40 block mb-2">Inspirasi</span>
-                    <h3 className="text-3xl md:text-4xl font-serif font-bold text-charcoal text-left">
-                        Galeri Visual
+                    <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-charcoal/40 block mb-2 font-mono">inspirasi</span>
+                    <h3 className="text-3xl md:text-4xl font-serif font-bold text-charcoal text-left lowercase">
+                        galeri visual
                     </h3>
                 </div>
                 {/* Mobile Hint */}
