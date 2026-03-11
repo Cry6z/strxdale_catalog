@@ -1,12 +1,10 @@
 import { supabase } from '@/lib/supabase';
-import Card from '@/components/ui/Card';
 import Hero from '@/components/ui/Hero';
 import Header from '@/components/ui/Header';
 import Footer from '@/components/ui/Footer';
 import ScrollFloat from '@/components/ScrollFloat';
 import Gallery from '@/components/ui/Gallery';
-import Link from 'next/link';
-
+import CatalogSection from '@/components/ui/CatalogSection';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -92,7 +90,7 @@ export default async function Home() {
   ]);
 
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col bg-white">
       <Header />
 
       <main className="flex-1">
@@ -102,41 +100,14 @@ export default async function Home() {
           description={heroSettings.description}
         />
 
-        {/* Catalog Section */}
-        <section className="py-16 md:py-24 bg-off-white overflow-hidden" id="featured">
-          <div className="mx-auto max-w-7xl px-6 md:px-8 mb-8 md:mb-12 flex items-end justify-between">
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-charcoal/40 block mb-2">Karya Pilihan</span>
-              <h3 className="text-3xl md:text-4xl font-serif font-bold text-charcoal text-left">
-                Produk Unggulan
-              </h3>
-            </div>
-          </div>
-
-          <div className="mx-auto max-w-7xl px-6 md:px-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 md:gap-y-16">
-              {items.map((item) => (
-                <Card key={item.id} {...item} />
-              ))}
-            </div>
-
-            <div className="mt-20 text-center">
-              <Link
-                href="/collection"
-                className="inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal border-b border-charcoal/20 pb-2 hover:border-charcoal transition-all"
-              >
-                lihat semua koleksi
-              </Link>
-            </div>
-          </div>
-        </section>
+        <CatalogSection items={items} />
 
         <Gallery />
 
         {/* Quote Section */}
-        <section className="relative py-24 md:py-40 px-6 md:px-8 overflow-hidden bg-off-white">
+        <section className="relative py-24 md:py-48 px-6 md:px-8 overflow-hidden bg-off-white">
           <div
-            className="absolute inset-0 z-0 opacity-60 pointer-events-none mix-blend-multiply"
+            className="absolute inset-0 z-0 opacity-40 pointer-events-none grayscale"
             style={{
               backgroundImage: 'url("/images/landing page/background.png")',
               backgroundSize: 'cover',
@@ -146,17 +117,17 @@ export default async function Home() {
 
           <div className="relative z-10 max-w-4xl mx-auto text-center">
             <ScrollFloat
-              animationDuration={1.2}
+              animationDuration={1.5}
               ease="power4.out"
               scrollStart="top bottom-=10%"
               scrollEnd="bottom center"
-              stagger={0.02}
+              stagger={0.03}
               containerClassName="w-full"
-              textClassName="font-serif text-3xl md:text-5xl italic text-charcoal leading-[1.3] max-w-3xl mx-auto"
+              textClassName="font-serif text-3xl md:text-6xl italic text-charcoal leading-[1.2] max-w-3xl mx-auto px-4"
             >
               "Behind every simple form, there is a silent phase that has been passed."
             </ScrollFloat>
-            <div className="mt-12 h-[1px] w-20 bg-charcoal/20 mx-auto"></div>
+            <div className="mt-16 h-[1px] w-12 bg-charcoal/20 mx-auto"></div>
           </div>
         </section>
       </main>
@@ -165,3 +136,4 @@ export default async function Home() {
     </div>
   );
 }
+
