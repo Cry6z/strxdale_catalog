@@ -57,9 +57,9 @@ html {
   --color-border: var(--border);
   --color-nav-bg: var(--nav-bg);
   --color-nav-accent: var(--nav-accent);
-  --font-serif: var(--font-anon-pro), ui-serif, monospace;
-  --font-sans: var(--font-anon-pro), ui-sans-serif, monospace;
-  --font-mono: var(--font-anon-pro), ui-monospace, monospace;
+  --font-serif: var(--font-anon-pro), "Anonymous Pro", monospace;
+  --font-sans: var(--font-anon-pro), "Anonymous Pro", monospace;
+  --font-mono: var(--font-anon-pro), "Anonymous Pro", monospace;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -159,5 +159,28 @@ body {
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-anon-pro), "Anonymous Pro", ui-monospace, monospace;
   }
+}
+
+/* Base font for common text elements - excluding Material Symbols specifically */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+button,
+input,
+select,
+textarea,
+li {
+  font-family: var(--font-anon-pro), "Anonymous Pro", monospace;
+}
+
+/* Material Symbols must keep their specific internal font */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
 }

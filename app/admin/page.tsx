@@ -19,9 +19,10 @@ interface CatalogItem {
 }
 
 export default function AdminDashboard() {
-    const [view, setView] = useState<'overview' | 'catalog' | 'hero'>('overview');
+    const [view, setView] = useState<'overview' | 'catalog' | 'hero' | 'gallery'>('overview');
     const [items, setItems] = useState<CatalogItem[]>([]);
     const [heroImages, setHeroImages] = useState<string[]>(['', '', '']);
+    const [landingGalleryImages, setLandingGalleryImages] = useState<string[]>([]);
     const [heroTitle, setHeroTitle] = useState("");
     const [heroDescription, setHeroDescription] = useState("");
     const [loading, setLoading] = useState(true);
@@ -69,6 +70,13 @@ export default function AdminDashboard() {
             .eq('key', 'hero_images')
             .single();
         if (images) setHeroImages(images.value);
+
+        const { data: gallery } = await supabase
+            .from('site_settings')
+            .select('*')
+            .eq('key', 'landing_gallery')
+            .single();
+        if (gallery) setLandingGalleryImages(gallery.value);
 
         const { data: title } = await supabase
             .from('site_settings')
@@ -160,21 +168,27 @@ export default function AdminDashboard() {
 
     async function updateHeroSettings() {
         setLoading(true);
-        await supabase
-            .from('site_settings')
-            .upsert({ key: 'hero_images', value: heroImages });
+        try {
+            const results = await Promise.all([
+                supabase.from('site_settings').upsert({ key: 'hero_images', value: heroImages }, { onConflict: 'key' }),
+                supabase.from('site_settings').upsert({ key: 'hero_title', value: heroTitle }, { onConflict: 'key' }),
+                supabase.from('site_settings').upsert({ key: 'hero_description', value: heroDescription }, { onConflict: 'key' })
+            ]);
 
-        await supabase
-            .from('site_settings')
-            .upsert({ key: 'hero_title', value: heroTitle });
+            const errors = results.filter(r => r.error);
 
-        const { error } = await supabase
-            .from('site_settings')
-            .upsert({ key: 'hero_description', value: heroDescription });
-
-        setLoading(false);
-        if (error) alert('Error updating hero settings: ' + error.message);
-        else alert('Hero settings updated successfully!');
+            if (errors.length > 0) {
+                console.error('Errors updating hero settings:', errors);
+                alert('Kesalahan saat menyimpan: ' + errors.map(e => e.error?.message).join(', '));
+            } else {
+                alert('Pengaturan hero berhasil diperbarui!');
+            }
+        } catch (err) {
+            console.error('Unexpected error:', err);
+            alert('Terjadi kesalahan yang tidak terduga.');
+        } finally {
+            setLoading(false);
+        }
     }
 
     async function uploadHeroImage(file: File, index: number) {
@@ -340,44 +354,53 @@ export default function AdminDashboard() {
     }
 
     return (
-        <div className="flex min-h-screen bg-background">
-            <aside className="w-64 border-r border-border flex flex-col fixed inset-y-0">
-                <div className="p-8 border-b border-border">
-                    <h2 className="text-sm font-bold tracking-[0.3em] uppercase opacity-50">Portal</h2>
-                    <p className="text-xl font-bold mt-2">strxdale&apos;s catalog</p>
+        <div className="flex min-h-screen bg-background font-sans">
+            <aside className="w-64 border-r border-border/40 bg-white/50 backdrop-blur-3xl flex flex-col fixed inset-y-0 text-charcoal">
+                <div className="p-8 pb-4">
+                    <h2 className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground/50 mb-1">Portal</h2>
+                    <p className="text-xl font-bold tracking-tight">strxdale&apos;s catalog</p>
                 </div>
-                <nav className="flex-1 p-4 space-y-2">
+                <nav className="flex-1 px-4 py-4 space-y-1.5">
                     <button
                         onClick={() => setView('overview')}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold transition-all ${view === 'overview' ? 'bg-charcoal text-white' : 'hover:bg-charcoal/5'}`}
+                        className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'overview' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
-                        <span className="material-symbols-outlined !text-lg">dashboard</span>
+                        <span className={`material-symbols-outlined !text-lg ${view === 'overview' ? 'opacity-100' : 'opacity-70'}`}>dashboard</span>
                         Ringkasan
                     </button>
                     <button
                         onClick={() => setView('catalog')}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold transition-all ${view === 'catalog' ? 'bg-charcoal text-white' : 'hover:bg-charcoal/5'}`}
+                        className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'catalog' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
-                        <span className="material-symbols-outlined !text-lg">inventory_2</span>
+                        <span className={`material-symbols-outlined !text-lg ${view === 'catalog' ? 'opacity-100' : 'opacity-70'}`}>inventory_2</span>
                         Katalog
                     </button>
                     <button
                         onClick={() => setView('hero')}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold transition-all ${view === 'hero' ? 'bg-charcoal text-white' : 'hover:bg-charcoal/5'}`}
+                        className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'hero' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
-                        <span className="material-symbols-outlined !text-lg">image_search</span>
+                        <span className={`material-symbols-outlined !text-lg ${view === 'hero' ? 'opacity-100' : 'opacity-70'}`}>image_search</span>
                         Pengaturan Hero
                     </button>
-                    <Link
-                        href="/"
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold hover:bg-charcoal/5 transition-all text-charcoal/60"
+                    <button
+                        onClick={() => setView('gallery')}
+                        className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'gallery' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
-                        <span className="material-symbols-outlined !text-lg">open_in_new</span>
-                        Lihat Situs
-                    </Link>
+                        <span className={`material-symbols-outlined !text-lg ${view === 'gallery' ? 'opacity-100' : 'opacity-70'}`}>collections</span>
+                        Galeri Landing
+                    </button>
+                    <div className="pt-4 mt-4 border-t border-border/40">
+                        <Link
+                            href="/"
+                            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-black/5 hover:text-charcoal transition-all"
+                        >
+                            <span className="material-symbols-outlined !text-lg opacity-70">open_in_new</span>
+                            Lihat Situs
+                        </Link>
+                    </div>
                 </nav>
-                <div className="p-8 border-t border-border">
-                    <p className="text-[10px] uppercase tracking-widest opacity-30">v1.2.0-stable</p>
+                <div className="p-8">
+                    <p className="text-[10px] font-medium text-muted-foreground/40">v1.2.0-stable</p>
                 </div>
             </aside>
 
@@ -386,60 +409,80 @@ export default function AdminDashboard() {
                     {view === 'overview' ? (
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <header className="mb-12">
-                                <h1 className="text-4xl font-bold tracking-tight mb-2">Ringkasan</h1>
-                                <p className="text-muted-foreground">Statistik umum dan aktivitas terbaru.</p>
+                                <h1 className="text-3xl font-bold tracking-tight mb-2 text-charcoal">Ringkasan</h1>
+                                <p className="text-sm text-muted-foreground">Statistik umum dan aktivitas terbaru koleksi Anda.</p>
                             </header>
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                                <div className="p-8 border border-border rounded-xl bg-white">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Total Item</span>
-                                    <p className="text-4xl font-bold mt-4">{totalItems}</p>
+                                <div className="p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                                        <span className="material-symbols-outlined !text-8xl">inventory_2</span>
+                                    </div>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Total Item</span>
+                                    <p className="text-4xl font-bold mt-4 text-charcoal">{totalItems}</p>
                                 </div>
-                                <div className="p-8 border border-border rounded-xl bg-white">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Nilai Koleksi</span>
-                                    <p className="text-4xl font-bold mt-4">${totalValue.toLocaleString()}</p>
+                                <div className="p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                                        <span className="material-symbols-outlined !text-8xl">payments</span>
+                                    </div>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Nilai Koleksi</span>
+                                    <p className="text-4xl font-bold mt-4 text-charcoal">${totalValue.toLocaleString()}</p>
                                 </div>
-                                <div className="p-8 border border-border rounded-xl bg-white">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Kategori</span>
-                                    <p className="text-4xl font-bold mt-4">{categories.length}</p>
+                                <div className="p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                                        <span className="material-symbols-outlined !text-8xl">category</span>
+                                    </div>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Kategori</span>
+                                    <p className="text-4xl font-bold mt-4 text-charcoal">{categories.length}</p>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                                 <div>
-                                    <h3 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-40 text-charcoal">Terbaru Ditambahkan</h3>
-                                    <div className="space-y-4">
+                                    <div className="flex items-center justify-between mb-6">
+                                        <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Terbaru Ditambahkan</h3>
+                                        <button onClick={() => setView('catalog')} className="text-xs font-medium text-charcoal hover:underline">Lihat Semua</button>
+                                    </div>
+                                    <div className="space-y-3">
                                         {recentItems.map(item => (
-                                            <div key={item.id} className="flex items-center gap-4 p-4 border border-border rounded-lg bg-white/50">
-                                                <div className="relative w-12 h-12 rounded overflow-hidden flex-shrink-0 bg-secondary">
-                                                    <Image src={item.image_url || '/placeholder.png'} alt={item.name} width={48} height={48} className="object-cover" />
+                                            <div key={item.id} className="flex items-center gap-4 p-4 rounded-xl bg-white shadow-sm ring-1 ring-black/5 hover:ring-black/10 transition-all cursor-pointer group" onClick={() => setView('catalog')}>
+                                                <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-secondary/50 border border-black/5">
+                                                    <Image src={item.image_url || '/placeholder.png'} alt={item.name} width={48} height={48} className="object-cover w-full h-full" />
                                                 </div>
-                                                <div className="flex-1">
-                                                    <p className="font-bold text-sm">{item.name}</p>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="font-bold text-sm text-charcoal truncate">{item.name}</p>
                                                     <p className="text-xs text-muted-foreground">${item.price}</p>
                                                 </div>
-                                                <button onClick={() => setView('catalog')} className="text-[10px] font-bold uppercase tracking-widest hover:underline">Lihat</button>
+                                                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <span className="material-symbols-outlined !text-sm text-muted-foreground">chevron_right</span>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
 
                                 <div>
-                                    <h3 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-40 text-charcoal">Quick Actions</h3>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest mb-6 text-muted-foreground">Quick Actions</h3>
                                     <div className="grid grid-cols-2 gap-4">
                                         <button
                                             onClick={() => { setView('catalog'); setShowForm(true); }}
-                                            className="p-6 border border-dashed border-charcoal/20 rounded-xl hover:bg-charcoal/5 transition-all text-left group"
+                                            className="p-6 rounded-2xl bg-charcoal/5 hover:bg-charcoal/10 transition-all text-left group border border-transparent hover:border-charcoal/10"
                                         >
-                                            <span className="material-symbols-outlined !text-xl mb-4 group-hover:scale-110 transition-transform">add_circle</span>
-                                            <p className="text-xs font-bold uppercase tracking-widest">Item Baru</p>
+                                            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
+                                                <span className="material-symbols-outlined !text-lg text-charcoal">add_circle</span>
+                                            </div>
+                                            <p className="text-sm font-bold text-charcoal">Tambah Item</p>
+                                            <p className="text-xs text-muted-foreground mt-1">Upload produk baru</p>
                                         </button>
                                         <button
                                             onClick={() => setView('catalog')}
-                                            className="p-6 border border-dashed border-charcoal/20 rounded-xl hover:bg-charcoal/5 transition-all text-left group"
+                                            className="p-6 rounded-2xl bg-charcoal/5 hover:bg-charcoal/10 transition-all text-left group border border-transparent hover:border-charcoal/10"
                                         >
-                                            <span className="material-symbols-outlined !text-xl mb-4 group-hover:scale-110 transition-transform">inventory</span>
-                                            <p className="text-xs font-bold uppercase tracking-widest">Kelola Item</p>
+                                            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
+                                                <span className="material-symbols-outlined !text-lg text-charcoal">inventory</span>
+                                            </div>
+                                            <p className="text-sm font-bold text-charcoal">Kelola Katalog</p>
+                                            <p className="text-xs text-muted-foreground mt-1">Edit & hapus produk</p>
                                         </button>
                                     </div>
                                 </div>
@@ -448,29 +491,32 @@ export default function AdminDashboard() {
                     ) : view === 'hero' ? (
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <header className="mb-12">
-                                <h1 className="text-4xl font-bold tracking-tight mb-2">Hero Settings</h1>
-                                <p className="text-muted-foreground">Manage your landing page content and background images.</p>
+                                <h1 className="text-3xl font-bold tracking-tight mb-2 text-charcoal">Pengaturan Hero</h1>
+                                <p className="text-sm text-muted-foreground">Kelola teks utama dan background hero landing page.</p>
                             </header>
 
-                            <div className="max-w-2xl space-y-12">
-                                <div className="space-y-6 p-6 border border-border rounded-xl bg-white shadow-sm">
-                                    <h3 className="text-xs font-bold uppercase tracking-widest opacity-40">Hero Content</h3>
-                                    <div className="space-y-4">
+                            <div className="max-w-2xl space-y-8">
+                                <div className="space-y-6 p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 relative overflow-hidden">
+                                    <div className="flex items-center gap-2 mb-2 pb-4 border-b border-border/40">
+                                        <span className="material-symbols-outlined !text-xl text-charcoal/40">edit_document</span>
+                                        <h3 className="text-sm font-bold text-charcoal">Konten Teks</h3>
+                                    </div>
+                                    <div className="space-y-5">
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Hero Title</label>
+                                            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Judul Hero</label>
                                             <input
                                                 type="text"
-                                                className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-sm"
+                                                className="w-full bg-charcoal/5 border border-transparent focus:bg-white focus:border-charcoal/20 focus:ring-4 focus:ring-charcoal/5 rounded-xl p-3 outline-none transition-all text-sm font-medium"
                                                 value={heroTitle}
                                                 onChange={(e) => setHeroTitle(e.target.value)}
                                                 placeholder="strxdale's catalog"
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Hero Description</label>
+                                            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Deskripsi Hero</label>
                                             <textarea
                                                 rows={3}
-                                                className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-sm"
+                                                className="w-full bg-charcoal/5 border border-transparent focus:bg-white focus:border-charcoal/20 focus:ring-4 focus:ring-charcoal/5 rounded-xl p-4 outline-none transition-all text-sm font-medium resize-y"
                                                 value={heroDescription}
                                                 onChange={(e) => setHeroDescription(e.target.value)}
                                                 placeholder="A refined selection of timeless essentials..."
@@ -480,23 +526,30 @@ export default function AdminDashboard() {
                                 </div>
 
                                 <div className="space-y-6">
-                                    <h3 className="text-xs font-bold uppercase tracking-widest opacity-40">Background Images</h3>
+                                    <div className="flex items-center gap-2 mb-2 pl-2">
+                                        <span className="material-symbols-outlined !text-xl text-charcoal/40">imagesmode</span>
+                                        <h3 className="text-sm font-bold text-charcoal">Background Images</h3>
+                                    </div>
+
                                     {[0, 1, 2].map((i) => (
-                                        <div key={i} className="space-y-4 p-6 border border-border rounded-xl bg-white shadow-sm">
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-xs font-bold uppercase tracking-widest opacity-40">Latar Belakang {i + 1}</span>
+                                        <div key={i} className="space-y-4 p-6 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 group hover:ring-black/10 transition-all">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                    <span className="w-5 h-5 rounded-full bg-black/5 flex items-center justify-center text-charcoal">{i + 1}</span>
+                                                    Slide {i + 1}
+                                                </span>
                                                 {heroImages[i] && (
-                                                    <div className="relative w-16 h-10 rounded border border-border overflow-hidden">
+                                                    <div className="relative w-16 h-10 rounded-md ring-1 ring-black/10 overflow-hidden shadow-sm">
                                                         <Image src={heroImages[i]} alt="" width={64} height={40} className="object-cover w-full h-full" />
                                                     </div>
                                                 )}
                                             </div>
-                                            <div className="flex gap-4 items-center">
+                                            <div className="flex gap-3 items-center">
                                                 <div className="flex-1">
                                                     <input
                                                         type="url"
-                                                        placeholder="External URL or Upload..."
-                                                        className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-xs"
+                                                        placeholder="URL Gambar..."
+                                                        className="w-full bg-charcoal/5 border border-transparent focus:bg-white focus:border-charcoal/20 focus:ring-4 focus:ring-charcoal/5 rounded-xl p-3 outline-none transition-all text-xs font-medium"
                                                         value={heroImages[i] || ''}
                                                         onChange={(e) => {
                                                             const newImages = [...heroImages];
@@ -515,27 +568,139 @@ export default function AdminDashboard() {
                                                             if (file) uploadHeroImage(file, i);
                                                         }}
                                                     />
-                                                    <div className="flex items-center gap-2 px-4 py-3 border border-dashed border-charcoal/20 rounded-lg hover:bg-charcoal/5 transition-all">
-                                                        <span className="material-symbols-outlined !text-lg">upload_file</span>
-                                                        <span className="text-[10px] font-bold uppercase tracking-widest">Local</span>
+                                                    <div className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white ring-1 ring-black/10 hover:bg-black/5 text-charcoal transition-all shadow-sm cursor-pointer">
+                                                        <span className="material-symbols-outlined !text-lg text-charcoal/50">upload_file</span>
+                                                        <span className="text-[10px] font-bold uppercase tracking-widest">Upload</span>
                                                     </div>
                                                 </label>
                                             </div>
                                         </div>
                                     ))}
 
-                                    <button
-                                        onClick={updateHeroSettings}
-                                        disabled={loading}
-                                        className="bg-charcoal text-white px-10 py-4 rounded-lg font-bold text-sm hover:opacity-90 disabled:opacity-50 transition-all shadow-xl shadow-charcoal/20"
-                                    >
-                                        {loading ? 'Saving...' : 'Save Hero Changes'}
-                                    </button>
+                                    <div className="pt-4 flex justify-end">
+                                        <button
+                                            onClick={updateHeroSettings}
+                                            disabled={loading}
+                                            className="bg-charcoal text-white px-10 py-4 rounded-xl font-bold text-sm hover:opacity-95 hover:shadow-lg disabled:opacity-50 transition-all flex items-center gap-2"
+                                        >
+                                            {loading ? (
+                                                <><span className="material-symbols-outlined animate-spin !text-lg">sync</span> Menyimpan...</>
+                                            ) : (
+                                                <><span className="material-symbols-outlined !text-lg">save</span> Simpan Perubahan Hero</>
+                                            )}
+                                        </button>
+                                    </div>
 
-                                    <div className="p-6 bg-beige/50 border border-charcoal/5 rounded-xl">
-                                        <p className="text-xs leading-relaxed text-charcoal/60 italic">
-                                            Tip: Use high-quality JPG or PNG images. Landscape orientation (16:9) works best for the full-screen hero section.
+                                    <div className="p-5 bg-charcoal/5 rounded-xl flex items-start gap-3 text-charcoal/60">
+                                        <span className="material-symbols-outlined !text-xl flex-shrink-0 mt-0.5">lightbulb</span>
+                                        <p className="text-[11px] leading-relaxed font-medium">
+                                            Tip: Gunakan gambar berkualitas tinggi berformat JPG atau PNG. Resolusi (16:9) landscape sangat disarankan untuk hero section layar penuh.
                                         </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ) : view === 'gallery' ? (
+                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                            <header className="mb-12">
+                                <h1 className="text-3xl font-bold tracking-tight mb-2 text-charcoal">Galeri Landing</h1>
+                                <p className="text-sm text-muted-foreground">Kelola koleksi foto yang akan ditampilkan pada halaman utama.</p>
+                            </header>
+
+                            <div className="space-y-8">
+                                <div className="p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
+                                    <div className="flex justify-between items-center mb-6 pb-4 border-b border-border/40">
+                                        <h3 className="text-sm font-bold text-charcoal flex items-center gap-2">
+                                            <span className="material-symbols-outlined !text-xl text-charcoal/40">photo_library</span>
+                                            Daftar Foto Galeri
+                                        </h3>
+                                        <label className="cursor-pointer group bg-charcoal text-white px-5 py-2.5 rounded-lg font-medium text-sm hover:bg-charcoal/90 transition-all shadow-sm ring-1 ring-black/10 flex items-center gap-2">
+                                            <input
+                                                type="file"
+                                                multiple
+                                                className="hidden"
+                                                accept="image/*"
+                                                onChange={async (e) => {
+                                                    const files = Array.from(e.target.files || []);
+                                                    if (files.length === 0) return;
+                                                    setLoading(true);
+                                                    const newUrls = [...landingGalleryImages];
+
+                                                    for (const file of files) {
+                                                        const fileExt = file.name.split('.').pop();
+                                                        const fileName = `gallery-${Math.random()}.${fileExt}`;
+                                                        const filePath = `${fileName}`;
+
+                                                        const { error: uploadError } = await supabase.storage
+                                                            .from('hero-images')
+                                                            .upload(filePath, file);
+
+                                                        if (!uploadError) {
+                                                            const { data: { publicUrl } } = supabase.storage
+                                                                .from('hero-images')
+                                                                .getPublicUrl(filePath);
+                                                            newUrls.push(publicUrl);
+                                                        } else {
+                                                            console.error('Upload error:', uploadError);
+                                                        }
+                                                    }
+
+                                                    setLandingGalleryImages(newUrls);
+                                                    setLoading(false);
+                                                }}
+                                            />
+                                            <span className="material-symbols-outlined !text-lg">add_photo_alternate</span>
+                                            Tambah Foto
+                                        </label>
+                                    </div>
+
+                                    {landingGalleryImages.length === 0 ? (
+                                        <div className="py-24 text-center rounded-2xl bg-charcoal/5 border border-dashed border-charcoal/20 flex flex-col items-center justify-center">
+                                            <span className="material-symbols-outlined !text-4xl text-charcoal/30 mb-4">hide_image</span>
+                                            <h3 className="text-lg font-bold text-charcoal mb-1">Galeri Kosong</h3>
+                                            <p className="text-sm text-muted-foreground max-w-sm">Belum ada foto di galeri halaman utama. Klik tombol Tambah Foto untuk mulai menyusun galeri.</p>
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                                            {landingGalleryImages.map((url, idx) => (
+                                                <div key={idx} className="relative aspect-[3/4] group rounded-2xl overflow-hidden ring-1 ring-black/10 shadow-sm hover:ring-black/20 hover:shadow-md transition-all bg-charcoal/5">
+                                                    <Image src={url} alt="" fill className="object-cover" />
+                                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                                                        <button
+                                                            onClick={() => {
+                                                                const updated = landingGalleryImages.filter((_, i) => i !== idx);
+                                                                setLandingGalleryImages(updated);
+                                                            }}
+                                                            className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 hover:bg-red-600 transition-all tooltip-delete"
+                                                        >
+                                                            <span className="material-symbols-outlined !text-lg">delete</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    <div className="mt-10 pt-6 border-t border-border/40 flex justify-end">
+                                        <button
+                                            onClick={async () => {
+                                                setLoading(true);
+                                                const { error } = await supabase
+                                                    .from('site_settings')
+                                                    .upsert({ key: 'landing_gallery', value: landingGalleryImages });
+                                                setLoading(false);
+                                                if (error) alert('Error: ' + error.message);
+                                                else alert('Galeri berhasil diperbarui!');
+                                            }}
+                                            disabled={loading}
+                                            className="bg-charcoal text-white px-10 py-4 rounded-xl font-bold text-sm hover:opacity-95 hover:shadow-lg disabled:opacity-50 transition-all flex items-center gap-2"
+                                        >
+                                            {loading ? (
+                                                <><span className="material-symbols-outlined animate-spin !text-lg">sync</span> Menyimpan...</>
+                                            ) : (
+                                                <><span className="material-symbols-outlined !text-lg">save</span> Simpan Perubahan Galeri</>
+                                            )}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -560,27 +725,36 @@ export default function AdminDashboard() {
                             </div>
 
                             {showForm && (
-                                <div className="mb-12 p-8 rounded-2xl border border-charcoal/10 bg-white shadow-sm animate-in zoom-in-95 duration-300">
-                                    <h2 className="text-2xl font-bold mb-6">{editingId ? 'Edit Catalog Item' : 'Add New Catalog Item'}</h2>
-                                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="mb-12 p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 animate-in slide-in-from-top-4 duration-300">
+                                    <div className="border-b border-border/40 pb-4 mb-6">
+                                        <h2 className="text-xl font-bold text-charcoal">{editingId ? 'Edit Item' : 'Tambah Item Baru'}</h2>
+                                        <p className="text-xs text-muted-foreground mt-1">Lengkapi detail produk di bawah ini.</p>
+                                    </div>
+                                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Item Name</label>
-                                            <input required type="text" className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-sm" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+                                            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                Nama Item
+                                                <span className="text-red-500">*</span>
+                                            </label>
+                                            <input required type="text" className="w-full bg-charcoal/5 border border-transparent focus:bg-white focus:border-charcoal/20 focus:ring-4 focus:ring-charcoal/5 rounded-xl p-3 outline-none transition-all text-sm font-medium" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Cth: The Signature Totebag" />
                                         </div>
                                         <div className="space-y-4">
                                             <div className="space-y-2">
-                                                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Price ($)</label>
+                                                <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                    Harga ($)
+                                                    <span className="text-red-500">*</span>
+                                                </label>
                                                 <input
                                                     disabled={formData.is_preorder || formData.is_showcase}
                                                     required={!formData.is_preorder && !formData.is_showcase}
                                                     type="number"
-                                                    className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-sm disabled:opacity-50"
+                                                    className="w-full bg-charcoal/5 border border-transparent focus:bg-white focus:border-charcoal/20 focus:ring-4 focus:ring-charcoal/5 rounded-xl p-3 outline-none transition-all text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                                                     placeholder={formData.is_showcase ? "Showcase only" : formData.is_preorder ? "Pre-order only" : "0.00"}
                                                     value={formData.price}
                                                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                                                 />
                                             </div>
-                                            <label className="flex items-center gap-3 cursor-pointer group">
+                                            <label className="flex items-center gap-3 cursor-pointer group p-3 rounded-xl border border-transparent hover:border-charcoal/10 hover:bg-charcoal/5 transition-all">
                                                 <div className="relative">
                                                     <input
                                                         type="checkbox"
@@ -592,10 +766,13 @@ export default function AdminDashboard() {
                                                         <span className="material-symbols-outlined !text-white !text-sm peer-checked:block hidden">check</span>
                                                     </div>
                                                 </div>
-                                                <span className="text-xs font-bold uppercase tracking-widest text-charcoal/60 group-hover:text-charcoal transition-colors">Open Pre-order only</span>
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-bold uppercase tracking-widest text-charcoal group-hover:text-charcoal transition-colors">Pre-order Only</span>
+                                                    <span className="text-[10px] text-muted-foreground">Tidak menampilkan harga tetap.</span>
+                                                </div>
                                             </label>
 
-                                            <label className="flex items-center gap-3 cursor-pointer group">
+                                            <label className="flex items-center gap-3 cursor-pointer group p-3 rounded-xl border border-transparent hover:border-charcoal/10 hover:bg-charcoal/5 transition-all">
                                                 <div className="relative">
                                                     <input
                                                         type="checkbox"
@@ -607,10 +784,13 @@ export default function AdminDashboard() {
                                                         <span className="material-symbols-outlined !text-white !text-sm peer-checked:block hidden">check</span>
                                                     </div>
                                                 </div>
-                                                <span className="text-xs font-bold uppercase tracking-widest text-charcoal/60 group-hover:text-charcoal transition-colors">Showcase Only (Hide WhatsApp)</span>
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-bold uppercase tracking-widest text-charcoal group-hover:text-charcoal transition-colors">Showcase Only</span>
+                                                    <span className="text-[10px] text-muted-foreground">Sembunyikan tombol order WhatsApp.</span>
+                                                </div>
                                             </label>
 
-                                            <label className="flex items-center gap-3 cursor-pointer group">
+                                            <label className="flex items-center gap-3 cursor-pointer group p-3 rounded-xl border border-transparent hover:border-charcoal/10 hover:bg-charcoal/5 transition-all">
                                                 <div className="relative">
                                                     <input
                                                         type="checkbox"
@@ -622,12 +802,18 @@ export default function AdminDashboard() {
                                                         <span className="material-symbols-outlined !text-white !text-sm peer-checked:block hidden">check</span>
                                                     </div>
                                                 </div>
-                                                <span className="text-xs font-bold uppercase tracking-widest text-charcoal/60 group-hover:text-charcoal transition-colors">Featured Item (Landing Page)</span>
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-bold uppercase tracking-widest text-charcoal group-hover:text-charcoal transition-colors">Featured Item</span>
+                                                    <span className="text-[10px] text-muted-foreground">Tampilkan di halaman depan.</span>
+                                                </div>
                                             </label>
                                         </div>
-                                        <div className="space-y-2">
+                                        <div className="space-y-3">
                                             <div className="flex justify-between items-center mb-1">
-                                                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Category</label>
+                                                <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                    Kategori
+                                                    <span className="text-red-500">*</span>
+                                                </label>
                                                 <button
                                                     type="button"
                                                     onClick={async () => {
@@ -635,13 +821,13 @@ export default function AdminDashboard() {
                                                         const data = await res.json();
                                                         alert(data.message || (data.status === 'success' ? 'Database synced!' : 'Error syncing database'));
                                                     }}
-                                                    className="text-[9px] font-bold uppercase tracking-widest text-charcoal/40 hover:text-charcoal transition-colors border border-charcoal/10 px-2 py-0.5 rounded"
+                                                    className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-charcoal transition-colors px-2 py-1 rounded bg-black/5"
                                                 >
-                                                    Fix & Sync
+                                                    Sinkronisasi DB
                                                 </button>
                                             </div>
                                             <div className="flex gap-2">
-                                                <select className="flex-1 bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-sm" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
+                                                <select className="flex-1 bg-charcoal/5 border border-transparent focus:bg-white focus:border-charcoal/20 focus:ring-4 focus:ring-charcoal/5 rounded-xl p-3 outline-none transition-all text-sm font-medium" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
                                                     {categories.map(cat => (
                                                         <option key={cat}>{cat}</option>
                                                     ))}
@@ -649,41 +835,44 @@ export default function AdminDashboard() {
                                                 <button
                                                     type="button"
                                                     onClick={() => {
-                                                        const cat = prompt('Enter new category name:');
+                                                        const cat = prompt('Masukkan nama kategori baru:');
                                                         if (cat && !categories.includes(cat)) {
                                                             const updated = [...categories, cat];
                                                             updateCategories(updated);
                                                             setFormData({ ...formData, category: cat });
                                                         }
                                                     }}
-                                                    className="px-4 border border-charcoal/10 rounded-lg hover:bg-charcoal/5 transition-colors"
+                                                    className="px-4 bg-charcoal text-white rounded-xl hover:bg-charcoal/90 transition-colors shadow-sm"
                                                 >
                                                     <span className="material-symbols-outlined !text-lg align-middle">add</span>
                                                 </button>
                                             </div>
-                                            <div className="flex flex-wrap gap-2 mt-2">
+                                            <div className="flex flex-wrap gap-2 mt-3">
                                                 {categories.map(cat => (
-                                                    <span key={cat} className="group flex items-center gap-1 text-[10px] px-2 py-1 rounded bg-charcoal/5 border border-charcoal/10 font-bold uppercase tracking-widest text-charcoal/60">
+                                                    <span key={cat} className="group flex items-center gap-1.5 text-[10px] px-3 py-1.5 rounded-full bg-white shadow-sm ring-1 ring-black/5 font-bold uppercase tracking-widest text-charcoal">
                                                         {cat}
                                                         <button
                                                             type="button"
                                                             onClick={() => deleteCategory(cat)}
-                                                            className="hover:text-red-500 transition-colors"
+                                                            className="text-muted-foreground hover:text-red-500 transition-colors opacity-50 group-hover:opacity-100"
                                                         >
-                                                            <span className="material-symbols-outlined !text-[12px]">close</span>
+                                                            <span className="material-symbols-outlined !text-[14px]">close</span>
                                                         </button>
                                                     </span>
                                                 ))}
                                             </div>
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Product Image</label>
+                                        <div className="space-y-3">
+                                            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                Foto Produk Utama
+                                                <span className="text-red-500">*</span>
+                                            </label>
                                             <div className="flex gap-4 items-center">
                                                 <div className="flex-1">
                                                     <input
                                                         type="text"
-                                                        placeholder="Image URL (optional if uploading)"
-                                                        className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-sm"
+                                                        placeholder="URL Gambar (Opsional jika upload)"
+                                                        className="w-full bg-charcoal/5 border border-transparent focus:bg-white focus:border-charcoal/20 focus:ring-4 focus:ring-charcoal/5 rounded-xl p-3 outline-none transition-all text-sm font-medium"
                                                         value={formData.image_url}
                                                         onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                                                     />
@@ -695,24 +884,25 @@ export default function AdminDashboard() {
                                                         accept="image/*"
                                                         onChange={(e) => setItemImageFile(e.target.files?.[0] || null)}
                                                     />
-                                                    <div className={`flex items-center gap-2 px-4 py-3 border border-dashed rounded-lg transition-all ${itemImageFile ? 'bg-charcoal text-white border-charcoal' : 'border-charcoal/20 hover:bg-charcoal/5'}`}>
+                                                    <div className={`flex items-center gap-2 px-6 py-3 border border-dashed rounded-xl transition-all ${itemImageFile ? 'bg-charcoal text-white border-charcoal shadow-md' : 'border-charcoal/20 hover:bg-charcoal/5 text-charcoal'}`}>
                                                         <span className="material-symbols-outlined !text-lg">{itemImageFile ? 'check_circle' : 'upload_file'}</span>
                                                         <span className="text-[10px] font-bold uppercase tracking-widest">
-                                                            {itemImageFile ? 'Selected' : 'Local'}
+                                                            {itemImageFile ? 'Terpilih' : 'Upload'}
                                                         </span>
                                                     </div>
                                                 </label>
                                             </div>
                                             {itemImageFile && (
-                                                <p className="text-[10px] text-charcoal/40 font-bold uppercase tracking-widest mt-1 italic">
-                                                    Ready to upload: {itemImageFile.name}
+                                                <p className="text-[10px] text-charcoal font-bold uppercase tracking-widest mt-2 bg-charcoal/5 p-2 rounded inline-block">
+                                                    <span className="opacity-50">Menunggu di-upload:</span> {itemImageFile.name}
                                                 </p>
                                             )}
                                         </div>
 
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Gallery Images (Optional)</label>
-                                            <div className="flex gap-2 items-center overflow-x-auto pb-2 hide-scrollbar">
+
+                                        <div className="space-y-3">
+                                            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 block">Galeri Foto Tambahan (Opsional)</label>
+                                            <div className="flex gap-3 items-center overflow-x-auto pb-4 hide-scrollbar">
                                                 <label className="flex-shrink-0 cursor-pointer group">
                                                     <input
                                                         type="file"
@@ -724,112 +914,148 @@ export default function AdminDashboard() {
                                                             setGalleryImageFiles(prev => [...prev, ...files]);
                                                         }}
                                                     />
-                                                    <div className="flex flex-col items-center justify-center w-24 aspect-[4/5] border border-dashed border-charcoal/20 rounded-lg hover:bg-charcoal/5 transition-all">
-                                                        <span className="material-symbols-outlined !text-lg text-charcoal/40">add_to_photos</span>
-                                                        <span className="text-[8px] font-bold uppercase tracking-widest mt-2 text-charcoal/40">Add More</span>
+                                                    <div className="flex flex-col items-center justify-center w-28 aspect-[4/5] border border-dashed border-charcoal/20 rounded-xl hover:bg-charcoal/5 hover:border-charcoal/40 transition-all text-charcoal/50 hover:text-charcoal bg-white">
+                                                        <span className="material-symbols-outlined !text-2xl mb-1">add_photo_alternate</span>
+                                                        <span className="text-[9px] font-bold uppercase tracking-widest mt-1">Tambah Foto</span>
                                                     </div>
                                                 </label>
                                                 {galleryImageFiles.map((file, idx) => (
-                                                    <div key={idx} className="relative w-24 aspect-[4/5] flex-shrink-0 group">
-                                                        <div className="w-full h-full bg-charcoal/5 rounded-lg flex items-center justify-center border border-charcoal/10 overflow-hidden">
-                                                            <span className="text-[10px] font-bold text-charcoal/40 truncate p-2">{file.name}</span>
+                                                    <div key={idx} className="relative w-28 aspect-[4/5] flex-shrink-0 group">
+                                                        <div className="w-full h-full bg-white ring-1 ring-black/5 rounded-xl flex items-center justify-center p-3 text-center shadow-sm overflow-hidden">
+                                                            <span className="text-[10px] font-bold text-charcoal/60 truncate w-full break-words whitespace-normal leading-tight">{file.name}</span>
                                                         </div>
                                                         <button
                                                             type="button"
                                                             onClick={() => setGalleryImageFiles(prev => prev.filter((_, i) => i !== idx))}
-                                                            className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                                            className="absolute -top-2 -right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-10"
                                                         >
-                                                            <span className="material-symbols-outlined !text-xs">close</span>
+                                                            <span className="material-symbols-outlined !text-[16px]">close</span>
                                                         </button>
                                                     </div>
                                                 ))}
                                                 {galleryUrls.map((url, idx) => (
-                                                    <div key={`url-${idx}`} className="relative w-24 aspect-[4/5] flex-shrink-0 group">
-                                                        <div className="w-full h-full bg-charcoal/5 rounded-lg overflow-hidden border border-charcoal/10">
-                                                            <Image src={url} alt="" width={96} height={120} className="w-full h-full object-cover" />
+                                                    <div key={`url-${idx}`} className="relative w-28 aspect-[4/5] flex-shrink-0 group">
+                                                        <div className="w-full h-full bg-charcoal/5 rounded-xl overflow-hidden ring-1 ring-black/5 shadow-sm">
+                                                            <Image src={url} alt="" width={112} height={140} className="w-full h-full object-cover" />
                                                         </div>
                                                         <button
                                                             type="button"
                                                             onClick={() => setGalleryUrls(prev => prev.filter((_, i) => i !== idx))}
-                                                            className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                                            className="absolute -top-2 -right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-10"
                                                         >
-                                                            <span className="material-symbols-outlined !text-xs">close</span>
+                                                            <span className="material-symbols-outlined !text-[16px]">close</span>
                                                         </button>
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
-                                        <div className="md:col-span-2 space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Description</label>
-                                            <textarea required rows={4} className="w-full bg-background border border-border rounded-lg p-3 focus:outline-none focus:border-charcoal transition-colors text-sm" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+                                        <div className="md:col-span-2 space-y-3">
+                                            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                Deskripsi Produk
+                                                <span className="text-red-500">*</span>
+                                            </label>
+                                            <textarea required rows={4} className="w-full bg-charcoal/5 border border-transparent focus:bg-white focus:border-charcoal/20 focus:ring-4 focus:ring-charcoal/5 rounded-xl p-4 outline-none transition-all text-sm font-medium resize-y" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder="Jelaskan detail produk Anda di sini..." />
                                         </div>
-                                        <button
-                                            type="submit"
-                                            disabled={loading}
-                                            className="md:col-span-2 bg-charcoal text-white py-4 rounded-lg font-bold text-sm hover:opacity-95 transition-all disabled:opacity-50"
-                                        >
-                                            {loading ? 'Processing...' : editingId ? 'Update Item' : 'Save Item to Catalog'}
-                                        </button>
+                                        <div className="md:col-span-2 pt-4 border-t border-border/40 flex justify-end">
+                                            <button
+                                                type="submit"
+                                                disabled={loading}
+                                                className="bg-charcoal text-white px-10 py-4 rounded-xl font-bold text-sm hover:opacity-95 hover:shadow-lg transition-all disabled:opacity-50 flex items-center gap-2"
+                                            >
+                                                {loading ? (
+                                                    <>
+                                                        <span className="material-symbols-outlined animate-spin !text-lg">sync</span>
+                                                        Memproses...
+                                                    </>
+                                                ) : editingId ? (
+                                                    <>
+                                                        <span className="material-symbols-outlined !text-lg">save</span>
+                                                        Simpan Perubahan
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <span className="material-symbols-outlined !text-lg">add_task</span>
+                                                        Simpan ke Katalog
+                                                    </>
+                                                )}
+                                            </button>
+                                        </div>
                                     </form>
                                 </div>
                             )}
 
-                            <div className="border border-border rounded-2xl bg-white overflow-hidden shadow-sm">
-                                <table className="w-full text-left">
-                                    <thead className="bg-charcoal/5 border-b border-border">
+                            <div className="bg-white rounded-2xl shadow-sm ring-1 ring-black/5 overflow-hidden">
+                                <table className="w-full text-left border-collapse">
+                                    <thead className="bg-black/[0.02] border-b border-black/5">
                                         <tr>
-                                            <th className="p-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Item</th>
-                                            <th className="p-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Category</th>
-                                            <th className="p-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Price</th>
-                                            <th className="p-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Actions</th>
+                                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground w-1/2">Detail Produk</th>
+                                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Kategori</th>
+                                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Harga</th>
+                                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground text-right">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody className="divide-y divide-black/5">
                                         {loading ? (
-                                            <tr><td colSpan={4} className="p-12 text-center text-muted-foreground italic">Loading collection...</td></tr>
+                                            <tr><td colSpan={4} className="p-12 text-center text-muted-foreground text-sm flex gap-2 justify-center items-center"><span className="material-symbols-outlined animate-spin text-muted-foreground">progress_activity</span> Memuat katalog...</td></tr>
                                         ) : items.length === 0 ? (
-                                            <tr><td colSpan={4} className="p-12 text-center text-muted-foreground italic">No items in the catalog.</td></tr>
+                                            <tr>
+                                                <td colSpan={4} className="p-16 text-center">
+                                                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-black/5 mb-4">
+                                                        <span className="material-symbols-outlined !text-3xl text-muted-foreground">inventory_2</span>
+                                                    </div>
+                                                    <h3 className="text-lg font-bold text-charcoal mb-1">Katalog Kosong</h3>
+                                                    <p className="text-sm text-muted-foreground">Belum ada produk yang ditambahkan ke koleksi.</p>
+                                                </td>
+                                            </tr>
                                         ) : (
                                             items.map((item) => (
-                                                <tr key={item.id} className="border-b border-border/50 hover:bg-charcoal/5 transition-colors">
-                                                    <td className="p-4">
+                                                <tr key={item.id} className="hover:bg-black/[0.02] transition-colors group">
+                                                    <td className="px-6 py-4">
                                                         <div className="flex items-center gap-4">
-                                                            <div className="relative w-10 h-10 rounded overflow-hidden flex-shrink-0 bg-secondary border border-border">
-                                                                <Image src={item.image_url || '/placeholder.png'} alt={item.name} width={40} height={40} className="object-cover" />
+                                                            <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-secondary/50 border border-black/5">
+                                                                <Image src={item.image_url || '/placeholder.png'} alt={item.name} width={48} height={48} className="object-cover w-full h-full" />
                                                             </div>
-                                                            <div>
-                                                                <Link
-                                                                    href={`/collection/${item.id}`}
-                                                                    target="_blank"
-                                                                    className="font-bold text-sm tracking-tight hover:underline flex items-center gap-1 lowercase"
-                                                                >
-                                                                    {item.name}
-                                                                    <span className="material-symbols-outlined !text-xs opacity-30">open_in_new</span>
+                                                            <div className="min-w-0 pr-4">
+                                                                <div className="flex items-center gap-2 mb-0.5">
+                                                                    <Link
+                                                                        href={`/collection/${item.id}`}
+                                                                        target="_blank"
+                                                                        className="font-bold text-sm text-charcoal hover:underline truncate"
+                                                                    >
+                                                                        {item.name}
+                                                                    </Link>
+                                                                    <span className="material-symbols-outlined !text-[14px] text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
                                                                     {item.is_featured && (
-                                                                        <span className="bg-amber-100 text-amber-700 text-[8px] px-1.5 py-0.5 rounded uppercase font-black tracking-tighter">Featured</span>
+                                                                        <span className="bg-charcoal text-white text-[8px] px-1.5 py-0.5 rounded uppercase font-black tracking-widest flex-shrink-0">Featured</span>
                                                                     )}
-                                                                </Link>
-                                                                <p className="text-[10px] text-muted-foreground line-clamp-1 max-w-xs">{item.description}</p>
+                                                                </div>
+                                                                <p className="text-[11px] text-muted-foreground line-clamp-1 break-all">{item.description}</p>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td className="p-4">
-                                                        <span className="text-[10px] px-2 py-1 rounded-full border border-charcoal/10 text-charcoal/70 uppercase font-bold tracking-widest">
+                                                    <td className="px-6 py-4">
+                                                        <span className="text-[10px] px-2.5 py-1 rounded-full bg-black/5 text-charcoal/70 uppercase font-bold tracking-widest whitespace-nowrap">
                                                             {item.category}
                                                         </span>
                                                     </td>
-                                                    <td className="p-4 font-bold text-sm">
+                                                    <td className="px-6 py-4 font-bold text-sm text-charcoal whitespace-nowrap">
                                                         {item.is_showcase ? (
-                                                            <span className="text-charcoal/40 italic font-medium">showcase</span>
+                                                            <span className="text-[10px] px-2 py-1 rounded border border-charcoal/20 text-charcoal/60 uppercase font-bold tracking-widest">Showcase</span>
                                                         ) : item.price === 0 ? (
-                                                            <span className="text-charcoal/40 italic font-medium">pre order</span>
+                                                            <span className="text-[10px] px-2 py-1 rounded border border-charcoal/20 text-charcoal/60 uppercase font-bold tracking-widest">Pre Order</span>
                                                         ) : (
                                                             `$${item.price.toLocaleString()}`
                                                         )}
                                                     </td>
-                                                    <td className="p-4 flex gap-4">
-                                                        <button onClick={() => handleEdit(item)} className="text-charcoal hover:underline text-[10px] font-bold uppercase tracking-widest">Edit</button>
-                                                        <button onClick={() => deleteItem(item.id)} className="text-red-500 hover:text-red-600 text-[10px] font-bold uppercase tracking-widest">Delete</button>
+                                                    <td className="px-6 py-4 text-right">
+                                                        <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <button onClick={() => handleEdit(item)} className="w-8 h-8 rounded-full hover:bg-black/5 flex items-center justify-center text-charcoal transition-colors tooltip-edit">
+                                                                <span className="material-symbols-outlined !text-lg">edit</span>
+                                                            </button>
+                                                            <button onClick={() => deleteItem(item.id)} className="w-8 h-8 rounded-full hover:bg-red-500/10 flex items-center justify-center text-red-500 transition-colors tooltip-delete">
+                                                                <span className="material-symbols-outlined !text-lg">delete</span>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))
@@ -837,27 +1063,7 @@ export default function AdminDashboard() {
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="mt-20 p-8 border border-dashed border-charcoal/20 rounded-2xl bg-beige/30">
-                                <h3 className="text-sm font-bold uppercase tracking-widest mb-6 text-charcoal/40">Database Connection Debugger</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-[10px] font-mono">
-                                    <div className="space-y-2">
-                                        <p className="text-charcoal/40 uppercase">Target URL:</p>
-                                        <p className="p-3 bg-white border border-border rounded truncate">
-                                            {process.env.NEXT_PUBLIC_SUPABASE_URL || 'Missing URL (Using Placeholder)'}
-                                        </p>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <p className="text-charcoal/40 uppercase">Connection Status:</p>
-                                        <div className="flex items-center gap-2 p-3 bg-white border border-border rounded">
-                                            <div className={`w-2 h-2 rounded-full ${items.length > 0 ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                            <span>{items.length > 0 ? 'Connected & Data Loaded' : 'No Data / Disconnected'}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p className="mt-6 text-[9px] text-charcoal/30 leading-relaxed italic">
-                                    * Jika status berwarna merah, pastikan file .env.local Anda berisi URL Supabase yang benar dan restart server Next.js Anda.
-                                </p>
-                            </div>
+
                         </div>
                     )}
                 </div>

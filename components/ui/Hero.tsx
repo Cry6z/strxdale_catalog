@@ -11,10 +11,20 @@ const FALLBACK_IMAGES = [
     '/images/hero3.png'
 ];
 
-export default function Hero() {
-    const [images, setImages] = useState<string[]>(FALLBACK_IMAGES);
-    const [title, setTitle] = useState("strxdale's catalog");
-    const [description, setDescription] = useState("Sebuah ruang untuk desain yang lahir dari rasa ingin mencoba. Sederhana, tenang, dan dibuat dengan pendekatan yang minimal.");
+interface HeroProps {
+    images?: string[];
+    title?: string;
+    description?: string;
+}
+
+export default function Hero({
+    images: propImages,
+    title: propTitle,
+    description: propDescription
+}: HeroProps) {
+    const [images, setImages] = useState<string[]>(propImages && propImages.length > 0 ? propImages : FALLBACK_IMAGES);
+    const [title, setTitle] = useState(propTitle || "strxdale's catalog");
+    const [description, setDescription] = useState(propDescription || "Sebuah ruang untuk desain yang lahir dari rasa ingin mencoba. Sederhana, tenang, dan dibuat dengan pendekatan yang minimal.");
     const [isMobile, setIsMobile] = useState(true);
 
     useEffect(() => {
@@ -25,36 +35,49 @@ export default function Hero() {
     }, []);
 
     useEffect(() => {
-        async function fetchHeroSettings() {
-            // Images
-            const { data: imgData } = await supabase
-                .from('site_settings')
-                .select('value')
-                .eq('key', 'hero_images')
-                .single();
+        // Sync state if props change (e.g. during navigation or re-renders)
+        if (propImages && propImages.length > 0) setImages(propImages);
+        if (propTitle) setTitle(propTitle);
+        if (propDescription) setDescription(propDescription);
+    }, [propImages, propTitle, propDescription]);
 
-            if (imgData && Array.isArray(imgData.value) && imgData.value.length >= 2) {
-                setImages(imgData.value);
+    useEffect(() => {
+        // Fallback: If props are empty, fetch client-side as well 
+        // (helpful if this component is used elsewhere without props)
+        if (propImages && propTitle && propDescription) return;
+
+        async function fetchHeroSettings() {
+            if (!propImages) {
+                const { data: imgData } = await supabase
+                    .from('site_settings')
+                    .select('value')
+                    .eq('key', 'hero_images')
+                    .single();
+                if (imgData && Array.isArray(imgData.value) && imgData.value.length >= 2) {
+                    setImages(imgData.value);
+                }
             }
 
-            // Title
-            const { data: titleData } = await supabase
-                .from('site_settings')
-                .select('value')
-                .eq('key', 'hero_title')
-                .single();
-            if (titleData?.value) setTitle(String(titleData.value));
+            if (!propTitle) {
+                const { data: titleData } = await supabase
+                    .from('site_settings')
+                    .select('value')
+                    .eq('key', 'hero_title')
+                    .single();
+                if (titleData?.value) setTitle(String(titleData.value));
+            }
 
-            // Description
-            const { data: descData } = await supabase
-                .from('site_settings')
-                .select('value')
-                .eq('key', 'hero_description')
-                .single();
-            if (descData?.value) setDescription(String(descData.value));
+            if (!propDescription) {
+                const { data: descData } = await supabase
+                    .from('site_settings')
+                    .select('value')
+                    .eq('key', 'hero_description')
+                    .single();
+                if (descData?.value) setDescription(String(descData.value));
+            }
         }
         fetchHeroSettings();
-    }, []);
+    }, [propImages, propTitle, propDescription]);
 
     return (
         <section className="relative min-h-[90vh] md:h-screen w-full overflow-hidden bg-beige flex items-center pt-24 md:pt-0">
