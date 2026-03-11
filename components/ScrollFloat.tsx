@@ -15,6 +15,7 @@ interface ScrollFloatProps {
   scrollStart?: string;
   scrollEnd?: string;
   stagger?: number;
+  scrub?: boolean | number;
 }
 
 const ScrollFloat: React.FC<ScrollFloatProps & { as?: React.ElementType }> = ({
@@ -27,6 +28,7 @@ const ScrollFloat: React.FC<ScrollFloatProps & { as?: React.ElementType }> = ({
   scrollStart = 'top 90%',
   scrollEnd = 'top 60%',
   stagger = 0.02,
+  scrub = 1,
   as: Component = 'h2'
 }) => {
   const containerRef = useRef<HTMLElement>(null);
@@ -41,7 +43,7 @@ const ScrollFloat: React.FC<ScrollFloatProps & { as?: React.ElementType }> = ({
     return text.split(' ').map((word, wordIndex, words) => (
       <span key={wordIndex} className="inline-block whitespace-nowrap">
         {word.split('').map((char, charIndex) => (
-          <span className="inline-block word-char opacity-0" key={charIndex}>
+          <span className="inline-block word-char" key={charIndex}>
             {char}
           </span>
         ))}
@@ -59,16 +61,17 @@ const ScrollFloat: React.FC<ScrollFloatProps & { as?: React.ElementType }> = ({
       const charElements = el.querySelectorAll('.word-char');
       if (charElements.length === 0) return;
 
-      gsap.fromTo(
+      // Set initial state via GSAP instead of CSS to prevent permanent invisibility
+      gsap.set(charElements, {
+        opacity: 0,
+        y: 40,
+        rotateX: -45,
+        scale: 0.9,
+        transformOrigin: '50% 100%'
+      });
+
+      gsap.to(
         charElements,
-        {
-          willChange: 'opacity, transform',
-          opacity: 0,
-          y: 40,
-          rotateX: -45,
-          scale: 0.9,
-          transformOrigin: '50% 100%'
-        },
         {
           duration: animationDuration,
           ease: ease,
@@ -81,15 +84,23 @@ const ScrollFloat: React.FC<ScrollFloatProps & { as?: React.ElementType }> = ({
             trigger: el,
             start: scrollStart,
             end: scrollEnd,
-            scrub: 1, // Smooth scrubbing
-            toggleActions: 'play none none reverse'
+            scrub: scrub,
+            toggleActions: scrub ? undefined : 'play none none reverse'
           }
         }
       );
     }, el);
 
-    return () => ctx.revert();
-  }, [animationDuration, ease, scrollStart, scrollEnd, stagger, splitText]);
+    // Refresh ScrollTrigger after a short delay to account for layout shifts/image loading
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 1000);
+
+    return () => {
+      ctx.revert();
+      clearTimeout(timer);
+    };
+  }, [animationDuration, ease, scrollStart, scrollEnd, stagger, splitText, scrub]);
 
   return (
     <Component ref={containerRef} className={`relative overflow-visible text-center ${containerClassName}`}>

@@ -92,8 +92,9 @@ export default function Hero({
                         animationDuration={1.2}
                         ease="power4.out"
                         stagger={0.03}
-                        scrollStart="top 80%"
+                        scrollStart="top 90%"
                         scrollEnd="top 30%"
+                        scrub={false}
                         containerClassName="text-left mb-6"
                         textClassName="font-serif text-5xl md:text-7xl lg:text-8xl font-black text-charcoal tracking-tighter"
                     >
@@ -105,8 +106,9 @@ export default function Hero({
                         animationDuration={1}
                         ease="power3.out"
                         stagger={0.01}
-                        scrollStart="top 85%"
+                        scrollStart="top 95%"
                         scrollEnd="top 40%"
+                        scrub={false}
                         containerClassName="text-left mb-10"
                         textClassName="max-w-md text-base md:text-lg font-light text-charcoal/70 leading-relaxed"
                     >
