@@ -9,7 +9,7 @@ export default function Header() {
 
     return (
         <header className="fixed top-6 left-0 right-0 z-50 px-4 md:px-6">
-            <motion.nav 
+            <motion.nav
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
@@ -18,7 +18,7 @@ export default function Header() {
                 {/* Left: Brand/Logo */}
                 <div className="flex items-center gap-4">
                     <Link href="/" className="flex items-center gap-2 md:gap-3 group">
-                        <motion.div 
+                        <motion.div
                             whileHover={{ rotate: 180 }}
                             transition={{ duration: 0.8, ease: "circOut" }}
                             className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-charcoal/60"
@@ -38,13 +38,13 @@ export default function Header() {
                 {/* Center: Navigation Links (Desktop) */}
                 <div className="hidden md:flex items-center gap-14 absolute left-1/2 -translate-x-1/2">
                     {['katalog', 'kisah'].map((item, idx) => (
-                        <Link 
-                            key={item} 
-                            href={item === 'katalog' ? '/collection' : '/story'} 
+                        <Link
+                            key={item}
+                            href={item === 'katalog' ? '/collection' : '/story'}
                             className="relative group text-[10px] font-bold tracking-[0.4em] text-charcoal/50 hover:text-charcoal transition-all duration-300 uppercase font-serif"
                         >
                             {item}
-                            <motion.div 
+                            <motion.div
                                 className="absolute -bottom-1 left-0 right-0 h-[1px] bg-charcoal origin-left"
                                 initial={{ scaleX: 0 }}
                                 whileHover={{ scaleX: 1 }}

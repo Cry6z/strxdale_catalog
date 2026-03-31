@@ -60,7 +60,7 @@ export default function CollectionGrid({ initialItems, categories: propCategorie
     return (
         <>
             {/* Filter Bar */}
-            <motion.section 
+            <motion.section
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1.2, ease: "circOut" }}
@@ -82,7 +82,7 @@ export default function CollectionGrid({ initialItems, categories: propCategorie
                             >
                                 {cat}
                                 {activeCategory === cat && (
-                                    <motion.div 
+                                    <motion.div
                                         layoutId="activeFilter"
                                         className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-charcoal"
                                         initial={false}
@@ -98,7 +98,7 @@ export default function CollectionGrid({ initialItems, categories: propCategorie
             {/* Grid */}
             <section className="py-16 md:py-24 px-4 md:px-8 min-h-[60vh]">
                 <div className="mx-auto max-w-7xl">
-                    <motion.div 
+                    <motion.div
                         layout
                         variants={containerVariants}
                         initial="hidden"
@@ -107,9 +107,9 @@ export default function CollectionGrid({ initialItems, categories: propCategorie
                     >
                         <AnimatePresence mode="popLayout">
                             {filteredItems.map((item) => (
-                                <motion.div 
+                                <motion.div
                                     layout
-                                    key={item.id} 
+                                    key={item.id}
                                     variants={itemVariants}
                                     initial="hidden"
                                     animate="visible"
@@ -123,7 +123,7 @@ export default function CollectionGrid({ initialItems, categories: propCategorie
 
                     <AnimatePresence>
                         {filteredItems.length === 0 && (
-                            <motion.div 
+                            <motion.div
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0 }}

@@ -36,33 +36,21 @@ export default function CatalogSection({ items }: CatalogSectionProps) {
             <div className="mx-auto max-w-7xl px-6 md:px-8 mb-16 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
                 <motion.div
                     initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ 
-                        opacity: 1, 
-                        x: 0,
-                        y: [0, -4, 0] 
-                    }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ 
-                        duration: 1.2, 
-                        ease: [0.16, 1, 0.3, 1],
-                        y: { 
-                            duration: 4, 
-                            repeat: Infinity, 
-                            ease: "easeInOut" 
-                        } 
-                    }}
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 >
                     <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal/30 block mb-4">karya pilihan</span>
                     <h3 className="text-3xl md:text-5xl font-serif font-black text-charcoal tracking-tighter leading-none lowercase">
                         produk unggulan
                     </h3>
                 </motion.div>
-                
+
                 <motion.div
                     initial={{ opacity: 0, x: 30 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                     className="hidden md:block"
                 >
                     <p className="max-w-[280px] text-[11px] text-charcoal/50 leading-relaxed uppercase tracking-wider text-right">
@@ -72,7 +60,7 @@ export default function CatalogSection({ items }: CatalogSectionProps) {
             </div>
 
             <div className="mx-auto max-w-7xl px-6 md:px-8">
-                <motion.div 
+                <motion.div
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
@@ -86,7 +74,7 @@ export default function CatalogSection({ items }: CatalogSectionProps) {
                     ))}
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -98,10 +86,10 @@ export default function CatalogSection({ items }: CatalogSectionProps) {
                         className="group relative inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal pb-4 overflow-hidden"
                     >
                         <span className="relative z-10 transition-colors duration-500 group-hover:text-charcoal/60">lihat semua koleksi</span>
-                        <motion.div 
+                        <motion.div
                             className="absolute bottom-0 left-0 w-full h-[1px] bg-charcoal/20"
                         />
-                        <motion.div 
+                        <motion.div
                             initial={{ scaleX: 0 }}
                             whileHover={{ scaleX: 1 }}
                             transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}

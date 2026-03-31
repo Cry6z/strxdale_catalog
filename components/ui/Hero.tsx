@@ -105,44 +105,33 @@ export default function Hero({
             <div className="mx-auto max-w-7xl px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
                 {/* Left: Content */}
-                <motion.div 
+                <motion.div
                     initial="hidden"
                     animate="visible"
                     variants={containerVariants}
                     className="relative z-20 text-left order-2 lg:order-1"
                 >
-                    <motion.div
-                        animate={{ 
-                            y: [0, -10, 0],
-                        }}
-                        transition={{ 
-                            duration: 6, 
-                            repeat: Infinity, 
-                            ease: "easeInOut" 
-                        }}
+                    <motion.h2
+                        variants={itemVariants}
+                        className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-charcoal tracking-tighter text-left mb-6 leading-[1.2] whitespace-nowrap lowercase"
                     >
-                        <motion.h2 
-                            variants={itemVariants}
-                            className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-charcoal tracking-tighter text-left mb-6 leading-[1.2] whitespace-nowrap lowercase"
-                        >
-                            {title}
-                        </motion.h2>
-                        
-                        <motion.p 
-                            variants={itemVariants}
-                            className="max-w-md text-base md:text-lg font-light text-charcoal/70 leading-relaxed text-left mb-10"
-                        >
-                            {description}
-                        </motion.p>
-                    </motion.div>
-                    
+                        {title}
+                    </motion.h2>
+
+                    <motion.p
+                        variants={itemVariants}
+                        className="max-w-md text-base md:text-lg font-light text-charcoal/70 leading-relaxed text-left mb-10"
+                    >
+                        {description}
+                    </motion.p>
+
                     <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-                        <a 
-                            className="group relative inline-flex items-center justify-center overflow-hidden border border-charcoal bg-charcoal text-white px-10 py-4 text-[10px] font-bold uppercase tracking-widest transition-all" 
+                        <a
+                            className="group relative inline-flex items-center justify-center overflow-hidden border border-charcoal bg-charcoal text-white px-10 py-4 text-[10px] font-bold uppercase tracking-widest transition-all"
                             href="#featured"
                         >
-                            <motion.div 
-                                className="absolute inset-0 bg-white transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[0.16,1,0.3,1]"
+                            <motion.div
+                                className="absolute inset-x-0 bottom-0 h-full w-full bg-white transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[0.16,1,0.3,1]"
                             />
                             <span className="relative z-10 group-hover:text-charcoal transition-colors duration-500">jelajahi katalog</span>
                         </a>
@@ -151,7 +140,7 @@ export default function Hero({
 
 
                 {/* Right: Card Stack Visual */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1], delay: 0.2 }}
@@ -186,7 +175,7 @@ export default function Hero({
             </div>
 
             {/* Scroll Indicator */}
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.5, duration: 1 }}
@@ -194,7 +183,7 @@ export default function Hero({
             >
                 <div className="flex flex-col items-center gap-4">
                     <span className="text-[10px] font-bold uppercase tracking-[0.4em] rotate-90 origin-left translate-x-3 mb-12 whitespace-nowrap">Scroll Down</span>
-                    <motion.div 
+                    <motion.div
                         initial={{ height: 0 }}
                         animate={{ height: 48 }}
                         transition={{ duration: 1, delay: 2 }}
