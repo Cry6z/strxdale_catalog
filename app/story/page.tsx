@@ -59,7 +59,7 @@ export default function StoryPage() {
                 <div className="space-y-12 md:space-y-16">
                     <motion.div variants={itemVariants} className="space-y-4">
                         <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-charcoal/30">Asal Usul</span>
-                        <h1 className="text-4xl md:text-7xl font-bold tracking-tighter leading-[1] md:leading-[0.9] lowercase max-w-3xl">
+                        <h1 className="text-3xl md:text-5xl font-bold tracking-tighter leading-tight lowercase max-w-3xl">
                             berawal dari rasa bosan, lalu menjadi sesuatu.
                         </h1>
                     </motion.div>

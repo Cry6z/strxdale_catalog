@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Anonymous_Pro } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import OpeningScene from "@/components/ui/OpeningScene";
+import AppWrapper from "@/components/ui/AppWrapper";
 import "./globals.css";
 
 const anonPro = Anonymous_Pro({
@@ -13,7 +15,7 @@ const anonPro = Anonymous_Pro({
 
 export const metadata: Metadata = {
   title: "strxdale's catalog | Born From Restlessness",
-  description: "Sebuah ruang untuk desain yang lahir dari rasa ingin mencoba. Sederhana, tenang, dan dibuat dengan pendekatan yang minimal.",
+  description: "Sebuah ruang untuk desain yang lahir dari rasa ingin mencoba. Sederhana, tenang, dan dibuat with pendekatan yang minimal.",
   icons: {
     icon: "/S.png",
   },
@@ -33,8 +35,11 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         />
       </head>
-      <body className={`${anonPro.variable} antialiased`}>
-        {children}
+      <body className={`${anonPro.variable} antialiased bg-white`}>
+        <OpeningScene />
+        <AppWrapper>
+          {children}
+        </AppWrapper>
         <Analytics />
       </body>
     </html>

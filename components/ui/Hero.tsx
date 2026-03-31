@@ -109,21 +109,32 @@ export default function Hero({
                     initial="hidden"
                     animate="visible"
                     variants={containerVariants}
-                    className="relative z-10 text-left order-2 lg:order-1"
+                    className="relative z-20 text-left order-2 lg:order-1"
                 >
-                    <motion.h2 
-                        variants={itemVariants}
-                        className="font-serif text-5xl md:text-7xl lg:text-8xl font-black text-charcoal tracking-tighter text-left mb-6 leading-[0.9]"
+                    <motion.div
+                        animate={{ 
+                            y: [0, -10, 0],
+                        }}
+                        transition={{ 
+                            duration: 6, 
+                            repeat: Infinity, 
+                            ease: "easeInOut" 
+                        }}
                     >
-                        {title}
-                    </motion.h2>
-                    
-                    <motion.p 
-                        variants={itemVariants}
-                        className="max-w-md text-base md:text-lg font-light text-charcoal/70 leading-relaxed text-left mb-10"
-                    >
-                        {description}
-                    </motion.p>
+                        <motion.h2 
+                            variants={itemVariants}
+                            className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-charcoal tracking-tighter text-left mb-6 leading-[1.2] whitespace-nowrap lowercase"
+                        >
+                            {title}
+                        </motion.h2>
+                        
+                        <motion.p 
+                            variants={itemVariants}
+                            className="max-w-md text-base md:text-lg font-light text-charcoal/70 leading-relaxed text-left mb-10"
+                        >
+                            {description}
+                        </motion.p>
+                    </motion.div>
                     
                     <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
                         <a 
@@ -131,9 +142,9 @@ export default function Hero({
                             href="#featured"
                         >
                             <motion.div 
-                                className="absolute inset-x-0 bottom-0 h-[2px] bg-white transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
+                                className="absolute inset-0 bg-white transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[0.16,1,0.3,1]"
                             />
-                            <span className="relative z-10 group-hover:opacity-80 transition-opacity">jelajahi katalog</span>
+                            <span className="relative z-10 group-hover:text-charcoal transition-colors duration-500">jelajahi katalog</span>
                         </a>
                     </motion.div>
                 </motion.div>
