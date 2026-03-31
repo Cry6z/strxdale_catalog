@@ -32,11 +32,9 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
             )}
             
             <motion.div
-                initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                initial={{ opacity: 0 }}
                 animate={{ 
-                    opacity: shouldShow ? 1 : 0, 
-                    y: shouldShow ? 0 : 10,
-                    scale: shouldShow ? 1 : 0.98
+                    opacity: shouldShow ? 1 : 0
                 }}
                 transition={{ 
                     duration: 1.5, 
