@@ -54,7 +54,7 @@ export default function CatalogSection({ items }: CatalogSectionProps) {
                     className="hidden md:block"
                 >
                     <p className="max-w-[280px] text-[11px] text-charcoal/50 leading-relaxed uppercase tracking-wider text-right">
-                        Desain terbaik yang saya pernah buat.
+                        Desain terbaik yang pernah saya buat.
                     </p>
                 </motion.div>
             </div>
