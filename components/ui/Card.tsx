@@ -23,7 +23,7 @@ export default function Card(item: CatalogItem) {
             className="group block"
         >
             <Link href={`/collection/${item.id}`} className="snap-start cursor-pointer block">
-                <div className="aspect-[4/5] overflow-hidden bg-beige relative rounded-2xl md:rounded-none shadow-sm group-hover:shadow-2xl transition-shadow duration-700">
+                <div className="aspect-4/5 overflow-hidden bg-beige relative rounded-2xl md:rounded-none shadow-sm group-hover:shadow-2xl transition-shadow duration-700">
                     <motion.div
                         className="w-full h-full"
                         whileHover={{ scale: 1.05 }}
@@ -59,7 +59,7 @@ export default function Card(item: CatalogItem) {
                             {item.name}
                         </h4>
                         <div className="flex items-center gap-2">
-                            <span className="w-4 h-[1px] bg-charcoal/20" />
+                            <span className="w-4 h-px bg-charcoal/20" />
                             <p className="text-[10px] md:text-xs text-charcoal/40 font-bold uppercase tracking-widest">
                                 {item.category}
                             </p>

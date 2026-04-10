@@ -87,13 +87,13 @@ export default function CatalogSection({ items }: CatalogSectionProps) {
                     >
                         <span className="relative z-10 transition-colors duration-500 group-hover:text-charcoal/60">lihat semua koleksi</span>
                         <motion.div
-                            className="absolute bottom-0 left-0 w-full h-[1px] bg-charcoal/20"
+                            className="absolute bottom-0 left-0 w-full h-px bg-charcoal/20"
                         />
                         <motion.div
                             initial={{ scaleX: 0 }}
                             whileHover={{ scaleX: 1 }}
                             transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-                            className="absolute bottom-0 left-0 w-full h-[1px] bg-charcoal origin-left"
+                            className="absolute bottom-0 left-0 w-full h-px bg-charcoal origin-left"
                         />
                     </Link>
                 </motion.div>
