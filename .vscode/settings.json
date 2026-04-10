@@ -1,0 +1,11 @@
+{
+  "css.lint.unknownAtRules": "ignore",
+  "tailwindcss.includeLanguages": {
+    "plaintext": "ts",
+    "typescript": "javascript",
+    "css": "tailwindcss"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
+}
