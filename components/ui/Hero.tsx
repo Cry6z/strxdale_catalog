@@ -187,7 +187,7 @@ export default function Hero({
                         initial={{ height: 0 }}
                         animate={{ height: 48 }}
                         transition={{ duration: 1, delay: 2 }}
-                        className="w-[1px] bg-charcoal/10"
+                        className="w-px bg-charcoal/10"
                     />
                 </div>
             </motion.div>

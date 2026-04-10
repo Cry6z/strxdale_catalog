@@ -365,28 +365,28 @@ export default function AdminDashboard() {
                         onClick={() => setView('overview')}
                         className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'overview' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
-                        <span className={`material-symbols-outlined !text-lg ${view === 'overview' ? 'opacity-100' : 'opacity-70'}`}>dashboard</span>
+                        <span className={`material-symbols-outlined text-lg! ${view === 'overview' ? 'opacity-100' : 'opacity-70'}`}>dashboard</span>
                         Ringkasan
                     </button>
                     <button
                         onClick={() => setView('catalog')}
                         className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'catalog' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
-                        <span className={`material-symbols-outlined !text-lg ${view === 'catalog' ? 'opacity-100' : 'opacity-70'}`}>inventory_2</span>
+                        <span className={`material-symbols-outlined text-lg! ${view === 'catalog' ? 'opacity-100' : 'opacity-70'}`}>inventory_2</span>
                         Katalog
                     </button>
                     <button
                         onClick={() => setView('hero')}
                         className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'hero' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
-                        <span className={`material-symbols-outlined !text-lg ${view === 'hero' ? 'opacity-100' : 'opacity-70'}`}>image_search</span>
+                        <span className={`material-symbols-outlined text-lg! ${view === 'hero' ? 'opacity-100' : 'opacity-70'}`}>image_search</span>
                         Pengaturan Hero
                     </button>
                     <button
                         onClick={() => setView('gallery')}
                         className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'gallery' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
-                        <span className={`material-symbols-outlined !text-lg ${view === 'gallery' ? 'opacity-100' : 'opacity-70'}`}>collections</span>
+                        <span className={`material-symbols-outlined text-lg! ${view === 'gallery' ? 'opacity-100' : 'opacity-70'}`}>collections</span>
                         Galeri Landing
                     </button>
                     <div className="pt-4 mt-4 border-t border-border/40">
@@ -394,7 +394,7 @@ export default function AdminDashboard() {
                             href="/"
                             className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-black/5 hover:text-charcoal transition-all"
                         >
-                            <span className="material-symbols-outlined !text-lg opacity-70">open_in_new</span>
+                            <span className="material-symbols-outlined text-lg! opacity-70">open_in_new</span>
                             Lihat Situs
                         </Link>
                     </div>
@@ -416,21 +416,21 @@ export default function AdminDashboard() {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                                 <div className="p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 relative overflow-hidden group">
                                     <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
-                                        <span className="material-symbols-outlined !text-8xl">inventory_2</span>
+                                        <span className="material-symbols-outlined text-8xl!">inventory_2</span>
                                     </div>
                                     <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Total Item</span>
                                     <p className="text-4xl font-bold mt-4 text-charcoal">{totalItems}</p>
                                 </div>
                                 <div className="p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 relative overflow-hidden group">
                                     <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
-                                        <span className="material-symbols-outlined !text-8xl">payments</span>
+                                        <span className="material-symbols-outlined text-8xl!">payments</span>
                                     </div>
                                     <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Nilai Koleksi</span>
                                     <p className="text-4xl font-bold mt-4 text-charcoal">${totalValue.toLocaleString()}</p>
                                 </div>
                                 <div className="p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 relative overflow-hidden group">
                                     <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
-                                        <span className="material-symbols-outlined !text-8xl">category</span>
+                                        <span className="material-symbols-outlined text-8xl!">category</span>
                                     </div>
                                     <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Kategori</span>
                                     <p className="text-4xl font-bold mt-4 text-charcoal">{categories.length}</p>
@@ -446,7 +446,7 @@ export default function AdminDashboard() {
                                     <div className="space-y-3">
                                         {recentItems.map(item => (
                                             <div key={item.id} className="flex items-center gap-4 p-4 rounded-xl bg-white shadow-sm ring-1 ring-black/5 hover:ring-black/10 transition-all cursor-pointer group" onClick={() => setView('catalog')}>
-                                                <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-secondary/50 border border-black/5">
+                                                <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-secondary/50 border border-black/5">
                                                     <Image src={item.image_url || '/placeholder.png'} alt={item.name} width={48} height={48} className="object-cover w-full h-full" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
@@ -454,7 +454,7 @@ export default function AdminDashboard() {
                                                     <p className="text-xs text-muted-foreground">${item.price}</p>
                                                 </div>
                                                 <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    <span className="material-symbols-outlined !text-sm text-muted-foreground">chevron_right</span>
+                                                    <span className="material-symbols-outlined text-sm! text-muted-foreground">chevron_right</span>
                                                 </div>
                                             </div>
                                         ))}
@@ -469,7 +469,7 @@ export default function AdminDashboard() {
                                             className="p-6 rounded-2xl bg-charcoal/5 hover:bg-charcoal/10 transition-all text-left group border border-transparent hover:border-charcoal/10"
                                         >
                                             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
-                                                <span className="material-symbols-outlined !text-lg text-charcoal">add_circle</span>
+                                                <span className="material-symbols-outlined text-lg! text-charcoal">add_circle</span>
                                             </div>
                                             <p className="text-sm font-bold text-charcoal">Tambah Item</p>
                                             <p className="text-xs text-muted-foreground mt-1">Upload produk baru</p>
@@ -479,7 +479,7 @@ export default function AdminDashboard() {
                                             className="p-6 rounded-2xl bg-charcoal/5 hover:bg-charcoal/10 transition-all text-left group border border-transparent hover:border-charcoal/10"
                                         >
                                             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
-                                                <span className="material-symbols-outlined !text-lg text-charcoal">inventory</span>
+                                                <span className="material-symbols-outlined text-lg! text-charcoal">inventory</span>
                                             </div>
                                             <p className="text-sm font-bold text-charcoal">Kelola Katalog</p>
                                             <p className="text-xs text-muted-foreground mt-1">Edit & hapus produk</p>
@@ -498,7 +498,7 @@ export default function AdminDashboard() {
                             <div className="max-w-2xl space-y-8">
                                 <div className="space-y-6 p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 relative overflow-hidden">
                                     <div className="flex items-center gap-2 mb-2 pb-4 border-b border-border/40">
-                                        <span className="material-symbols-outlined !text-xl text-charcoal/40">edit_document</span>
+                                        <span className="material-symbols-outlined text-xl! text-charcoal/40">edit_document</span>
                                         <h3 className="text-sm font-bold text-charcoal">Konten Teks</h3>
                                     </div>
                                     <div className="space-y-5">
@@ -527,7 +527,7 @@ export default function AdminDashboard() {
 
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-2 mb-2 pl-2">
-                                        <span className="material-symbols-outlined !text-xl text-charcoal/40">imagesmode</span>
+                                        <span className="material-symbols-outlined text-xl! text-charcoal/40">imagesmode</span>
                                         <h3 className="text-sm font-bold text-charcoal">Background Images</h3>
                                     </div>
 
@@ -558,7 +558,7 @@ export default function AdminDashboard() {
                                                         }}
                                                     />
                                                 </div>
-                                                <label className="flex-shrink-0 cursor-pointer group">
+                                                <label className="shrink-0 cursor-pointer group">
                                                     <input
                                                         type="file"
                                                         className="hidden"
@@ -569,7 +569,7 @@ export default function AdminDashboard() {
                                                         }}
                                                     />
                                                     <div className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white ring-1 ring-black/10 hover:bg-black/5 text-charcoal transition-all shadow-sm cursor-pointer">
-                                                        <span className="material-symbols-outlined !text-lg text-charcoal/50">upload_file</span>
+                                                        <span className="material-symbols-outlined text-lg! text-charcoal/50">upload_file</span>
                                                         <span className="text-[10px] font-bold uppercase tracking-widest">Upload</span>
                                                     </div>
                                                 </label>
@@ -584,15 +584,15 @@ export default function AdminDashboard() {
                                             className="bg-charcoal text-white px-10 py-4 rounded-xl font-bold text-sm hover:opacity-95 hover:shadow-lg disabled:opacity-50 transition-all flex items-center gap-2"
                                         >
                                             {loading ? (
-                                                <><span className="material-symbols-outlined animate-spin !text-lg">sync</span> Menyimpan...</>
+                                                <><span className="material-symbols-outlined animate-spin text-lg!">sync</span> Menyimpan...</>
                                             ) : (
-                                                <><span className="material-symbols-outlined !text-lg">save</span> Simpan Perubahan Hero</>
+                                                <><span className="material-symbols-outlined text-lg!">save</span> Simpan Perubahan Hero</>
                                             )}
                                         </button>
                                     </div>
 
                                     <div className="p-5 bg-charcoal/5 rounded-xl flex items-start gap-3 text-charcoal/60">
-                                        <span className="material-symbols-outlined !text-xl flex-shrink-0 mt-0.5">lightbulb</span>
+                                        <span className="material-symbols-outlined text-xl! shrink-0 mt-0.5">lightbulb</span>
                                         <p className="text-[11px] leading-relaxed font-medium">
                                             Tip: Gunakan gambar berkualitas tinggi berformat JPG atau PNG. Resolusi (16:9) landscape sangat disarankan untuk hero section layar penuh.
                                         </p>
@@ -611,7 +611,7 @@ export default function AdminDashboard() {
                                 <div className="p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
                                     <div className="flex justify-between items-center mb-6 pb-4 border-b border-border/40">
                                         <h3 className="text-sm font-bold text-charcoal flex items-center gap-2">
-                                            <span className="material-symbols-outlined !text-xl text-charcoal/40">photo_library</span>
+                                            <span className="material-symbols-outlined text-xl! text-charcoal/40">photo_library</span>
                                             Daftar Foto Galeri
                                         </h3>
                                         <label className="cursor-pointer group bg-charcoal text-white px-5 py-2.5 rounded-lg font-medium text-sm hover:bg-charcoal/90 transition-all shadow-sm ring-1 ring-black/10 flex items-center gap-2">
@@ -649,21 +649,21 @@ export default function AdminDashboard() {
                                                     setLoading(false);
                                                 }}
                                             />
-                                            <span className="material-symbols-outlined !text-lg">add_photo_alternate</span>
+                                            <span className="material-symbols-outlined text-lg!">add_photo_alternate</span>
                                             Tambah Foto
                                         </label>
                                     </div>
 
                                     {landingGalleryImages.length === 0 ? (
                                         <div className="py-24 text-center rounded-2xl bg-charcoal/5 border border-dashed border-charcoal/20 flex flex-col items-center justify-center">
-                                            <span className="material-symbols-outlined !text-4xl text-charcoal/30 mb-4">hide_image</span>
+                                            <span className="material-symbols-outlined text-4xl! text-charcoal/30 mb-4">hide_image</span>
                                             <h3 className="text-lg font-bold text-charcoal mb-1">Galeri Kosong</h3>
                                             <p className="text-sm text-muted-foreground max-w-sm">Belum ada foto di galeri halaman utama. Klik tombol Tambah Foto untuk mulai menyusun galeri.</p>
                                         </div>
                                     ) : (
                                         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
                                             {landingGalleryImages.map((url, idx) => (
-                                                <div key={idx} className="relative aspect-[3/4] group rounded-2xl overflow-hidden ring-1 ring-black/10 shadow-sm hover:ring-black/20 hover:shadow-md transition-all bg-charcoal/5">
+                                                <div key={idx} className="relative aspect-3/4 group rounded-2xl overflow-hidden ring-1 ring-black/10 shadow-sm hover:ring-black/20 hover:shadow-md transition-all bg-charcoal/5">
                                                     <Image src={url} alt="" fill className="object-cover" />
                                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                                                         <button
@@ -673,7 +673,7 @@ export default function AdminDashboard() {
                                                             }}
                                                             className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 hover:bg-red-600 transition-all tooltip-delete"
                                                         >
-                                                            <span className="material-symbols-outlined !text-lg">delete</span>
+                                                            <span className="material-symbols-outlined text-lg!">delete</span>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -696,9 +696,9 @@ export default function AdminDashboard() {
                                             className="bg-charcoal text-white px-10 py-4 rounded-xl font-bold text-sm hover:opacity-95 hover:shadow-lg disabled:opacity-50 transition-all flex items-center gap-2"
                                         >
                                             {loading ? (
-                                                <><span className="material-symbols-outlined animate-spin !text-lg">sync</span> Menyimpan...</>
+                                                <><span className="material-symbols-outlined animate-spin text-lg!">sync</span> Menyimpan...</>
                                             ) : (
-                                                <><span className="material-symbols-outlined !text-lg">save</span> Simpan Perubahan Galeri</>
+                                                <><span className="material-symbols-outlined text-lg!">save</span> Simpan Perubahan Galeri</>
                                             )}
                                         </button>
                                     </div>
@@ -719,7 +719,7 @@ export default function AdminDashboard() {
                                     }}
                                     className="bg-charcoal text-white px-6 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-all flex items-center gap-2"
                                 >
-                                    <span className="material-symbols-outlined !text-lg">{showForm ? 'close' : 'add'}</span>
+                                    <span className="material-symbols-outlined text-lg!">{showForm ? 'close' : 'add'}</span>
                                     {showForm ? 'Cancel' : 'Add New Item'}
                                 </button>
                             </div>
@@ -763,7 +763,7 @@ export default function AdminDashboard() {
                                                         onChange={(e) => setFormData({ ...formData, is_preorder: e.target.checked })}
                                                     />
                                                     <div className="w-5 h-5 border-2 border-charcoal/20 rounded peer-checked:bg-charcoal peer-checked:border-charcoal transition-all flex items-center justify-center">
-                                                        <span className="material-symbols-outlined !text-white !text-sm peer-checked:block hidden">check</span>
+                                                        <span className="material-symbols-outlined text-white! text-sm! peer-checked:block hidden">check</span>
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col">
@@ -781,7 +781,7 @@ export default function AdminDashboard() {
                                                         onChange={(e) => setFormData({ ...formData, is_showcase: e.target.checked })}
                                                     />
                                                     <div className="w-5 h-5 border-2 border-charcoal/20 rounded peer-checked:bg-charcoal peer-checked:border-charcoal transition-all flex items-center justify-center">
-                                                        <span className="material-symbols-outlined !text-white !text-sm peer-checked:block hidden">check</span>
+                                                        <span className="material-symbols-outlined text-white! text-sm! peer-checked:block hidden">check</span>
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col">
@@ -799,7 +799,7 @@ export default function AdminDashboard() {
                                                         onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
                                                     />
                                                     <div className="w-5 h-5 border-2 border-charcoal/20 rounded peer-checked:bg-charcoal peer-checked:border-charcoal transition-all flex items-center justify-center">
-                                                        <span className="material-symbols-outlined !text-white !text-sm peer-checked:block hidden">check</span>
+                                                        <span className="material-symbols-outlined text-white! text-sm! peer-checked:block hidden">check</span>
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col">
@@ -844,7 +844,7 @@ export default function AdminDashboard() {
                                                     }}
                                                     className="px-4 bg-charcoal text-white rounded-xl hover:bg-charcoal/90 transition-colors shadow-sm"
                                                 >
-                                                    <span className="material-symbols-outlined !text-lg align-middle">add</span>
+                                                    <span className="material-symbols-outlined text-lg! align-middle">add</span>
                                                 </button>
                                             </div>
                                             <div className="flex flex-wrap gap-2 mt-3">
@@ -856,7 +856,7 @@ export default function AdminDashboard() {
                                                             onClick={() => deleteCategory(cat)}
                                                             className="text-muted-foreground hover:text-red-500 transition-colors opacity-50 group-hover:opacity-100"
                                                         >
-                                                            <span className="material-symbols-outlined !text-[14px]">close</span>
+                                                            <span className="material-symbols-outlined text-[14px]!">close</span>
                                                         </button>
                                                     </span>
                                                 ))}
@@ -877,7 +877,7 @@ export default function AdminDashboard() {
                                                         onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                                                     />
                                                 </div>
-                                                <label className="flex-shrink-0 cursor-pointer group">
+                                                <label className="shrink-0 cursor-pointer group">
                                                     <input
                                                         type="file"
                                                         className="hidden"
@@ -885,7 +885,7 @@ export default function AdminDashboard() {
                                                         onChange={(e) => setItemImageFile(e.target.files?.[0] || null)}
                                                     />
                                                     <div className={`flex items-center gap-2 px-6 py-3 border border-dashed rounded-xl transition-all ${itemImageFile ? 'bg-charcoal text-white border-charcoal shadow-md' : 'border-charcoal/20 hover:bg-charcoal/5 text-charcoal'}`}>
-                                                        <span className="material-symbols-outlined !text-lg">{itemImageFile ? 'check_circle' : 'upload_file'}</span>
+                                                        <span className="material-symbols-outlined text-lg!">{itemImageFile ? 'check_circle' : 'upload_file'}</span>
                                                         <span className="text-[10px] font-bold uppercase tracking-widest">
                                                             {itemImageFile ? 'Terpilih' : 'Upload'}
                                                         </span>
@@ -903,7 +903,7 @@ export default function AdminDashboard() {
                                         <div className="space-y-3">
                                             <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 block">Galeri Foto Tambahan (Opsional)</label>
                                             <div className="flex gap-3 items-center overflow-x-auto pb-4 hide-scrollbar">
-                                                <label className="flex-shrink-0 cursor-pointer group">
+                                                <label className="shrink-0 cursor-pointer group">
                                                     <input
                                                         type="file"
                                                         multiple
@@ -914,27 +914,27 @@ export default function AdminDashboard() {
                                                             setGalleryImageFiles(prev => [...prev, ...files]);
                                                         }}
                                                     />
-                                                    <div className="flex flex-col items-center justify-center w-28 aspect-[4/5] border border-dashed border-charcoal/20 rounded-xl hover:bg-charcoal/5 hover:border-charcoal/40 transition-all text-charcoal/50 hover:text-charcoal bg-white">
-                                                        <span className="material-symbols-outlined !text-2xl mb-1">add_photo_alternate</span>
+                                                    <div className="flex flex-col items-center justify-center w-28 aspect-4/5 border border-dashed border-charcoal/20 rounded-xl hover:bg-charcoal/5 hover:border-charcoal/40 transition-all text-charcoal/50 hover:text-charcoal bg-white">
+                                                        <span className="material-symbols-outlined text-2xl! mb-1">add_photo_alternate</span>
                                                         <span className="text-[9px] font-bold uppercase tracking-widest mt-1">Tambah Foto</span>
                                                     </div>
                                                 </label>
                                                 {galleryImageFiles.map((file, idx) => (
-                                                    <div key={idx} className="relative w-28 aspect-[4/5] flex-shrink-0 group">
+                                                    <div key={idx} className="relative w-28 aspect-4/5 shrink-0 group">
                                                         <div className="w-full h-full bg-white ring-1 ring-black/5 rounded-xl flex items-center justify-center p-3 text-center shadow-sm overflow-hidden">
-                                                            <span className="text-[10px] font-bold text-charcoal/60 truncate w-full break-words whitespace-normal leading-tight">{file.name}</span>
+                                                            <span className="text-[10px] font-bold text-charcoal/60 truncate w-full wrap-break-word whitespace-normal leading-tight">{file.name}</span>
                                                         </div>
                                                         <button
                                                             type="button"
                                                             onClick={() => setGalleryImageFiles(prev => prev.filter((_, i) => i !== idx))}
                                                             className="absolute -top-2 -right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-10"
                                                         >
-                                                            <span className="material-symbols-outlined !text-[16px]">close</span>
+                                                            <span className="material-symbols-outlined text-[16px]!">close</span>
                                                         </button>
                                                     </div>
                                                 ))}
                                                 {galleryUrls.map((url, idx) => (
-                                                    <div key={`url-${idx}`} className="relative w-28 aspect-[4/5] flex-shrink-0 group">
+                                                    <div key={`url-${idx}`} className="relative w-28 aspect-4/5 shrink-0 group">
                                                         <div className="w-full h-full bg-charcoal/5 rounded-xl overflow-hidden ring-1 ring-black/5 shadow-sm">
                                                             <Image src={url} alt="" width={112} height={140} className="w-full h-full object-cover" />
                                                         </div>
@@ -943,7 +943,7 @@ export default function AdminDashboard() {
                                                             onClick={() => setGalleryUrls(prev => prev.filter((_, i) => i !== idx))}
                                                             className="absolute -top-2 -right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-10"
                                                         >
-                                                            <span className="material-symbols-outlined !text-[16px]">close</span>
+                                                            <span className="material-symbols-outlined text-[16px]!">close</span>
                                                         </button>
                                                     </div>
                                                 ))}
@@ -964,17 +964,17 @@ export default function AdminDashboard() {
                                             >
                                                 {loading ? (
                                                     <>
-                                                        <span className="material-symbols-outlined animate-spin !text-lg">sync</span>
+                                                        <span className="material-symbols-outlined animate-spin text-lg!">sync</span>
                                                         Memproses...
                                                     </>
                                                 ) : editingId ? (
                                                     <>
-                                                        <span className="material-symbols-outlined !text-lg">save</span>
+                                                        <span className="material-symbols-outlined text-lg!">save</span>
                                                         Simpan Perubahan
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <span className="material-symbols-outlined !text-lg">add_task</span>
+                                                        <span className="material-symbols-outlined text-lg!">add_task</span>
                                                         Simpan ke Katalog
                                                     </>
                                                 )}
@@ -986,7 +986,7 @@ export default function AdminDashboard() {
 
                             <div className="bg-white rounded-2xl shadow-sm ring-1 ring-black/5 overflow-hidden">
                                 <table className="w-full text-left border-collapse">
-                                    <thead className="bg-black/[0.02] border-b border-black/5">
+                                    <thead className="bg-black/2 border-b border-black/5">
                                         <tr>
                                             <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground w-1/2">Detail Produk</th>
                                             <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Kategori</th>
@@ -1001,7 +1001,7 @@ export default function AdminDashboard() {
                                             <tr>
                                                 <td colSpan={4} className="p-16 text-center">
                                                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-black/5 mb-4">
-                                                        <span className="material-symbols-outlined !text-3xl text-muted-foreground">inventory_2</span>
+                                                        <span className="material-symbols-outlined text-3xl! text-muted-foreground">inventory_2</span>
                                                     </div>
                                                     <h3 className="text-lg font-bold text-charcoal mb-1">Katalog Kosong</h3>
                                                     <p className="text-sm text-muted-foreground">Belum ada produk yang ditambahkan ke koleksi.</p>
@@ -1009,10 +1009,10 @@ export default function AdminDashboard() {
                                             </tr>
                                         ) : (
                                             items.map((item) => (
-                                                <tr key={item.id} className="hover:bg-black/[0.02] transition-colors group">
+                                                <tr key={item.id} className="hover:bg-black/2 transition-colors group">
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center gap-4">
-                                                            <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-secondary/50 border border-black/5">
+                                                            <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-secondary/50 border border-black/5">
                                                                 <Image src={item.image_url || '/placeholder.png'} alt={item.name} width={48} height={48} className="object-cover w-full h-full" />
                                                             </div>
                                                             <div className="min-w-0 pr-4">
@@ -1024,9 +1024,9 @@ export default function AdminDashboard() {
                                                                     >
                                                                         {item.name}
                                                                     </Link>
-                                                                    <span className="material-symbols-outlined !text-[14px] text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
+                                                                    <span className="material-symbols-outlined text-[14px]! text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
                                                                     {item.is_featured && (
-                                                                        <span className="bg-charcoal text-white text-[8px] px-1.5 py-0.5 rounded uppercase font-black tracking-widest flex-shrink-0">Featured</span>
+                                                                        <span className="bg-charcoal text-white text-[8px] px-1.5 py-0.5 rounded uppercase font-black tracking-widest shrink-0">Featured</span>
                                                                     )}
                                                                 </div>
                                                                 <p className="text-[11px] text-muted-foreground line-clamp-1 break-all">{item.description}</p>
@@ -1050,10 +1050,10 @@ export default function AdminDashboard() {
                                                     <td className="px-6 py-4 text-right">
                                                         <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                                             <button onClick={() => handleEdit(item)} className="w-8 h-8 rounded-full hover:bg-black/5 flex items-center justify-center text-charcoal transition-colors tooltip-edit">
-                                                                <span className="material-symbols-outlined !text-lg">edit</span>
+                                                                <span className="material-symbols-outlined text-lg!">edit</span>
                                                             </button>
                                                             <button onClick={() => deleteItem(item.id)} className="w-8 h-8 rounded-full hover:bg-red-500/10 flex items-center justify-center text-red-500 transition-colors tooltip-delete">
-                                                                <span className="material-symbols-outlined !text-lg">delete</span>
+                                                                <span className="material-symbols-outlined text-lg!">delete</span>
                                                             </button>
                                                         </div>
                                                     </td>

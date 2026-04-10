@@ -20,8 +20,8 @@ export default function Footer() {
                     <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-4 md:gap-x-8 text-[10px] font-bold uppercase tracking-[0.3em] text-white/30">
                         <Link href="/collection" className="hover:text-white transition-colors">katalog</Link>
                         <Link href="/story" className="hover:text-white transition-colors">kisah</Link>
-                        <div className="hidden md:block w-[1px] h-3 bg-white/10 self-center"></div>
-                        <div className="w-full h-[1px] bg-white/5 md:hidden my-2"></div>
+                        <div className="hidden md:block w-px h-3 bg-white/10 self-center"></div>
+                        <div className="w-full h-px bg-white/5 md:hidden my-2"></div>
                         <div className="flex flex-wrap justify-center gap-x-6 gap-y-4">
                             <a href="https://instagram.com/strxdale" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">instagram</a>
                             <a href="https://wa.me/6281379669540" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">whatsapp</a>

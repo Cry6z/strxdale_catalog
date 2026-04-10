@@ -28,7 +28,7 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
         <div className="relative">
             {/* Pure white cover while loading intro */}
             {!isFinished && (
-                <div className="fixed inset-0 z-[9997] bg-white dark:bg-charcoal" />
+                <div className="fixed inset-0 z-9997 bg-white dark:bg-charcoal" />
             )}
             
             <motion.div

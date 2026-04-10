@@ -58,7 +58,7 @@ const OpeningScene: React.FC = () => {
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
-                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-white dark:bg-charcoal"
+                    className="fixed inset-0 z-9999 flex items-center justify-center bg-white dark:bg-charcoal"
                 >
                     <div className="text-center px-6">
                         <AnimatePresence mode="wait">

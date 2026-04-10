@@ -127,7 +127,7 @@ export default async function Home() {
             >
               "Behind every simple form, there is a silent phase that has been passed."
             </ScrollFloat>
-            <div className="mt-16 h-[1px] w-12 bg-charcoal/20 mx-auto"></div>
+            <div className="mt-16 h-px w-12 bg-charcoal/20 mx-auto"></div>
           </div>
         </section>
       </main>

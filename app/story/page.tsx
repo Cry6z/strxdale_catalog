@@ -76,7 +76,7 @@ export default function StoryPage() {
                         <motion.div 
                             whileHover={{ scale: 0.98 }}
                             transition={{ duration: 0.5, ease: 'easeInOut' }}
-                            className="relative aspect-[4/5] bg-charcoal/5 overflow-hidden greyscale group"
+                            className="relative aspect-4/5 bg-charcoal/5 overflow-hidden greyscale group"
                         >
                             <Image
                                 src="/images/story/design.png"
@@ -102,7 +102,7 @@ export default function StoryPage() {
                         className="mb-12 md-16"
                     >
                         <h2 className="text-[10px] font-bold uppercase tracking-[0.5em] text-charcoal/40 mb-4">Prototipe</h2>
-                        <div className="w-10 md:w-12 h-[1px] bg-charcoal/20"></div>
+                        <div className="w-10 md:w-12 h-px bg-charcoal/20"></div>
                     </motion.div>
 
                     <motion.div 

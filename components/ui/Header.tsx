@@ -13,7 +13,7 @@ export default function Header() {
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="mx-auto max-w-screen-xl bg-white/80 backdrop-blur-md border border-charcoal/5 rounded-full px-6 md:px-10 py-3 md:py-4 flex items-center justify-between shadow-[0_4px_30px_rgba(0,0,0,0.05)] transition-all"
+                className="mx-auto max-w-7xl bg-white/80 backdrop-blur-md border border-charcoal/5 rounded-full px-6 md:px-10 py-3 md:py-4 flex items-center justify-between shadow-[0_4px_30px_rgba(0,0,0,0.05)] transition-all"
             >
                 {/* Left: Brand/Logo */}
                 <div className="flex items-center gap-4">
@@ -29,7 +29,7 @@ export default function Header() {
                                 <path d="m13 17-2-10"></path>
                             </svg>
                         </motion.div>
-                        <span className="text-charcoal font-bold tracking-[0.1em] text-sm md:text-base font-serif lowercase">
+                        <span className="text-charcoal font-bold tracking-widest text-sm md:text-base font-serif lowercase">
                             strxdale&apos;s catalog
                         </span>
                     </Link>
@@ -45,7 +45,7 @@ export default function Header() {
                         >
                             {item}
                             <motion.div
-                                className="absolute -bottom-1 left-0 right-0 h-[1px] bg-charcoal origin-left"
+                                className="absolute -bottom-1 left-0 right-0 h-px bg-charcoal origin-left"
                                 initial={{ scaleX: 0 }}
                                 whileHover={{ scaleX: 1 }}
                                 transition={{ duration: 0.4, ease: "circOut" }}
