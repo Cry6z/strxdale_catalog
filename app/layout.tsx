@@ -14,7 +14,7 @@ const anonPro = Anonymous_Pro({
 
 
 export const metadata: Metadata = {
-  title: "strxdale's catalog | Born From Restlessness",
+  title: "strxdale's catalog",
   description: "Sebuah ruang untuk desain yang lahir dari rasa ingin mencoba. Sederhana, tenang, dan dibuat with pendekatan yang minimal.",
   icons: {
     icon: "/S.png",
