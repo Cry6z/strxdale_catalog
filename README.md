@@ -7,9 +7,9 @@ Dibangun dengan **Next.js**, **Tailwind CSS**, dan **Supabase**, platform ini di
 
 ---
 
-## ✨ Apa yang Bisa Dilakukan?
+## Apa yang Bisa Dilakukan?
 
-### 🛍️ Untuk Pengunjung
+### Untuk Pengunjung
 - **Halaman depan yang hidup**  
   Hero section dengan visual yang bisa berubah—bukan sekadar banner statis.
 
@@ -24,7 +24,7 @@ Dibangun dengan **Next.js**, **Tailwind CSS**, dan **Supabase**, platform ini di
 
 ---
 
-### 🔒 Untuk Admin
+### Untuk Admin
 - **Akses simpel tapi tetap aman**  
   Masuk lewat `/access-portal`, langsung ke dashboard.
 
@@ -44,7 +44,7 @@ Dibangun dengan **Next.js**, **Tailwind CSS**, dan **Supabase**, platform ini di
 
 ---
 
-## 🚀 Teknologi yang Dipakai
+## Teknologi yang Dipakai
 
 - **Next.js** (App Router) — struktur modern & scalable  
 - **TypeScript** — biar lebih aman & jelas  
@@ -54,7 +54,7 @@ Dibangun dengan **Next.js**, **Tailwind CSS**, dan **Supabase**, platform ini di
 
 ---
 
-## 📂 Struktur Project (Singkat Aja)
+## Struktur Project (Singkat Aja)
 
 ```text
 app/
@@ -102,7 +102,7 @@ Buka di: `http://localhost:3000`
 
 ---
 
-## 📦 Deployment
+## Deployment
 
 Paling enak pakai **Vercel**:
 
