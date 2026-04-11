@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# strxdale's catalog
 
-## Getting Started
+Sebuah ruang digital untuk menampilkan produk dengan cara yang lebih dari sekadar katalog.  
+Di sini, setiap item punya tempat, setiap visual punya cerita.
 
-First, run the development server:
+Dibangun dengan **Next.js**, **Tailwind CSS**, dan **Supabase**, platform ini dirancang agar terasa ringan, cepat, dan nyaman—baik untuk pengunjung maupun pengelola.
+
+---
+
+## ✨ Apa yang Bisa Dilakukan?
+
+### 🛍️ Untuk Pengunjung
+- **Halaman depan yang hidup**  
+  Hero section dengan visual yang bisa berubah—bukan sekadar banner statis.
+
+- **Galeri visual yang estetik**  
+  Tampilan grid yang fokus ke vibe dan identitas brand, bukan cuma produk.
+
+- **Katalog yang jelas & rapi**  
+  Produk ditampilkan dengan info penting: harga, kategori, dan tipe (pre-order, showcase, dll).
+
+- **Detail produk yang langsung to the point**  
+  Lihat info lengkap + langsung lanjut ke WhatsApp tanpa ribet.
+
+---
+
+### 🔒 Untuk Admin
+- **Akses simpel tapi tetap aman**  
+  Masuk lewat `/access-portal`, langsung ke dashboard.
+
+- **Dashboard yang ringkas**  
+  Lihat jumlah item, nilai koleksi, dan aktivitas tanpa harus mikir.
+
+- **Kelola produk tanpa ribet (CRUD)**  
+  - Tambah, edit, hapus produk  
+  - Upload gambar cover & galeri  
+  - Atur status: pre-order, showcase, atau unggulan  
+  - Kategori otomatis rapi
+
+- **Edit konten tanpa sentuh kode**  
+  - Ganti background hero  
+  - Ubah teks (judul & deskripsi)  
+  - Atur galeri landing
+
+---
+
+## 🚀 Teknologi yang Dipakai
+
+- **Next.js** (App Router) — struktur modern & scalable  
+- **TypeScript** — biar lebih aman & jelas  
+- **Tailwind CSS** — styling cepat + fleksibel  
+- **Supabase** — database + storage dalam satu tempat  
+- **Vercel** — deployment paling praktis
+
+---
+
+## 📂 Struktur Project (Singkat Aja)
+
+```text
+app/
+ ├── page.tsx         # Homepage
+ ├── collection/      # Katalog
+ ├── admin/           # Dashboard admin
+ ├── access-portal/   # Login
+ └── story/           # Tentang brand
+
+components/
+ ├── admin/           # Komponen admin
+ └── ui/              # Komponen umum
+
+lib/
+ ├── supabase.ts
+ └── utils.ts
+
+public/
+```
+
+---
+
+## 🛠️ Cara Jalanin di Lokal
+
+```bash
+git clone <repository-url>
+cd strxdale_catalog
+npm install
+```
+
+Buat file `.env.local`:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-project-anon-key
+```
+
+Jalankan:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka di: `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📦 Deployment
 
-## Learn More
+Paling enak pakai **Vercel**:
 
-To learn more about Next.js, take a look at the following resources:
+1. Push ke GitHub  
+2. Import project ke Vercel  
+3. Masukin environment variables  
+4. Deploy — selesai
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**strxdale's catalog**  
+*Bukan cuma katalog. Tapi cara baru buat nampilin karya.*
