@@ -44,6 +44,8 @@ export default function AdminDashboard() {
     const [galleryImageFiles, setGalleryImageFiles] = useState<File[]>([]);
     const [galleryUrls, setGalleryUrls] = useState<string[]>([]);
     const [editingId, setEditingId] = useState<string | null>(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
 
     const router = useRouter();
 
@@ -356,36 +358,49 @@ export default function AdminDashboard() {
     }
 
     return (
-        <div className="flex min-h-screen bg-background font-sans">
-            <aside className="w-64 border-r border-border/40 bg-white/50 backdrop-blur-3xl flex flex-col fixed inset-y-0 text-charcoal">
-                <div className="p-8 pb-4">
-                    <h2 className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground/50 mb-1">Portal</h2>
-                    <p className="text-xl font-bold tracking-tight">strxdale&apos;s catalog</p>
+        <div className="flex min-h-screen bg-background font-sans relative">
+            {/* Mobile Sidebar Overlay */}
+            {isSidebarOpen && (
+                <div 
+                    className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden" 
+                    onClick={() => setIsSidebarOpen(false)} 
+                />
+            )}
+
+            <aside className={`w-64 border-r border-border/40 bg-white/90 md:bg-white/50 backdrop-blur-3xl flex flex-col fixed inset-y-0 text-charcoal z-50 transition-transform duration-300 md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                <div className="p-8 pb-4 flex justify-between items-center md:block">
+                    <div>
+                        <h2 className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground/50 mb-1">Portal</h2>
+                        <p className="text-xl font-bold tracking-tight">strxdale&apos;s catalog</p>
+                    </div>
+                    <button onClick={() => setIsSidebarOpen(false)} className="md:hidden p-2 rounded-lg bg-black/5 text-charcoal flex items-center justify-center hover:bg-black/10">
+                         <span className="material-symbols-outlined text-xl!">close</span>
+                    </button>
                 </div>
-                <nav className="flex-1 px-4 py-4 space-y-1.5">
+                <nav className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
                     <button
-                        onClick={() => setView('overview')}
+                        onClick={() => { setView('overview'); setIsSidebarOpen(false); }}
                         className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'overview' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
                         <span className={`material-symbols-outlined text-lg! ${view === 'overview' ? 'opacity-100' : 'opacity-70'}`}>dashboard</span>
                         Ringkasan
                     </button>
                     <button
-                        onClick={() => setView('catalog')}
+                        onClick={() => { setView('catalog'); setIsSidebarOpen(false); }}
                         className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'catalog' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
                         <span className={`material-symbols-outlined text-lg! ${view === 'catalog' ? 'opacity-100' : 'opacity-70'}`}>inventory_2</span>
                         Katalog
                     </button>
                     <button
-                        onClick={() => setView('hero')}
+                        onClick={() => { setView('hero'); setIsSidebarOpen(false); }}
                         className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'hero' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
                         <span className={`material-symbols-outlined text-lg! ${view === 'hero' ? 'opacity-100' : 'opacity-70'}`}>image_search</span>
                         Pengaturan Hero
                     </button>
                     <button
-                        onClick={() => setView('gallery')}
+                        onClick={() => { setView('gallery'); setIsSidebarOpen(false); }}
                         className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'gallery' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
                         <span className={`material-symbols-outlined text-lg! ${view === 'gallery' ? 'opacity-100' : 'opacity-70'}`}>collections</span>
@@ -406,8 +421,21 @@ export default function AdminDashboard() {
                 </div>
             </aside>
 
-            <main className="flex-1 ml-64 p-12">
-                <div className="max-w-6xl mx-auto">
+            <main className="flex-1 md:ml-64 p-6 md:p-12 w-full max-w-[100vw] transition-all">
+                <div className="max-w-6xl mx-auto overflow-x-hidden">
+                    {/* Mobile Header */}
+                    <div className="md:hidden flex items-center justify-between mb-8 bg-white/50 backdrop-blur-lg p-4 rounded-2xl border border-border/40 shadow-sm relative z-30">
+                        <div className="flex items-center gap-3">
+                            <button onClick={() => setIsSidebarOpen(true)} className="p-2 rounded-lg bg-black/5 hover:bg-black/10 transition-colors text-charcoal flex items-center justify-center">
+                                <span className="material-symbols-outlined text-xl!">menu</span>
+                            </button>
+                            <span className="font-bold text-sm tracking-tight text-charcoal">Hallo, Admin!</span>
+                        </div>
+                        <div className="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-charcoal">
+                            <span className="material-symbols-outlined text-[16px]!">admin_panel_settings</span>
+                        </div>
+                    </div>
+
                     {view === 'overview' ? (
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <header className="mb-12">
@@ -986,8 +1014,8 @@ export default function AdminDashboard() {
                                 </div>
                             )}
 
-                            <div className="bg-white rounded-2xl shadow-sm ring-1 ring-black/5 overflow-hidden">
-                                <table className="w-full text-left border-collapse">
+                            <div className="bg-white rounded-2xl shadow-sm ring-1 ring-black/5 overflow-x-auto">
+                                <table className="w-full text-left border-collapse min-w-[600px]">
                                     <thead className="bg-black/2 border-b border-black/5">
                                         <tr>
                                             <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground w-1/2">Detail Produk</th>
