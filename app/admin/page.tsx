@@ -739,8 +739,8 @@ export default function AdminDashboard() {
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <div className="flex items-center justify-between mb-12">
                                 <div>
-                                    <h1 className="text-4xl font-bold tracking-tight mb-2">Catalog</h1>
-                                    <p className="text-muted-foreground">Manage your collection items.</p>
+                                    <h1 className="text-4xl font-bold tracking-tight mb-2">Katalog</h1>
+                                    <p className="text-muted-foreground">Kelola item koleksi Anda.</p>
                                 </div>
                                 <button
                                     onClick={() => {
@@ -750,7 +750,7 @@ export default function AdminDashboard() {
                                     className="bg-charcoal text-white px-6 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-all flex items-center gap-2"
                                 >
                                     <span className="material-symbols-outlined text-lg!">{showForm ? 'close' : 'add'}</span>
-                                    {showForm ? 'Cancel' : 'Add New Item'}
+                                    {showForm ? 'Batal' : 'Tambah Item Baru'}
                                 </button>
                             </div>
 
