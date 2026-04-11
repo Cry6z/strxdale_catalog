@@ -4,6 +4,8 @@ import Footer from '@/components/ui/Footer';
 import ProductGallery from '@/components/ui/ProductGallery';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { formatPrice } from '@/lib/utils';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -73,12 +75,12 @@ export default async function ProductDetailPage(props: { params: Promise<{ id: s
                                     ) : item.price === 0 ? (
                                         <span className="italic">pre order</span>
                                     ) : (
-                                        `$${item.price.toLocaleString()}`
+                                        formatPrice(item.price)
                                     )}
                                 </p>
                             </div>
 
-                            <div className="h-[1px] w-full bg-charcoal/5 mb-8" />
+                            <div className="h-px w-full bg-charcoal/5 mb-8" />
 
                             <div className="mb-12">
                                 <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal/40 mb-4">Deskripsi</h3>

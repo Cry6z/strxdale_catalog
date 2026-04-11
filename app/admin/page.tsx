@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
+import { formatPrice } from '@/lib/utils';
+
 
 interface CatalogItem {
     id: string;
@@ -426,7 +428,7 @@ export default function AdminDashboard() {
                                         <span className="material-symbols-outlined text-8xl!">payments</span>
                                     </div>
                                     <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Nilai Koleksi</span>
-                                    <p className="text-4xl font-bold mt-4 text-charcoal">${totalValue.toLocaleString()}</p>
+                                    <p className="text-4xl font-bold mt-4 text-charcoal">{formatPrice(totalValue)}</p>
                                 </div>
                                 <div className="p-8 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 relative overflow-hidden group">
                                     <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
@@ -451,7 +453,7 @@ export default function AdminDashboard() {
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <p className="font-bold text-sm text-charcoal truncate">{item.name}</p>
-                                                    <p className="text-xs text-muted-foreground">${item.price}</p>
+                                                    <p className="text-xs text-muted-foreground">{formatPrice(item.price)}</p>
                                                 </div>
                                                 <div className="opacity-0 group-hover:opacity-100 transition-opacity">
                                                     <span className="material-symbols-outlined text-sm! text-muted-foreground">chevron_right</span>
@@ -741,7 +743,7 @@ export default function AdminDashboard() {
                                         <div className="space-y-4">
                                             <div className="space-y-2">
                                                 <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                                                    Harga ($)
+                                                    Harga (Rp)
                                                     <span className="text-red-500">*</span>
                                                 </label>
                                                 <input
@@ -1044,7 +1046,7 @@ export default function AdminDashboard() {
                                                         ) : item.price === 0 ? (
                                                             <span className="text-[10px] px-2 py-1 rounded border border-charcoal/20 text-charcoal/60 uppercase font-bold tracking-widest">Pre Order</span>
                                                         ) : (
-                                                            `$${item.price.toLocaleString()}`
+                                                            formatPrice(item.price)
                                                         )}
                                                     </td>
                                                     <td className="px-6 py-4 text-right">

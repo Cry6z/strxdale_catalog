@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { formatPrice } from '@/lib/utils';
+
 
 interface CatalogItem {
     id: string;
@@ -71,7 +73,7 @@ export default function Card(item: CatalogItem) {
                         ) : item.price === 0 ? (
                             <span className="text-charcoal/30 italic font-medium lowercase">pre order</span>
                         ) : (
-                            `$${item.price.toLocaleString()}`
+                            formatPrice(item.price)
                         )}
                     </span>
                 </div>

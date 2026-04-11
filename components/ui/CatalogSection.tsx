@@ -31,33 +31,33 @@ export default function CatalogSection({ items }: CatalogSectionProps) {
         },
     };
 
-    return (
-        <section className="py-16 md:py-32 bg-off-white overflow-hidden" id="featured">
-            <div className="mx-auto max-w-7xl px-6 md:px-8 mb-16 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
-                <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                >
-                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal/30 block mb-4">karya pilihan</span>
-                    <h3 className="text-3xl md:text-5xl font-serif font-black text-charcoal tracking-tighter leading-none lowercase">
-                        produk unggulan
-                    </h3>
-                </motion.div>
+        return (
+            <section className="py-16 md:py-32 bg-off-white overflow-hidden" id="featured">
+                <div className="mx-auto max-w-7xl px-6 md:px-8 mb-16 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-charcoal/30 block mb-4">karya pilihan</span>
+                        <h3 className="text-3xl md:text-5xl font-serif font-black text-charcoal tracking-tighter leading-none lowercase">
+                            produk unggulan
+                        </h3>
+                    </motion.div>
 
-                <motion.div
-                    initial={{ opacity: 0, x: 30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="hidden md:block"
-                >
-                    <p className="max-w-[280px] text-[11px] text-charcoal/50 leading-relaxed uppercase tracking-wider text-right">
-                        Desain terbaik yang pernah saya buat.
-                    </p>
-                </motion.div>
-            </div>
+                    <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                        className="hidden md:block"
+                    >
+                        <p className="max-w-[280px] text-[11px] text-charcoal/50 leading-relaxed uppercase tracking-wider text-right">
+                            Desain terbaik yang pernah saya buat.
+                        </p>
+                    </motion.div>
+                </div>
 
             <div className="mx-auto max-w-7xl px-6 md:px-8">
                 <motion.div
