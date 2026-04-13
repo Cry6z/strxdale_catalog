@@ -12,9 +12,9 @@ export default function Sidebar({ view, setView, isSidebarOpen, setIsSidebarOpen
         <>
             {/* Mobile Sidebar Overlay */}
             {isSidebarOpen && (
-                <div 
-                    className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden" 
-                    onClick={() => setIsSidebarOpen(false)} 
+                <div
+                    className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
+                    onClick={() => setIsSidebarOpen(false)}
                 />
             )}
 
@@ -25,7 +25,7 @@ export default function Sidebar({ view, setView, isSidebarOpen, setIsSidebarOpen
                         <p className="text-xl font-bold tracking-tight">strxdale&apos;s catalog</p>
                     </div>
                     <button onClick={() => setIsSidebarOpen(false)} className="md:hidden p-2 rounded-lg bg-black/5 text-charcoal flex items-center justify-center hover:bg-black/10">
-                         <span className="material-symbols-outlined text-xl!">close</span>
+                        <span className="material-symbols-outlined text-xl!">close</span>
                     </button>
                 </div>
                 <nav className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
@@ -55,7 +55,7 @@ export default function Sidebar({ view, setView, isSidebarOpen, setIsSidebarOpen
                         className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'gallery' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
                     >
                         <span className={`material-symbols-outlined text-lg! ${view === 'gallery' ? 'opacity-100' : 'opacity-70'}`}>collections</span>
-                        Pengaturan Galeri
+                        Galeri Landing
                     </button>
                     <div className="pt-4 mt-4 border-t border-border/40">
                         <Link

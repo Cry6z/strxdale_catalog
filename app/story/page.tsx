@@ -151,7 +151,7 @@ export default function StoryPage() {
                             <div className="px-4 pb-6 space-y-2">
                                 <h3 className="text-sm font-bold lowercase tracking-tight group-hover:translate-x-1 transition-transform duration-500">spacewalk</h3>
                                 <p className="text-[11px] leading-relaxed text-charcoal/50">
-                                    Desain ini yang membuat saya yakin untuk memakai gaya minimalis pada desain saya kedepannya
+                                   Desain bukan hanya tentang penampilan, tetapi tentang menemukan bentuk yang terasa tepat.
                                 </p>
                             </div>
                         </motion.div>
