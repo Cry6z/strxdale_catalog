@@ -151,7 +151,7 @@ export default function StoryPage() {
                             <div className="px-4 pb-6 space-y-2">
                                 <h3 className="text-sm font-bold lowercase tracking-tight group-hover:translate-x-1 transition-transform duration-500">spacewalk</h3>
                                 <p className="text-[11px] leading-relaxed text-charcoal/50">
-                                   Desain bukan hanya tentang penampilan, tetapi tentang menemukan bentuk yang terasa tepat.
+                                    Desain ini yang membuat saya yakin untuk memakai gaya minimalis pada desain saya kedepannya
                                 </p>
                             </div>
                         </motion.div>
@@ -194,7 +194,7 @@ export default function StoryPage() {
                         containerClassName="w-full"
                         textClassName="text-2xl md:text-3xl font-light italic text-charcoal/60 leading-relaxed max-w-2xl px-4"
                     >
-                        &quot;Design is not just about looks, but about finding a form that feels right.&quot;
+                        &quot;Desain bukan hanya tentang penampilan, tetapi tentang menemukan bentuk yang terasa tepat.&quot;
                     </ScrollFloat>
                     <motion.div 
                         initial={{ opacity: 0, y: 10 }}
