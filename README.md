@@ -1,117 +1,110 @@
 # strxdale's catalog
 
-Sebuah ruang digital untuk menampilkan produk dengan cara yang lebih dari sekadar katalog.  
-Di sini, setiap item punya tempat, setiap visual punya cerita.
+strxdale's catalog adalah aplikasi web modern yang dirancang sebagai ruang pamer digital komprehensif. Platform ini berfungsi tidak hanya sebagai tempat untuk menampilkan produk, tetapi juga sebagai media untuk merepresentasikan visual dan identitas merek secara profesional.
 
-Dibangun dengan **Next.js**, **Tailwind CSS**, dan **Supabase**, platform ini dirancang agar terasa ringan, cepat, dan nyaman—baik untuk pengunjung maupun pengelola.
-
----
-
-## Apa yang Bisa Dilakukan?
-
-### Untuk Pengunjung
-- **Halaman depan yang hidup**  
-  Hero section dengan visual yang bisa berubah—bukan sekadar banner statis.
-
-- **Galeri visual yang estetik**  
-  Tampilan grid yang fokus ke vibe dan identitas brand, bukan cuma produk.
-
-- **Katalog yang jelas & rapi**  
-  Produk ditampilkan dengan info penting: harga, kategori, dan tipe (pre-order, showcase, dll).
-
-- **Detail produk yang langsung to the point**  
-  Lihat info lengkap + langsung lanjut ke WhatsApp tanpa ribet.
+Dibangun menggunakan arsitektur web modern, platform ini menitikberatkan pada performa tinggi, pengalaman pengguna yang halus, dan sistem manajemen konten (CMS) mandiri yang mudah digunakan oleh administrator.
 
 ---
 
-### Untuk Admin
-- **Akses simpel tapi tetap aman**  
-  Masuk lewat `/access-portal`, langsung ke dashboard.
+## Fitur Utama
 
-- **Dashboard yang ringkas**  
-  Lihat jumlah item, nilai koleksi, dan aktivitas tanpa harus mikir.
+### Pengalaman Pengunjung
+- **Halaman Utama Dinamis:** Menghadirkan antarmuka pembuka dengan animasi interaktif dan visual hero section yang dapat disesuaikan.
+- **Galeri Kurasi:** Tampilan galeri berbasis tata letak grid yang menekankan estetika dan identitas merek.
+- **Katalog Terstruktur:** Sistem katalog produk komprehensif yang menampilkan informasi esensial seperti harga, kategori, dan status ketersediaan (seperti pre-order atau eksibisi).
+- **Detail Produk Responsif:** Memberikan rincian mendalam pada setiap produk dengan integrasi komunikasi langsung (WhatsApp) untuk proses transaksi atau pertanyaan teknis.
 
-- **Kelola produk tanpa ribet (CRUD)**  
-  - Tambah, edit, hapus produk  
-  - Upload gambar cover & galeri  
-  - Atur status: pre-order, showcase, atau unggulan  
-  - Kategori otomatis rapi
-
-- **Edit konten tanpa sentuh kode**  
-  - Ganti background hero  
-  - Ubah teks (judul & deskripsi)  
-  - Atur galeri landing
+### Panel Administrator
+- **Autentikasi Aman:** Portal akses terproteksi untuk administrator.
+- **Dasbor Analitik Singkat:** Ringkasan statistik performa katalog, termasuk total item dan estimasi nilai koleksi.
+- **Manajemen Inventaris (CRUD):** Sistem manajemen data produk penuh, mengizinkan admin untuk menambah, mengedit, dan menghapus entri katalog beserta aset gambarnya.
+- **Pengaturan Situs Dinamis:** Administrator dapat memodifikasi teks, hero banner, dan konten galeri langsung melalui dasbor tanpa perlu mengubah kode sumber.
 
 ---
 
-## Teknologi yang Dipakai
+## Teknologi
 
-- **Next.js** (App Router) — struktur modern & scalable  
-- **TypeScript** — biar lebih aman & jelas  
-- **Tailwind CSS** — styling cepat + fleksibel  
-- **Supabase** — database + storage dalam satu tempat  
-- **Vercel** — deployment paling praktis
+Proyek ini dibangun di atas fondasi teknologi berikut:
+
+- **Kerangka Kerja Utama:** Next.js 16 (App Router) dengan React 19
+- **Bahasa Pemrograman:** TypeScript
+- **Penataan Gaya (Styling):** Tailwind CSS v4, Radix UI, dan Shadcn
+- **Animasi:** Framer Motion dan GSAP
+- **Basis Data dan Penyimpanan:** Supabase (PostgreSQL)
 
 ---
 
-## Struktur Project (Singkat Aja)
+## Struktur Proyek
+
+Berikut adalah gambaran arsitektur dan struktur utama dari proyek ini:
 
 ```text
-app/
- ├── page.tsx         # Homepage
- ├── collection/      # Katalog
- ├── admin/           # Dashboard admin
- ├── access-portal/   # Login
- └── story/           # Tentang brand
-
-components/
- ├── admin/           # Komponen admin
- └── ui/              # Komponen umum
-
-lib/
- ├── supabase.ts
- └── utils.ts
-
-public/
+strxdale_catalog/
+├── app/                  # Rute aplikasi dan halaman
+│   ├── access-portal/    # Portal autentikasi admin
+│   ├── admin/            # Area panel administrator
+│   ├── collection/       # Halaman katalog produk
+│   ├── story/            # Halaman cerita dan identitas merek
+│   ├── layout.tsx        # Konfigurasi tata letak utama
+│   └── page.tsx          # Halaman beranda
+├── components/           # Komponen antarmuka yang dapat digunakan kembali
+│   ├── admin/            # Komponen khusus halaman administrator
+│   └── ui/               # Komponen antarmuka umum (tombol, formulir)
+├── lib/                  # Fungsi utilitas dan konfigurasi eksternal
+│   ├── supabase.ts       # Klien Supabase
+│   └── utils.ts          # Fungsi utilitas umum
+└── public/               # Aset statis seperti gambar dan ikon
 ```
 
 ---
 
-## 🛠️ Cara Jalanin di Lokal
+## Panduan Instalasi Lokal
 
+Untuk menjalankan proyek ini di perangkat lokal, pastikan Anda telah memasang **Node.js** (versi 18 atau lebih baru) dan **npm** di sistem Anda.
+
+### 1. Kloning Repositori
 ```bash
-git clone <repository-url>
+git clone <url-repositori-anda>
 cd strxdale_catalog
+```
+
+### 2. Instalasi Dependensi
+```bash
 npm install
 ```
 
-Buat file `.env.local`:
-
+### 3. Konfigurasi Lingkungan
+Buat sebuah file baru bernama `.env.local` pada direktori dasar proyek. Salin format di bawah ini dan isi nilainya sesuai dengan proyek Supabase Anda:
 ```env
-NEXT_PUBLIC_SUPABASE_URL=your-project-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-project-anon-key
+NEXT_PUBLIC_SUPABASE_URL=alamat_url_proyek_supabase_anda
+NEXT_PUBLIC_SUPABASE_ANON_KEY=kunci_anon_proyek_supabase_anda
 ```
 
-Jalankan:
-
+### 4. Menjalankan Server Pengembangan
 ```bash
 npm run dev
 ```
 
-Buka di: `http://localhost:3000`
+Platform akan berjalan dan dapat diakses melalui peramban web di alamat: `http://localhost:3000`.
 
 ---
 
-## Deployment
+## Basis Data (Supabase)
 
-Paling enak pakai **Vercel**:
+Aplikasi ini bergantung pada skema tabel berikut di Supabase untuk dapat berfungsi:
+1. `catalog_items`: Menyimpan seluruh data produk dalam katalog.
+2. `landing_gallery`: Mengatur konten visual galeri pada halaman beranda.
+3. `site_settings`: Menyimpan preferensi dinamis dan teks situs yang diatur oleh admin.
 
-1. Push ke GitHub  
-2. Import project ke Vercel  
-3. Masukin environment variables  
-4. Deploy — selesai
+Pastikan struktur tabel pada Supabase Anda telah selaras dengan model data TypeScript yang ada pada direktori proyek.
 
 ---
 
-**strxdale's catalog**  
-*Bukan cuma katalog. Tapi cara baru buat nampilin karya.*
+## Panduan Penerapan (Deployment)
+
+Aplikasi ini sangat direkomendasikan untuk disebarkan menggunakan layanan **Vercel** karena integrasinya yang optimal dengan Next.js:
+
+1. Unggah kode sumber ini ke repositori platform Git (GitHub, GitLab, atau Bitbucket).
+2. Buat proyek baru di Vercel dan hubungkan repositori terkait.
+3. Pastikan untuk menambahkan semua nilai lingkungan (Environment Variables) dari file `.env.local` pada pengaturan proyek Vercel sebelum tahap penyebaran dimulai.
+4. Klik tombol deploy dan tunggu proses hingga aplikasi siap digunakan secara publik.
