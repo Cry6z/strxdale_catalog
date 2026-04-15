@@ -50,7 +50,7 @@ export default function StoryPage() {
             <Header />
 
             {/* Hero Narrative */}
-            <motion.section 
+            <motion.section
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
@@ -73,7 +73,7 @@ export default function StoryPage() {
                                 Seiring waktu, percobaan kecil itu berkembang menjadi rangkaian desain yang terus bereksplorasi pada kesederhanaan dan bentuk yang esensial.
                             </p>
                         </div>
-                        <motion.div 
+                        <motion.div
                             whileHover={{ scale: 0.98 }}
                             transition={{ duration: 0.5, ease: 'easeInOut' }}
                             className="relative aspect-4/5 bg-charcoal/5 overflow-hidden greyscale group"
@@ -95,7 +95,7 @@ export default function StoryPage() {
             {/* Prototype Showcase */}
             <section className="py-16 md:py-24 bg-charcoal/5 overflow-hidden">
                 <div className="max-w-7xl mx-auto px-6 md:px-8">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -105,7 +105,7 @@ export default function StoryPage() {
                         <div className="w-10 md:w-12 h-px bg-charcoal/20"></div>
                     </motion.div>
 
-                    <motion.div 
+                    <motion.div
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, margin: "-100px" }}
@@ -157,12 +157,12 @@ export default function StoryPage() {
                         </motion.div>
 
                         {/* Card 3 - Special Link Card */}
-                        <motion.div 
+                        <motion.div
                             variants={cardVariants}
                             whileHover={{ y: -5 }}
                             className="bg-charcoal flex flex-col items-center justify-center p-12 text-center group relative overflow-hidden"
                         >
-                            <motion.div 
+                            <motion.div
                                 initial={{ opacity: 0 }}
                                 whileHover={{ opacity: 1 }}
                                 className="absolute inset-0 bg-white/5 pointer-events-none"
@@ -196,7 +196,7 @@ export default function StoryPage() {
                     >
                         &quot;Desain bukan hanya tentang penampilan, tetapi tentang menemukan bentuk yang terasa tepat.&quot;
                     </ScrollFloat>
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
