@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 interface SidebarProps {
-    view: 'overview' | 'catalog' | 'hero' | 'gallery';
-    setView: (view: 'overview' | 'catalog' | 'hero' | 'gallery') => void;
+    view: 'overview' | 'catalog' | 'hero' | 'gallery' | 'store';
+    setView: (view: 'overview' | 'catalog' | 'hero' | 'gallery' | 'store') => void;
     isSidebarOpen: boolean;
     setIsSidebarOpen: (isOpen: boolean) => void;
 }
@@ -56,6 +56,13 @@ export default function Sidebar({ view, setView, isSidebarOpen, setIsSidebarOpen
                     >
                         <span className={`material-symbols-outlined text-lg! ${view === 'gallery' ? 'opacity-100' : 'opacity-70'}`}>collections</span>
                         Galeri Landing
+                    </button>
+                    <button
+                        onClick={() => { setView('store'); setIsSidebarOpen(false); }}
+                        className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'store' ? 'bg-black/5 text-charcoal font-bold shadow-sm ring-1 ring-black/5' : 'text-muted-foreground hover:bg-black/5 hover:text-charcoal'}`}
+                    >
+                        <span className={`material-symbols-outlined text-lg! ${view === 'store' ? 'opacity-100' : 'opacity-70'}`}>store</span>
+                        Status Toko
                     </button>
                     <div className="pt-4 mt-4 border-t border-border/40">
                         <Link

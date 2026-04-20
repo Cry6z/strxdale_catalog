@@ -5,7 +5,8 @@ import ProductGallery from '@/components/ui/ProductGallery';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { formatPrice } from '@/lib/utils';
-
+import ClosedStore from '@/components/ui/ClosedStore';
+import { getStoreSettings } from '@/lib/getStoreSettings';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,10 +35,15 @@ async function getContactInfo() {
 
 export default async function ProductDetailPage(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
-    const [item, contactInfo] = await Promise.all([
+    const [item, contactInfo, storeSettings] = await Promise.all([
         getItem(params.id),
-        getContactInfo()
+        getContactInfo(),
+        getStoreSettings()
     ]);
+
+    if (storeSettings.status === 'closed') {
+        return <ClosedStore title={storeSettings.title} description={storeSettings.description} background={storeSettings.background} />;
+    }
 
     if (!item) {
         notFound();

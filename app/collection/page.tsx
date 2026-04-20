@@ -2,6 +2,8 @@ import { supabase } from '@/lib/supabase';
 import Header from '@/components/ui/Header';
 import Footer from '@/components/ui/Footer';
 import CollectionGrid from '@/components/ui/CollectionGrid';
+import ClosedStore from '@/components/ui/ClosedStore';
+import { getStoreSettings } from '@/lib/getStoreSettings';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,10 +34,15 @@ async function getCategories() {
 }
 
 export default async function CollectionPage() {
-    const [items, categories] = await Promise.all([
+    const [items, categories, storeSettings] = await Promise.all([
         getItems(),
-        getCategories()
+        getCategories(),
+        getStoreSettings()
     ]);
+
+    if (storeSettings.status === 'closed') {
+        return <ClosedStore title={storeSettings.title} description={storeSettings.description} background={storeSettings.background} />;
+    }
 
     return (
         <div className="relative flex min-h-screen flex-col bg-off-white">

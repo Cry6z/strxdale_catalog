@@ -2,6 +2,7 @@
 
 import Sidebar from '@/components/admin/Sidebar';
 import OverviewView from '@/components/admin/OverviewView';
+import StoreSettingsView from '@/components/admin/StoreSettingsView';
 import HeroSettingsView from '@/components/admin/HeroSettingsView';
 import GallerySettingsView from '@/components/admin/GallerySettingsView';
 import CatalogManagerView from '@/components/admin/CatalogManagerView';
@@ -25,7 +26,9 @@ export default function AdminDashboard() {
         galleryUrls, setGalleryUrls,
         editingId,
         isSidebarOpen, setIsSidebarOpen,
-        updateCategories, deleteCategory,
+        updateCategories, deleteCategory, toggleStoreStatus, storeStatus,
+        closedTitle, setClosedTitle, closedDescription, setClosedDescription, closedBackground, setClosedBackground,
+        updateClosedStoreSettings, uploadClosedBackground,
         updateHeroSettings, uploadHeroImage,
         handleEdit, resetForm, handleSubmit, deleteItem,
         totalItems, totalValue, recentItems
@@ -52,6 +55,20 @@ export default function AdminDashboard() {
                             recentItems={recentItems}
                             setView={setView}
                             setShowForm={setShowForm}
+                        />
+                    )}
+
+                    {view === 'store' && (
+                        <StoreSettingsView 
+                            storeStatus={storeStatus}
+                            toggleStoreStatus={toggleStoreStatus}
+                            closedTitle={closedTitle}
+                            setClosedTitle={setClosedTitle}
+                            closedDescription={closedDescription}
+                            setClosedDescription={setClosedDescription}
+                            closedBackground={closedBackground}
+                            uploadClosedBackground={uploadClosedBackground}
+                            updateClosedStoreSettings={updateClosedStoreSettings}
                         />
                     )}
                     

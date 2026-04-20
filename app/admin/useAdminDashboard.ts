@@ -4,12 +4,16 @@ import { supabase } from '@/lib/supabase';
 import { CatalogItem } from '@/components/admin/types';
 
 export function useAdminDashboard() {
-    const [view, setView] = useState<'overview' | 'catalog' | 'hero' | 'gallery'>('overview');
+    const [view, setView] = useState<'overview' | 'catalog' | 'hero' | 'gallery' | 'store'>('overview');
     const [items, setItems] = useState<CatalogItem[]>([]);
     const [heroImages, setHeroImages] = useState<string[]>(['', '', '']);
     const [landingGalleryImages, setLandingGalleryImages] = useState<string[]>([]);
     const [heroTitle, setHeroTitle] = useState("");
     const [heroDescription, setHeroDescription] = useState("");
+    const [storeStatus, setStoreStatus] = useState<'open' | 'closed'>('open');
+    const [closedTitle, setClosedTitle] = useState("Toko Sedang Ditutup");
+    const [closedDescription, setClosedDescription] = useState("Kami sedang merapikan beberapa hal di belakang layar. Seluruh akses katalog dan pemesanan saat ini tidak tersedia.");
+    const [closedBackground, setClosedBackground] = useState("");
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [categories, setCategories] = useState<string[]>(['Lifestyle', 'Accessories', 'Design', 'Vintage']);
@@ -79,6 +83,22 @@ export function useAdminDashboard() {
         if (desc) setHeroDescription(desc.value);
     }, []);
 
+    const fetchStoreStatus = useCallback(async () => {
+        const { data: settings } = await supabase
+            .from('site_settings')
+            .select('*')
+            .in('key', ['store_status', 'closed_title', 'closed_description', 'closed_background']);
+        
+        if (settings) {
+            settings.forEach(s => {
+                if (s.key === 'store_status' && s.value) setStoreStatus(s.value as 'open' | 'closed');
+                if (s.key === 'closed_title' && s.value !== null) setClosedTitle(String(s.value));
+                if (s.key === 'closed_description' && s.value !== null) setClosedDescription(String(s.value));
+                if (s.key === 'closed_background' && s.value !== null) setClosedBackground(String(s.value));
+            });
+        }
+    }, []);
+
     const fetchItems = useCallback(async () => {
         setLoading(true);
         const { data, error } = await supabase
@@ -117,12 +137,13 @@ export function useAdminDashboard() {
             await Promise.all([
                 fetchItems(),
                 fetchHeroSettings(),
-                fetchCategories()
+                fetchCategories(),
+                fetchStoreStatus()
             ]);
         };
 
         checkAuth();
-    }, [router, fetchItems, fetchHeroSettings, fetchCategories]);
+    }, [router, fetchItems, fetchHeroSettings, fetchCategories, fetchStoreStatus]);
 
     async function updateCategories(newCategories: string[]) {
         try {
@@ -151,6 +172,65 @@ export function useAdminDashboard() {
         const updated = categories.filter(c => c !== catToDelete);
         updateCategories(updated);
     };
+
+    async function toggleStoreStatus() {
+        const newStatus = storeStatus === 'open' ? 'closed' : 'open';
+        const { error } = await supabase
+            .from('site_settings')
+            .upsert({ key: 'store_status', value: newStatus }, { onConflict: 'key' });
+        
+        if (error) {
+            alert('Error updating store status: ' + error.message);
+        } else {
+            setStoreStatus(newStatus);
+        }
+    }
+
+    async function updateClosedStoreSettings() {
+        setLoading(true);
+        try {
+            const results = await Promise.all([
+                supabase.from('site_settings').upsert({ key: 'closed_title', value: closedTitle }, { onConflict: 'key' }),
+                supabase.from('site_settings').upsert({ key: 'closed_description', value: closedDescription }, { onConflict: 'key' })
+            ]);
+            const errors = results.filter(r => r.error);
+            if (errors.length > 0) {
+                alert('Kesalahan saat menyimpan teks: ' + errors.map(e => e.error?.message).join(', '));
+            } else {
+                alert('Pengaturan teks tutup toko berhasil diperbarui!');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Terjadi kesalahan yang tidak terduga.');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function uploadClosedBackground(file: File) {
+        setLoading(true);
+        const fileExt = file.name.split('.').pop();
+        const fileName = `closed-bg-${Math.random()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+            .from('hero-images')
+            .upload(filePath, file);
+
+        if (uploadError) {
+            alert('Upload error: ' + uploadError.message);
+            setLoading(false);
+            return;
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+            .from('hero-images')
+            .getPublicUrl(filePath);
+
+        await supabase.from('site_settings').upsert({ key: 'closed_background', value: publicUrl }, { onConflict: 'key' });
+        setClosedBackground(publicUrl);
+        setLoading(false);
+    }
 
     async function updateHeroSettings() {
         setLoading(true);
@@ -355,7 +435,9 @@ export function useAdminDashboard() {
         galleryUrls, setGalleryUrls,
         editingId, setEditingId,
         isSidebarOpen, setIsSidebarOpen,
-        updateCategories, deleteCategory,
+        updateCategories, deleteCategory, toggleStoreStatus, storeStatus,
+        closedTitle, setClosedTitle, closedDescription, setClosedDescription, closedBackground, setClosedBackground,
+        updateClosedStoreSettings, uploadClosedBackground,
         updateHeroSettings, uploadHeroImage,
         handleEdit, resetForm, handleSubmit, deleteItem,
         totalItems, totalValue, recentItems

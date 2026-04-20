@@ -7,7 +7,7 @@ interface OverviewViewProps {
     totalValue: number;
     categoriesCount: number;
     recentItems: CatalogItem[];
-    setView: (view: 'overview' | 'catalog' | 'hero' | 'gallery') => void;
+    setView: (view: 'overview' | 'catalog' | 'hero' | 'gallery' | 'store') => void;
     setShowForm: (show: boolean) => void;
 }
 
@@ -96,7 +96,7 @@ export default function OverviewView({
                             </div>
                             <p className="text-sm font-bold text-charcoal">Kelola Katalog</p>
                             <p className="text-xs text-muted-foreground mt-1">Edit & hapus produk</p>
-                        </button>
+                       </button>
                     </div>
                 </div>
             </div>
