@@ -144,7 +144,7 @@ export default function Hero({
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1], delay: 0.2 }}
-                    className="relative h-[450px] md:h-[550px] lg:h-[650px] order-1 lg:order-2 flex items-center justify-center pt-16 md:pt-24 lg:pt-32"
+                    className="relative h-[450px] md:h-[550px] lg:h-[650px] order-1 lg:order-2 flex items-center justify-center lg:translate-y-12 pt-8 lg:pt-0"
                 >
                     <div className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[480px] h-full flex items-center justify-center">
                         <CardSwap

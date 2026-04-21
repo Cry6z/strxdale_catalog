@@ -35,11 +35,6 @@ export default function Footer() {
                 <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[9px] tracking-[0.3em] text-white/10 uppercase">
                     <p>© 2026 strxdale&apos;s catalog</p>
                     <p className="hidden md:block uppercase">born from restlessness</p>
-                    <div className="md:hidden flex gap-4 text-[8px]">
-                        <span>Indonesia</span>
-                        <span className="opacity-50">•</span>
-                        <span>v1.2.0</span>
-                    </div>
                 </div>
             </div>
         </footer>

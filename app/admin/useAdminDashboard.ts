@@ -143,6 +143,11 @@ export function useAdminDashboard() {
         };
 
         checkAuth();
+        
+        // Open sidebar on desktop by default
+        if (typeof window !== 'undefined' && window.innerWidth >= 768) {
+            setIsSidebarOpen(true);
+        }
     }, [router, fetchItems, fetchHeroSettings, fetchCategories, fetchStoreStatus]);
 
     async function updateCategories(newCategories: string[]) {
