@@ -5,9 +5,6 @@ import Footer from '@/components/ui/Footer';
 import ScrollFloat from '@/components/ScrollFloat';
 import Gallery from '@/components/ui/Gallery';
 import CatalogSection from '@/components/ui/CatalogSection';
-import ClosedStore from '@/components/ui/ClosedStore';
-import { getStoreSettings } from '@/lib/getStoreSettings';
-
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
@@ -86,15 +83,10 @@ async function getHeroSettings() {
 }
 
 export default async function Home() {
-  const [items, heroSettings, storeSettings] = await Promise.all([
+  const [items, heroSettings] = await Promise.all([
     getItems(),
-    getHeroSettings(),
-    getStoreSettings()
+    getHeroSettings()
   ]);
-
-  if (storeSettings.status === 'closed') {
-    return <ClosedStore title={storeSettings.title} description={storeSettings.description} background={storeSettings.background} />;
-  }
 
   return (
     <div className="relative flex min-h-screen flex-col bg-white">

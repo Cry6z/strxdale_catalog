@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Anonymous_Pro } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import OpeningScene from "@/components/ui/OpeningScene";
-import AppWrapper from "@/components/ui/AppWrapper";
 import "./globals.css";
 
 const anonPro = Anonymous_Pro({
@@ -36,10 +34,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${anonPro.variable} antialiased bg-white`}>
-        <OpeningScene />
-        <AppWrapper>
-          {children}
-        </AppWrapper>
+        {children}
         <Analytics />
       </body>
     </html>

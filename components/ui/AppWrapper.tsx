@@ -3,11 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-export default function AppWrapper({ children }: { children: React.ReactNode }) {
-    const [isFinished, setIsFinished] = useState(false);
-    const [shouldShow, setShouldShow] = useState(false);
+export default function AppWrapper({ children, bypass = false }: { children: React.ReactNode; bypass?: boolean }) {
+    const [isFinished, setIsFinished] = useState(bypass);
+    const [shouldShow, setShouldShow] = useState(bypass);
 
     useEffect(() => {
+        if (bypass) return;
+
         const handleFinish = () => {
             setIsFinished(true);
             // Slight delay before fading in for maximum smoothness
@@ -32,7 +34,7 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
             )}
             
             <motion.div
-                initial={{ opacity: 0 }}
+                initial={{ opacity: bypass ? 1 : 0 }}
                 animate={{ 
                     opacity: shouldShow ? 1 : 0
                 }}
