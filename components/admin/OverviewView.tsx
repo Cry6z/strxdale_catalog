@@ -96,7 +96,7 @@ export default function OverviewView({
                             </div>
                             <p className="text-sm font-bold text-charcoal">Kelola Katalog</p>
                             <p className="text-xs text-muted-foreground mt-1">Edit & hapus produk</p>
-                       </button>
+                        </button>
                     </div>
                 </div>
             </div>

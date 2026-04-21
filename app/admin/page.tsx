@@ -36,11 +36,11 @@ export default function AdminDashboard() {
 
     return (
         <div className="flex min-h-screen bg-background font-sans relative">
-            <Sidebar 
-                view={view} 
-                setView={setView} 
-                isSidebarOpen={isSidebarOpen} 
-                setIsSidebarOpen={setIsSidebarOpen} 
+            <Sidebar
+                view={view}
+                setView={setView}
+                isSidebarOpen={isSidebarOpen}
+                setIsSidebarOpen={setIsSidebarOpen}
             />
 
             <main className="flex-1 md:ml-64 p-6 md:p-12 w-full max-w-[100vw] transition-all">
@@ -48,7 +48,7 @@ export default function AdminDashboard() {
                     <MobileHeader setIsSidebarOpen={setIsSidebarOpen} />
 
                     {view === 'overview' && (
-                        <OverviewView 
+                        <OverviewView
                             totalItems={totalItems}
                             totalValue={totalValue}
                             categoriesCount={categories.length}
@@ -59,7 +59,7 @@ export default function AdminDashboard() {
                     )}
 
                     {view === 'store' && (
-                        <StoreSettingsView 
+                        <StoreSettingsView
                             storeStatus={storeStatus}
                             toggleStoreStatus={toggleStoreStatus}
                             closedTitle={closedTitle}
@@ -71,7 +71,7 @@ export default function AdminDashboard() {
                             updateClosedStoreSettings={updateClosedStoreSettings}
                         />
                     )}
-                    
+
                     {view === 'hero' && (
                         <HeroSettingsView
                             heroTitle={heroTitle}
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
                     )}
 
                     {view === 'gallery' && (
-                        <GallerySettingsView 
+                        <GallerySettingsView
                             landingGalleryImages={landingGalleryImages}
                             setLandingGalleryImages={setLandingGalleryImages}
                             loading={loading}
@@ -96,7 +96,7 @@ export default function AdminDashboard() {
                     )}
 
                     {view === 'catalog' && (
-                        <CatalogManagerView 
+                        <CatalogManagerView
                             items={items}
                             loading={loading}
                             showForm={showForm}
