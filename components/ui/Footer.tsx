@@ -23,7 +23,7 @@ export default function Footer() {
                         <div className="hidden md:block w-px h-3 bg-white/10 self-center"></div>
                         <div className="w-full h-px bg-white/5 md:hidden my-2"></div>
                         <div className="flex flex-wrap justify-center gap-x-6 gap-y-4">
-                            <a href="https://instagram.com/strxdale" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">instagram</a>
+                            <a href="https://instagram.com/douzebran" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">instagram</a>
                             <a href="https://wa.me/6281379669540" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">whatsapp</a>
                             <a href="mailto:gibran121208@gmail.com" className="hover:text-white transition-colors">gmail</a>
                             <a href="https://github.com/Cry6z" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors peer">github</a>

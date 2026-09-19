@@ -54,14 +54,14 @@ export default function StoreSettingsView({
                     
                     <button
                         onClick={toggleStoreStatus}
-                        className={`relative inline-flex h-10 w-[72px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-all duration-300 ease-in-out focus:outline-none shadow-inner ${storeStatus === 'open' ? 'bg-slate-900 shadow-slate-900/10' : 'bg-slate-300'}`}
+                        className={`relative inline-flex h-10 w-18 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-all duration-300 ease-in-out focus:outline-none shadow-inner ${storeStatus === 'open' ? 'bg-slate-900 shadow-slate-900/10' : 'bg-slate-300'}`}
                         role="switch"
                         aria-checked={storeStatus === 'open'}
                     >
                         <span className="sr-only">Toggle store status</span>
                         <span
                             aria-hidden="true"
-                            className={`pointer-events-none inline-block h-9 w-9 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${storeStatus === 'open' ? 'translate-x-[32px]' : 'translate-x-0'}`}
+                            className={`pointer-events-none inline-block h-9 w-9 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${storeStatus === 'open' ? 'translate-x-8' : 'translate-x-0'}`}
                         />
                     </button>
                 </div>
@@ -140,7 +140,7 @@ export default function StoreSettingsView({
                                                     className="object-cover opacity-60 group-hover/cb:scale-105 transition-transform duration-700" 
                                                 />
                                                 <div className="absolute inset-0 flex items-center justify-center p-4 bg-linear-to-t from-black/40 to-transparent">
-                                                    <p className="text-white font-serif italic text-2xl tracking-tight text-center max-w-[200px] wrap-break-word drop-shadow-md">
+                                                    <p className="text-white font-serif italic text-2xl tracking-tight text-center max-w-50 wrap-break-word drop-shadow-md">
                                                         {closedTitle || 'Preview'}
                                                     </p>
                                                 </div>

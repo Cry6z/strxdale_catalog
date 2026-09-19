@@ -22,7 +22,7 @@ export default function MobileHeader({ setIsSidebarOpen }: MobileHeaderProps) {
                 </div>
             </div>
             {/* Spacer underneath to compensate for fixed header (+ original top padding + element height) */}
-            <div className="md:hidden h-[120px]"></div>
+            <div className="md:hidden h-30"></div>
         </>
     );
 }
